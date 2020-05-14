@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#Usar 4 espacios para dentado
 
 def matematicas():
     """
