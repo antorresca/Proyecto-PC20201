@@ -308,12 +308,11 @@ def ecuacion_cuadratica():
 def derivar():
     """
     Funcion para derivar monomios, es decir hallar la recta tangente a una funcion con centro en (0,0)
-    :param funcion: Str con la funcion a derivar
     """
     lista = []
     variable = ''
     abecedario = 'abcdefghijklmnñopqrstuvwxyz'
-    print('Ingrese su función (monomio)')
+    print('Ingrese su función (monomio) \t [Pv^n \t P: coeficiente \t v: variable \t n: exponente]')
     funcion = input()
     for l in abecedario:
         if l in funcion:
