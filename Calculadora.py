@@ -4,8 +4,6 @@
 def matematicas():
     """
     Menú de las funciones propias de la matemática
-
-    :param mate: numero que corresponde a una funcion determinada en la lista
     """
     print('''ELIJA UNA FUNCIÓN: 
             \t 1)Suma
@@ -164,7 +162,6 @@ def quimica():
 def sumar():
     """
     Funcion de sumar cierta cantidad de numeros ingresados por el usuario
-    :param numeros: lista de numeros que se van a sumar
     """
     suma = 0
     print('Ingrese los valores a sumar')
@@ -198,8 +195,6 @@ def restar():
 def multiplicar():
     """
     Funcion para multiplicar la cantidad de numeros que desee el usuario
-    :param m: cantidad entera de numeros que el usuario desee multiplicar
-    :param numero: numeros enteros y/o decimales que se multiplicaran
     """
     print('Ingrese los numeros que desea multiplicar')
     m = input()
@@ -216,8 +211,6 @@ def multiplicar():
 def dividir():
     """
     Funcion para dividir cierta cantidad de elementos
-    :param d: cantidad entera de numeros que se van a dividir
-    :param num: numeros enteros o decimales que se van a dividir
     """
     print('Ingrese la cantidad de numeros que desea dividir')
     d = int(input())
@@ -241,8 +234,6 @@ def dividir():
 def potenciar():
     """
     Funcion para encontrar la potencia de un numero
-    :param base: Numero base de la ecponenciacion
-    :param exp: Numero al que se va a exponenciar la base
     """
     print('Ingrese la base:')
     base = float(input())
@@ -255,8 +246,6 @@ def potenciar():
 def radicar():
     """
     Funcion para sacarle la raiz a un numero que el usuario de
-    :param nume: numero entero o decimal que es el radicando
-    :param ind: numero entero o decimal que es el indice de la riz
     """
     print('Ingrese el radicando: ')
     nume = float(input())
