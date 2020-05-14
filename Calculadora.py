@@ -16,8 +16,6 @@ def matematicas():
             \t 7)Ecuacion cuadratica
             \t 8)Derivacion
             ''')
-            #hola, sirve github?
-
     mate = int(input())
     if mate == 1:
         sumar()
@@ -50,19 +48,18 @@ def fisica():
     3) Electromagnetismo
     4) Ondas
     """)
-  Rama = int(input())
-  
-  if Rama == 1:
-    cinematica()
-  elif Rama == 2:
-    dinamica()
-  elif Rama == 3:
-    print('electromagnetismo')
-  elif Rama == 4:
-    print('ondas')
-  else:
-    print("Rama no encontrada, Por favor, ingrese los datos nuevamente")
-    fisica()   
+    Rama = int(input())
+    if Rama == 1:
+        cinematica()
+    elif Rama == 2:
+        dinamica()
+    elif Rama == 3:
+        print('electromagnetismo')
+    elif Rama == 4:
+        print('ondas')
+    else:
+        print("Rama no encontrada, Por favor, ingrese los datos nuevamente")
+        fisica()   
    
 def estadistica():
   """
