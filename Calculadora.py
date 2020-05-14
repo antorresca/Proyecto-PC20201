@@ -37,20 +37,17 @@ def matematicas():
         volver_al_menu()
 
 def fisica():
-
-  """ 
-  En la funcion 'fisica' se imprime un menu con las areas de la fisica que la calculadora,
- por el momento acepta 4 areas. Esta funcion opera por medio de una cadena de ifs y elfis, la 
- cual, acepta un numero que se asocia con  la rama en el print se menu de inicio de fisica al usuario. 
- """ 
-
-  print (""" Por favor, definir el numero de la rama:
-   1) Cinematica
-   2) Dinamica
-   3) Electromagnetismo
-   4) Ondas
-  """)
-
+    """ 
+    En la funcion 'fisica' se imprime un menu con las areas de la fisica que la calculadora,
+    por el momento acepta 4 areas. Esta funcion opera por medio de una cadena de ifs y elfis, la 
+    cual, acepta un numero que se asocia con  la rama en el print se menu de inicio de fisica al usuario. 
+    """ 
+    print (""" Por favor, definir el numero de la rama:
+    1) Cinematica
+    2) Dinamica
+    3) Electromagnetismo
+    4) Ondas
+    """)
   Rama = int(input())
   
   if Rama == 1:
