@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #Usar 4 espacios para dentado
+import os
+
+def borrarPantalla():
+   os.system ("clear")
+   os.system ("cls")
 
 def matematicas():
-    """
-    Menú de las funciones propias de la matemática
-    """
-    print('''ELIJA UNA FUNCIÓN: 
+    borrarPantalla()
+    print(''' BIENVENIDO A LA SECCION MATEMATICAS!
+            ELIJA UNA FUNCIÓN: 
             \t 1)Suma
             \t 2)Resta
             \t 3)Multiplicación
@@ -18,20 +22,28 @@ def matematicas():
             ''')
     mate = int(input())
     if mate == 1:
+        borrarPantalla()
         sumar()
     elif mate == 2:
+        borrarPantalla()
         restar()
     elif mate == 3:
+        borrarPantalla()
         multiplicar()
     elif mate == 4:
+        borrarPantalla()
         dividir()
     elif mate == 5:
+        borrarPantalla()
         potenciar()
     elif mate == 6:
+        borrarPantalla()
         radicar()
     elif mate == 7:
+        borrarPantalla()
         ecuacion_cuadratica()
     elif mate == 8:
+        borrarPantalla()
         separar()
     else:
         volver_al_menu()
@@ -160,6 +172,7 @@ def sumar():
     """
     Funcion de sumar cierta cantidad de numeros ingresados por el usuario
     """
+    borrarPantalla()
     suma = 0
     print('Ingrese los valores a sumar')
     m = input()
@@ -178,6 +191,7 @@ def restar():
     :param n: cantidad de numeros que el usuario quiere sumar
     :param a: numeros que se sumaran
     """
+    borrarPantalla()
     print("ingrese los numeros que se van a restar separados por un espacio: ")
     numeros = list(map(float, (input().split())))
     resta = 0
@@ -193,6 +207,7 @@ def multiplicar():
     """
     Funcion para multiplicar la cantidad de numeros que desee el usuario
     """
+    borrarPantalla()
     print('Ingrese los numeros que desea multiplicar')
     m = input()
     if '*' in m:
@@ -209,6 +224,7 @@ def dividir():
     """
     Funcion para dividir cierta cantidad de elementos
     """
+    borrarPantalla()
     print('Ingrese la cantidad de numeros que desea dividir')
     d = int(input())
     division = 1
@@ -232,6 +248,7 @@ def potenciar():
     """
     Funcion para encontrar la potencia de un numero
     """
+    borrarPantalla()
     print('Ingrese la base:')
     base = float(input())
     print('ingrese exponente')
@@ -244,6 +261,7 @@ def radicar():
     """
     Funcion para sacarle la raiz a un numero que el usuario de
     """
+    borrarPantalla()
     print('Ingrese el radicando: ')
     nume = float(input())
     print('Ingrese el indice: ')
@@ -257,6 +275,7 @@ def ecuacion_cuadratica():
     Funcion para resolver ecuaciones de segundo grado
     :param ecuacion: str de la expresion algebraica
     """
+    borrarPantalla()
     print("""Escriba su ecuacion
           (con formato= Cv^2+/-Cv+/-C=C
           donde C es el coeficiente y v es la variable)
@@ -306,6 +325,9 @@ def ecuacion_cuadratica():
     volver_al_menu()
 
 def separar():
+    borrarPantalla()
+    print('''Ingrese la funcion que desee derivar
+            (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
     s = input()+'+'
     partes = []
     cont = 0
@@ -319,10 +341,12 @@ def separar():
             else:
                 partes.append([s[cont:q]])
             cont = q+1
+    print('La derivada es:\t')
     for i in range(len(partes)):
         imp = derivar(partes[i][0],i)
         if imp != '0':
             print(imp,end='')
+    print()
     volver_al_menu()
     
 def derivar(s,a):
@@ -372,9 +396,9 @@ def volver_al_menu():
     Funcion para volver a el menu principal del programa
     :param respuesta: Entrada string del usuario frente a la pregunta
     """
-    print('¿Desea regresar al menú principal?')
+    print('¿Desea regresar al menú principal? Si/No')
     respuesta = input()
-    if respuesta == 'si' or respuesta == 'Si' or respuesta == 'SI' or respuesta == 's' or respuesta == 'S' or respuesta == 'Yes' or respuesta == 'YES' or respuesta == 'Y' or respuesta == 'Y':
+    if respuesta == 'si' or respuesta == 'Si' or respuesta == 'SI' or respuesta == 's' or respuesta == 'S':
         main()
     else:
         print('Vuelva pronto!')
@@ -587,6 +611,7 @@ def main():
     Funcion para desplegar el menu de opciones de la calculadora
     :param opcion: numero de la opcion que eligió el usuario
     """
+    borrarPantalla()
     print('''ELIJA UNA OPCIÓN:
             \t 1)MATEMÁTICAS
             \t 2)ESTADÍSTICA
