@@ -32,7 +32,7 @@ def matematicas():
     elif mate == 7:
         ecuacion_cuadratica()
     elif mate == 8:
-        derivar_monomio()
+        separar()
     else:
         volver_al_menu()
 
@@ -305,42 +305,67 @@ def ecuacion_cuadratica():
         print(variable+'[1]='+str(cuadratica1)+'\n'+variable+'[2]='+str(cuadratica2))
     volver_al_menu()
 
-def derivar_monomio():
+def separar():
+    s = input()+'+'
+    partes = []
+    cont = 0
+    for q in range(len(s)):
+        if s[q] == '+' or s[q] == '-':
+            if s[q-1] == '^':
+                for m in range(q+1,len(s)):
+                    if s[m] == '+' or s[m] == '-':
+                        partes.append([s[cont:m]])
+                        break
+            else:
+                partes.append([s[cont:q]])
+            cont = q+1
+    for i in range(len(partes)):
+        imp = derivar(partes[i][0],i)
+        if imp != '0':
+            print(imp,end='')
+    volver_al_menu()
+    
+def derivar(s,a):
     alfabeto = 'abcefghijklmnopqrstuvwxyz'
-    print('Ingrese el monomio a derivar')
-    s = input()
     coeficiente = []
     exponente = []
     resultado = 0
     exp = 0
+    r = '0'
+    variable = ""
     for i in alfabeto:
         if i in s:
             variable = i
             break
-    for j in range(len(s)):
-        if s[j] == variable:
-            coeficiente.append(s[:j])
-            exponente.append(s[j+1:])
-            break
-    for g in exponente:
-        if g != "":
-            for t in range(len(g)):
-                if g[t] == '^':
-                    resultado = int(coeficiente[0])*int(g[t+1:])
-                    exp = int(g[t+1:])-1
-                    break
+    if variable != "":
+        for j in range(len(s)):
+            if s[j] == variable:
+                coeficiente.append(s[:j])
+                exponente.append(s[j+1:])
+                break
+        for g in exponente:
+            if g != "":
+                for t in range(len(g)):
+                    if g[t] == '^':
+                        resultado = int(coeficiente[0])*int(g[t+1:])
+                        exp = int(g[t+1:])-1
+                        break
+            else:
+                resultado = int(coeficiente[0])
+                break
+        if a > 0:
+            if resultado > 0:
+                resultado = '+'+str(resultado)
+        if exp == 0:
+            r = str(resultado)
+        elif exp == 1:
+            r = str(resultado)+variable
+        elif exp < 0:
+            r = str(resultado)+'/'+variable+'^'+str(-1*exp)
         else:
-            resultado = int(coeficiente[0])
-            break
-    if exp == 0:
-        print(str(resultado))
-    elif exp == 1:
-        print(str(resultado)+variable)
-    elif exp < 0:
-        print(str(resultado)+variable+'^'+str(exp),'o',str(resultado)+'/'+variable+'^'+str(-1*exp))
-    else:
-        print(str(resultado)+variable+'^'+str(exp))
-    volver_al_menu()
+            r = str(resultado)+variable+'^'+str(exp)
+        return r
+    return r
     
 def volver_al_menu():
     """
