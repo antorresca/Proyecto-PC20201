@@ -32,7 +32,7 @@ def matematicas():
     elif mate == 7:
         ecuacion_cuadratica()
     elif mate == 8:
-        derivar()
+        derivar_monomio()
     else:
         volver_al_menu()
 
@@ -305,45 +305,41 @@ def ecuacion_cuadratica():
         print(variable+'[1]='+str(cuadratica1)+'\n'+variable+'[2]='+str(cuadratica2))
     volver_al_menu()
 
-def derivar():
-    """
-    Funcion para derivar monomios, es decir hallar la recta tangente a una funcion con centro en (0,0)
-    """
-    lista = []
-    variable = ''
-    abecedario = 'abcdefghijklmnñopqrstuvwxyz'
-    print('Ingrese su función (monomio) \t [Pv^n \t P: coeficiente \t v: variable \t n: exponente]')
-    funcion = input()
-    for l in abecedario:
-        if l in funcion:
-            variable = l
-    if '^' in funcion:
-        lista = list(map(float, funcion.split(variable+'^')))
-    else:
-        for k in range(len(funcion)):
-            if k == 0:
-                lista.append(funcion[k])
-    base = 0
+def derivar_monomio():
+    alfabeto = 'abcefghijklmnopqrstuvwxyz'
+    print('Ingrese el monomio a derivar')
+    s = input()
+    coeficiente = []
+    exponente = []
+    resultado = 0
     exp = 0
-    if len(lista) == 1:
-        base = int(lista[0])
-        exp = 1
+    for i in alfabeto:
+        if i in s:
+            variable = i
+            break
+    for j in range(len(s)):
+        if s[j] == variable:
+            coeficiente.append(s[:j])
+            exponente.append(s[j+1:])
+            break
+    for g in exponente:
+        if g != "":
+            for t in range(len(g)):
+                if g[t] == '^':
+                    resultado = int(coeficiente[0])*int(g[t+1:])
+                    exp = int(g[t+1:])-1
+                    break
+        else:
+            resultado = int(coeficiente[0])
+            break
+    if exp == 0:
+        print(str(resultado))
+    elif exp == 1:
+        print(str(resultado)+variable)
+    elif exp < 0:
+        print(str(resultado)+variable+'^'+str(exp),'o',str(resultado)+'/'+variable+'^'+str(-1*exp))
     else:
-        for j in range(len(lista)):
-            if j == 0:
-                base = int(lista[j])
-            elif j == 1:
-                exp = int(lista[j])
-    b = str(base*exp)
-    e = exp-1
-    if e == 0:
-        print(b) 
-    elif e == 1:
-        print(b+variable)
-    elif e < 0:
-        print(b+'/'+variable+'^'+str(e*-1))
-    else:
-        print(b+variable+'^'+str(e))
+        print(str(resultado)+variable+'^'+str(exp))
     volver_al_menu()
     
 def volver_al_menu():
