@@ -280,48 +280,39 @@ def ecuacion_cuadratica():
           (con formato= Cv^2+/-Cv+/-C=C
           donde C es el coeficiente y v es la variable)
           """)
-    ecuacion = input()
-    abcedario = 'abcdefghijklmnopqrstuwxyz'
-    variable = ''
-    for x in abcedario:
-        if x in ecuacion:
-            variable = x
-    ec,igualdad = ecuacion.split('=')
+    n = input()
+    abecedario = 'abcdefghijklmnopqrstuvwxyz'
+    for v in abecedario:
+        if v in n:
+            variable = v
+            break
     lista = []
-    f = 0
-    if igualdad != '0':
-        igualdad = int(igualdad)*-1
-        ec = ec+str(igualdad)+'=0'
-    for j in range(len(ec)):
-        if ec[j] == '+':
-            lista.append([ec[f:j]])
-            f = j
-        elif ec[j] == '-':
-            lista.append([ec[f:j]])
-            f = j
-        elif ec[j] == '=':
-            lista.append([ec[f:j]])
-            f = j
-    copia = lista[:]
-    c = 0
-    for g in range(len(copia)):
-        for l in copia[g]:
-            a = lista.pop()
-            for n in a:
-                v = n.split(variable)
-                if '' in v:
-                    b = int(v[0])
-                elif '^2' in v:
-                    a = int(v[0])
+    cont,c = 0,0
+    n = n.replace('=','-')+'='
+    for t in range(len(n)):
+        if n[t] == '+' or n[t] == '-' or n[t] == '=':
+            lista.append(n[cont:t])
+            cont = t
+    for i in lista:
+        if variable in i:
+            for j in range(len(i)):
+                if '^2' in i:
+                    if i[j] == '^':
+                        a = float(i[:j-1])
                 else:
-                    c += int(v[0])
-    sqrt = ((b**2-(4*a*c))**0.5)
-    cuadratica1 = (((-1)*b)+sqrt)/(2*a)
-    cuadratica2 = (((-1)*b)-sqrt)/(2*a)
-    if type(cuadratica1) == complex or type(cuadratica2) == complex:
-        print('NO TIENE RESPUESTA DENTRO DE LOS REALES')
+                    if i[j] == variable:
+                        b = float(i[:j])
+        else:
+            c += float(i)
+    X1 = (-b+((b**2)-4*a*c)**0.5)/(2*a)
+    X2 = (-b-((b**2)-4*a*c)**0.5)/(2*a)
+    if  type(X1) == complex or type(X2) == complex:
+        print('No tiene respuesta dentro de los reales, ¿Quiere ver los resultados de todos modos? si/no')
+        respuesta = input().lower()
+        if respuesta == 'si' or respuesta == 's' or respuesta == 'i':
+            print('X[1]=',X1,'\nX[2]=',X2) 
     else:
-        print(variable+'[1]='+str(cuadratica1)+'\n'+variable+'[2]='+str(cuadratica2))
+        print('X[1]=',X1,'\nX[2]=',X2)
     volver_al_menu()
 
 def separar():
