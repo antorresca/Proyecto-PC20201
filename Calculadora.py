@@ -19,6 +19,7 @@ def matematicas():
             \t 6)Radicación
             \t 7)Ecuacion cuadratica
             \t 8)Derivacion
+            \t 9)Integracion
             ''')
     mate = int(input())
     if mate == 1:
@@ -45,6 +46,8 @@ def matematicas():
     elif mate == 8:
         borrarPantalla()
         derivacion()
+    elif mate == 9:
+        integracion()
     else:
         volver_al_menu()
 
