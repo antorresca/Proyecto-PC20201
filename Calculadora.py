@@ -403,7 +403,7 @@ def derivar(funcion_a_derivar):
             contador += 1
 
 def integracion():  
-    borrarpantalla()
+    borrarPantalla()
     print('''Ingrese la funcion que desee integrar
             (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
     funcion = separar(input()+'+')
@@ -412,7 +412,7 @@ def integracion():
     volver_al_menu()
 
 def derivacion():
-    borrarpantalla()
+    borrarPantalla()
     print('''Ingrese la funcion que desee derivar
             (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
     funcion = separar(input()+'+')
