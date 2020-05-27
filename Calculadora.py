@@ -315,75 +315,106 @@ def ecuacion_cuadratica():
         print('X[1]=',X1,'\nX[2]=',X2)
     volver_al_menu()
 
-def separar(s):
-    partes = []
+def separar(a):
+    lista = []
     cont = 0
-    for q in range(len(s)):
-        if s[q] == '+' or s[q] == '-':
-            if s[q-1] == '^':
-                for m in range(q+1,len(s)):
-                    if s[m] == '+' or s[m] == '-':
-                        partes.append([s[cont:m]])
-                        break
-            else:
-                partes.append([s[cont:q]])
-            cont = q+1
-    return partes
-    
-def derivar(s,a):
+    for t in range(len(a)):
+        if a[t] == '+':
+            lista.append(a[cont:t])
+            cont = t
+        elif a[t] == '-':
+            lista.append(a[cont:t])
+            cont = t
+    return lista
+
+def integrar(funcion_a_integrar):
     alfabeto = 'abcefghijklmnopqrstuvwxyz'
-    coeficiente = []
-    exponente = []
-    resultado = 0
-    exp = 0
-    r = '0'
-    variable = ""
-    for i in alfabeto:
-        if i in s:
-            variable = i
-            break
-    if variable != "":
-        for j in range(len(s)):
-            if s[j] == variable:
-                coeficiente.append(s[:j])
-                exponente.append(s[j+1:])
+    contador = 0
+    for i in range(len(funcion_a_integrar)):
+        for v in alfabeto:
+            if v in funcion_a_integrar[i]:
+                variable = v
                 break
-        for g in exponente:
-            if g != "":
-                for t in range(len(g)):
-                    if g[t] == '^':
-                        resultado = int(coeficiente[0])*int(g[t+1:])
-                        exp = int(g[t+1:])-1
+        if variable in funcion_a_integrar[i]:
+            if '^' in funcion_a_integrar[i]:
+                for t in range(len(funcion_a_integrar[i])):
+                    if funcion_a_integrar[i][t] == '^':
+                        exponente = float(funcion_a_integrar[i][t+1:])+1
                         break
             else:
-                resultado = int(coeficiente[0])
-                break
-        if a > 0:
-            if resultado > 0:
-                resultado = '+'+str(resultado)
-        if exp == 0:
-            r = str(resultado)
-        elif exp == 1:
-            r = str(resultado)+variable
-        elif exp < 0:
-            r = str(resultado)+'/'+variable+'^'+str(-1*exp)
+                exponente = 2
+            for y in range(len(funcion_a_integrar[i])):
+                if funcion_a_integrar[i][y] == variable:
+                    coeficiente = float(funcion_a_integrar[i][:y])
+                    break
+            resultado = coeficiente/exponente
+            if contador != 0:
+                if resultado>0:
+                    resultado = '+'+str(resultado) 
+            if resultado == 1:
+                print(str(variable)+'^'+str(exponente),end='')
+            else:
+                print(str(resultado)+str(variable)+'^'+str(exponente),end='')
         else:
-            r = str(resultado)+variable+'^'+str(exp)
-        return r
-    return r
+            print(str(funcion_a_integrar[i])+'x',end='')
+    print('+C')
+
+def derivar(funcion_a_derivar):
+    alfabeto = 'abcefghijklmnopqrstuvwxyz'
+    contador = 0
+    for i in range(len(funcion_a_derivar)):
+        for v in alfabeto:
+            if v in funcion_a_derivar[i]:
+                variable = v
+                break
+        if variable in funcion_a_derivar[i]:
+            if '^' in funcion_a_derivar[i]:
+                for t in range(len(funcion_a_derivar[i])):
+                    if funcion_a_derivar[i][t] == '^':
+                        exponente = float(funcion_a_derivar[i][t+1:])-1
+                        break
+            else:
+                exponente = 0
+            for y in range(len(funcion_a_derivar[i])):
+                if funcion_a_derivar[i][y] == variable:
+                    coeficiente = float(funcion_a_derivar[i][:y])
+                    break
+            resultado = coeficiente*(exponente+1)
+            if contador != 0:
+                if resultado>0:
+                    resultado = '+'+str(resultado) 
+            if resultado == 1:
+                if exponente == 1:
+                    print(str(variable),end='')
+                elif exponente == 0:
+                    print(str(resultado),end='')
+                else:
+                   print(str(variable)+'^'+str(exponente),end='')
+            else:
+                if exponente == 1:
+                    print(str(resultado)+str(variable),end='')
+                elif exponente == 0:
+                    print(str(resultado),end='')
+                else:
+                    print(str(resultado)+str(variable)+'^'+str(exponente),end='')
+            contador += 1
+
+def integracion():  
+    borrarpantalla()
+    print('''Ingrese la funcion que desee integrar
+            (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
+    funcion = separar(input()+'+')
+    print('La integral es:')
+    integrar(funcion)
+    volver_al_menu()
 
 def derivacion():
-    borrarPantalla()
+    borrarpantalla()
     print('''Ingrese la funcion que desee derivar
             (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
-    funcion = input()+'+'
-    funcion_a_derivar = separar(funcion)
-    print('La derivada es:\t')
-    for i in range(len(funcion_a_derivar)):
-        imp = derivar(funcion_a_derivar[i][0],i)
-        if imp != '0':
-            print(imp,end='')
-    print()
+    funcion = separar(input()+'+')
+    print('La derivada es:')
+    derivar(funcion)
     volver_al_menu()
     
 def volver_al_menu():
