@@ -44,7 +44,7 @@ def matematicas():
         ecuacion_cuadratica()
     elif mate == 8:
         borrarPantalla()
-        separar()
+        derivacion()
     else:
         volver_al_menu()
 
@@ -315,11 +315,7 @@ def ecuacion_cuadratica():
         print('X[1]=',X1,'\nX[2]=',X2)
     volver_al_menu()
 
-def separar():
-    borrarPantalla()
-    print('''Ingrese la funcion que desee derivar
-            (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
-    s = input()+'+'
+def separar(s):
     partes = []
     cont = 0
     for q in range(len(s)):
@@ -332,13 +328,7 @@ def separar():
             else:
                 partes.append([s[cont:q]])
             cont = q+1
-    print('La derivada es:\t')
-    for i in range(len(partes)):
-        imp = derivar(partes[i][0],i)
-        if imp != '0':
-            print(imp,end='')
-    print()
-    volver_al_menu()
+    return partes
     
 def derivar(s,a):
     alfabeto = 'abcefghijklmnopqrstuvwxyz'
@@ -381,6 +371,20 @@ def derivar(s,a):
             r = str(resultado)+variable+'^'+str(exp)
         return r
     return r
+
+def derivacion():
+    borrarPantalla()
+    print('''Ingrese la funcion que desee derivar
+            (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
+    funcion = input()+'+'
+    funcion_a_derivar = separar(funcion)
+    print('La derivada es:\t')
+    for i in range(len(funcion_a_derivar)):
+        imp = derivar(funcion_a_derivar[i][0],i)
+        if imp != '0':
+            print(imp,end='')
+    print()
+    volver_al_menu()
     
 def volver_al_menu():
     """
