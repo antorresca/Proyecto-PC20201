@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#Usar 4 espacios para dentado
 import os
+import turtle
 
 def borrarPantalla():
    os.system ("clear")
