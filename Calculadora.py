@@ -1,9 +1,10 @@
 import os
 import turtle
+Datos = []
 
 def borrarPantalla():
    os.system ("clear")
-   os.system ("cls")
+   os.system ("cls")   
 
 def matematicas():
     borrarPantalla()
@@ -73,75 +74,98 @@ def fisica():
     else:
         print("Rama no encontrada, Por favor, ingrese los datos nuevamente")
         fisica()   
-   
 def estadistica():
-  """
-  Menú de funciones propias de la estadística
+    print('''ELIJA UNA OPCIÓN:
+            \t 1)Crear Datos
+            \t 2)Agregar Datos
+            \t 3)Operaciones estadisticas
+            \t 4)Volver al menu principal
+            ''')
+    OpcionesDatos = int(input())
+    if OpcionesDatos == 1:
+        CrearDatos()
+    elif OpcionesDatos == 2:
+        AgregarDatos()
+    elif OpcionesDatos == 3:
+        if len(Datos) == 0:
+            print(Datos)
+            print('No hay datos a procesar, ingrése los datos')
+            estadistica()
+        else:
+            FuncionesEst()
+    else:
+        volver_al_menu()
+def CrearDatos():
+    if len(Datos) == 0:
+        AgregarDatos()
+    else:
+        for i in range(len(Datos)):
+            Datos.remove(Datos[0])
+        AgregarDatos()
+def AgregarDatos():
+    print('Ingrese cantidad de valores: ')
+    n = int(input())
+    for i in range(n):
+        xi = float(input())
+        Datos.append(xi)
+    Datos.sort()
+    estadistica()
+def FuncionesEst():
+    """
+    Menú de funciones propias de la estadística
 
-  :param n: Número de datos a analizar, estos se almacenan en una lista
-  :param xi: Dato que será almacenado en la lista 
-  :param Funcion: Número que corresponde a una funcion determinada en la lista
-  :param PM: Se presenta en algunas funciones para elegir si se desea saber el valor poblacional o muestral
-
-  """
-  Datos = []
-  print('Ingrese cantidad de valores: ')
-  n = int(input())
-  for i in range(n):
-    xi = float(input())
-    Datos.append(xi)
-  Datos.sort()
-  print('''ELIJA UNA FUNCIÓN: 
-    \t 1)Media
-    \t 2)Mediana
-    \t 3)Varianza
-    \t 4)Desviación estandar
-    \t 5)Coeficiente de variación
-    \t 6)Percentiles
-    \t 7)Cuartiles
-    ''')
-  Funcion = int(input())
-  if Funcion == 1:
-    promedio = MediaAritmetica(Datos)
-    print('Promedio =',promedio)
-    volver_al_menu()
-  elif Funcion == 2:
-    mediana = Mediana(Datos)
-    print('Mediana =',mediana)
-    volver_al_menu()
-  elif Funcion == 3:
-    print('''Elija una opción:
-    \t 1) Poblacional
-    \t 2) Muestral
-    ''')
-    PM = int(input())
-    varianza = Varianza(Datos, PM)
-    print('Varianza =',varianza)
-    volver_al_menu()
-  elif Funcion == 4:
-    print('''Elija una opción:
-    \t 1) Poblacional
-    \t 2) Muestral
-    ''')
-    PM = int(input())
-    s = DesviacionEstandar(Datos, PM)
-    print('Desviacion =',s)
-    volver_al_menu()
-  elif Funcion == 5:
-    print('''Elija una opción:
-    \t 1) Poblacional
-    \t 2) Muestral
-    ''')
-    PM = int(input())
-    CV = CoeficienteDeVariacion(Datos, PM)
-    print('C.V. ='+str(CV)+'%')
-    volver_al_menu()
-  elif Funcion == 6:
-    Percentiles(Datos)
-    volver_al_menu()
-  elif Funcion == 7:
-    Cuartiles(Datos)
-    volver_al_menu()
+    """
+    print('''ELIJA UNA FUNCIÓN: 
+        \t 1)Media
+        \t 2)Mediana
+        \t 3)Varianza
+        \t 4)Desviación estandar
+        \t 5)Coeficiente de variación
+        \t 6)Percentiles
+        \t 7)Cuartiles
+        ''')
+    Funcion = int(input())
+    if Funcion == 1:
+        promedio = MediaAritmetica(Datos)
+        print('Promedio =',promedio)
+        estadistica()
+    elif Funcion == 2:
+        mediana = Mediana(Datos)
+        print('Mediana =',mediana)
+        estadistica()
+    elif Funcion == 3:
+        print('''Elija una opción:
+        \t 1) Poblacional
+        \t 2) Muestral
+        ''')
+        PM = int(input())
+        varianza = Varianza(Datos, PM)
+        print('Varianza =',varianza)
+        estadistica()
+    elif Funcion == 4:
+        print('''Elija una opción:
+        \t 1) Poblacional
+        \t 2) Muestral
+        ''')
+        PM = int(input())
+        s = DesviacionEstandar(Datos, PM)
+        print('Desviacion =',s)
+        estadistica()
+    elif Funcion == 5:
+        print('''Elija una opción:
+        \t 1) Poblacional
+        \t 2) Muestral
+        ''')
+        PM = int(input())
+        CV = CoeficienteDeVariacion(Datos, PM)
+        print('C.V. ='+str(CV)+'%')
+        estadistica()
+    elif Funcion == 6:
+        Percentiles(Datos)
+        estadistica()
+    elif Funcion == 7:
+        Cuartiles(Datos)
+        estadistica()
 
 def quimica():
     """ 
@@ -479,7 +503,7 @@ def cinematica():
     print("La velocidad es ", velocidad,"metros/segundo")
     volver_al_menu()
 
-  def aceleracion():
+def aceleracion():
     """
     funcion en la cual se piden dos valores, velocidad y tiempo para conocer una 
     aceleracion segun la ecuacion aceleracion = velocidad / tiempo
@@ -492,21 +516,21 @@ def cinematica():
     print("La aceleracion es ", aceleracion,"metros/segundo^2")
     volver_al_menu()
   
-  print ("""
-   Por favor, definir la incognita:
-   Un string que sea la variable fisica a encontar o el fenomeno fisco a comprender.
-  """)
-  Incognita = str(input()) 
-  Incognita = Incognita.upper()  
-  if Incognita == "DISTANCIA":
-    distancia()
-  elif Incognita == "VELOCIDAD":
-    velocidad()
-  elif Incognita == "ACELERACION":
-    aceleracion()
-  else:
-    print("Variable o proceso no encontrado")
-    volver_al_menu()
+    print ("""
+    Por favor, definir la incognita:
+    Un string que sea la variable fisica a encontar o el fenomeno fisco a comprender.
+    """)
+    Incognita = str(input()) 
+    Incognita = Incognita.upper()  
+    if Incognita == "DISTANCIA":
+        distancia()
+    elif Incognita == "VELOCIDAD":
+        velocidad()
+    elif Incognita == "ACELERACION":
+        aceleracion()
+    else:
+        print("Variable o proceso no encontrado")
+        volver_al_menu()
     
 def dinamica():
   """
