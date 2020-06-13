@@ -40,10 +40,7 @@ def matematicas():
     elif mate == 6:
         borrarPantalla()
         radicar()
-    elif mate == 7:
-        borrarPantalla()
-        ecuacion_cuadratica()
-    elif mate == 8 or mate == 9:
+    elif mate == 7 or mate == 8 or mate == 9:
         operacion_de_fucniones(mate)
     elif mate == 10:
         graficar()
