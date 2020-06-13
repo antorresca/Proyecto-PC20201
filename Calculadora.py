@@ -43,11 +43,8 @@ def matematicas():
     elif mate == 7:
         borrarPantalla()
         ecuacion_cuadratica()
-    elif mate == 8:
-        borrarPantalla()
-        derivacion()
-    elif mate == 9:
-        integracion()
+    elif mate == 8 or mate == 9:
+        operacion_de_fucniones(mate)
     elif mate == 10:
         graficar()
     else:
@@ -358,6 +355,7 @@ def separar(a):
     return lista
 
 def integrar(funcion_a_integrar):
+    print('La integral es:')
     alfabeto = 'abcefghijklmnopqrstuvwxyz'
     contador = 0
     for i in range(len(funcion_a_integrar)):
@@ -390,6 +388,7 @@ def integrar(funcion_a_integrar):
     print('+C')
 
 def derivar(funcion_a_derivar):
+    print('La derivada es:')
     alfabeto = 'abcefghijklmnopqrstuvwxyz'
     contador = 0
     for i in range(len(funcion_a_derivar)):
@@ -429,22 +428,15 @@ def derivar(funcion_a_derivar):
                     print(str(resultado)+str(variable)+'^'+str(exponente),end='')
             contador += 1
 
-def integracion():  
+def operacion_de_fucniones(operacion):  
     borrarPantalla()
-    print('''Ingrese la funcion que desee integrar
+    print('''Ingrese la funcion
             (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
     funcion = separar(input())
-    print('La integral es:')
-    integrar(funcion)
-    volver_al_menu()
-
-def derivacion():
-    borrarPantalla()
-    print('''Ingrese la funcion que desee derivar
-            (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
-    funcion = separar(input())
-    print('La derivada es:')
-    derivar(funcion)
+    if operacion == 8:
+        derivar(funcion)
+    elif operacion == 9:
+        integrar(funcion)
     volver_al_menu()
 
 def plano():
