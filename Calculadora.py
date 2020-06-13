@@ -19,6 +19,7 @@ def matematicas():
             \t 7)Ecuacion cuadratica
             \t 8)Derivacion
             \t 9)Integracion
+            \t 10)Grafica
             ''')
     mate = int(input())
     if mate == 1:
@@ -47,6 +48,8 @@ def matematicas():
         derivacion()
     elif mate == 9:
         integracion()
+    elif mate == 10:
+        graficar()
     else:
         volver_al_menu()
 
@@ -73,7 +76,8 @@ def fisica():
         print('ondas')
     else:
         print("Rama no encontrada, Por favor, ingrese los datos nuevamente")
-        fisica()   
+        fisica()
+
 def estadistica():
     print('''ELIJA UNA OPCIÓN:
             \t 1)Crear Datos
@@ -441,7 +445,77 @@ def derivacion():
     print('La derivada es:')
     derivar(funcion)
     volver_al_menu()
-    
+
+def plano():
+    plano = turtle.Turtle()
+    plano.color('gray')
+    x = -125
+    y = -125
+    plano.speed(0)
+    for g in range(10):
+        for n in range(10):
+            plano.up()
+            plano.goto(x,y)
+            plano.down()
+            for i in range(4):
+                plano.forward(25)
+                plano.left(90)
+            x += 25
+        x = -125
+        y +=25
+    plano.up()
+    plano.pensize(2)
+    plano.goto(0,-125)
+    plano.color('black')
+    plano.down()
+    plano.goto(0,125)
+    plano.up()
+    plano.goto(0,135)
+    plano.down()
+    plano.goto(20,155)
+    plano.up()
+    plano.goto(0,155)
+    plano.down()
+    plano.goto(10,145)
+    plano.up()
+    plano.goto(-125,0)
+    plano.down()
+    plano.goto(125,0)
+    plano.up()
+    plano.goto(135,0)
+    plano.down()
+    plano.goto(155,-20)
+    plano.up()
+    plano.goto(155,0)
+    plano.down()
+    plano.goto(135,-20)
+    plano.hideturtle()
+
+def graficar():
+    turtle.setup(350,350)
+    wn = turtle.Screen()
+    wn.title('Cuadratica')
+    wn.screensize(300,300)
+    alex = turtle.Turtle()
+    tess = turtle.Turtle()
+    alex.pensize(1.5)
+    tess.pensize(1.5)
+    alex.speed(0)
+    tess.speed(0)
+    alex.color('blue')
+    tess.color('blue')
+    contador = 0
+    for n in range(125):
+        if ((n**2)/25) <= 126:
+            alex.goto(n,(n**2)/25)
+            tess.goto(-n,((-n)**2)/25)
+        else:
+            break
+    alex.hideturtle()
+    tess.hideturtle()
+    wn.exitonclick()
+    volver_al_menu()  
+
 def volver_al_menu():
     """
     Funcion para volver a el menu principal del programa
