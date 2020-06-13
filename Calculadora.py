@@ -16,7 +16,7 @@ def matematicas():
             \t 4)División
             \t 5)Potenciación
             \t 6)Radicación
-            \t 7)Ecuacion cuadratica
+            \t 7)Ecuacion
             \t 8)Derivacion
             \t 9)Integracion
             \t 10)Grafica
@@ -293,13 +293,37 @@ def radicar():
     print(str(ind)+'√'+str(nume)+'='+str(raiz))
     volver_al_menu()
 
-def ecuacion_cuadratica(funcion,variable):
+def ecuaciones(lista,variable):
+    lista.sort(key = len)
+    for n in lista:
+        if '^2' in n:
+            cuadratica(lista,variable)
+            break
+        else:
+            normal(lista,variable)
+            break
+    return
+
+def normal(ecuacion,variable):
+    independiente = 0
+    for elemento in ecuacion:
+        if variable in elemento:
+            if elemento[0] == variable:
+                algebra = 1
+            else:
+                algebra = int(elemento.split(variable)[0])
+        else:
+            independiente += float(elemento)
+    print(variable+'='+str((-1*independiente)/algebra))
+    return
+
+def cuadratica(ecuacion,variable):
     """
     Funcion para resolver ecuaciones de segundo grado
     :param ecuacion: str de la expresion algebraica
     """
     borrarPantalla()
-    a,b,c = 0,0,0
+    c = 0
     for i in funcion:
         if variable in i:
             for j in range(len(i)):
@@ -409,7 +433,7 @@ def operacion_de_fucniones(operacion):
             (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
     funcion,letra = separar(input().replace('=','-'))
     if operacion == 7:
-        ecuacion_cuadratica(funcion,letra)
+        ecuaciones(funcion,letra)
     elif operacion == 8:
         derivar(funcion,letra)
     elif operacion == 9:
