@@ -299,6 +299,7 @@ def ecuacion_cuadratica(funcion,variable):
     :param ecuacion: str de la expresion algebraica
     """
     borrarPantalla()
+    a,b,c = 0,0,0
     for i in funcion:
         if variable in i:
             for j in range(len(i)):
@@ -318,7 +319,7 @@ def ecuacion_cuadratica(funcion,variable):
         if respuesta == 'si' or respuesta == 's' or respuesta == 'i':
             print('X[1]=',X1,'\nX[2]=',X2) 
     else:
-        print('X[1]=',X1,'\nX[2]=',X2)
+        print(variable+'[1]=',X1,'\n'+variable+'[2]=',X2)
     volver_al_menu()
 
 def separar(a):
@@ -328,7 +329,7 @@ def separar(a):
     a += '+'
     for t in range(len(a)):
         if a[t] == '+' or a[t] == '-':
-            lista1.append(a[cont:t])
+            lista.append(a[cont:t])
             cont = t
     for i in range(len(lista)):
         for v in alfabeto:
@@ -406,9 +407,9 @@ def operacion_de_fucniones(operacion):
     borrarPantalla()
     print('''Ingrese la funcion
             (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
-    funcion,letra = separar(input())
+    funcion,letra = separar(input().replace('=','-'))
     if operacion == 7:
-        cuadratica(funcion,letra)
+        ecuacion_cuadratica(funcion,letra)
     elif operacion == 8:
         derivar(funcion,letra)
     elif operacion == 9:
