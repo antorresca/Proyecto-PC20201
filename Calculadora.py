@@ -492,8 +492,8 @@ def plano():
     plano.hideturtle()
 
 def graficar():
-    turtle.setup(350,350)
     wn = turtle.Screen()
+    turtle.setup(350,350)
     wn.title('Cuadratica')
     wn.screensize(300,300)
     plano()
@@ -505,7 +505,6 @@ def graficar():
     tess.speed(0)
     alex.color('blue')
     tess.color('blue')
-    contador = 0
     for n in range(125):
         if ((n**2)/25) <= 126:
             alex.goto(n,(n**2)/25)
