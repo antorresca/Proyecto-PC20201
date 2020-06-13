@@ -347,6 +347,7 @@ def ecuacion_cuadratica():
 def separar(a):
     lista = []
     cont = 0
+    a += '+'
     for t in range(len(a)):
         if a[t] == '+':
             lista.append(a[cont:t])
@@ -432,7 +433,7 @@ def integracion():
     borrarPantalla()
     print('''Ingrese la funcion que desee integrar
             (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
-    funcion = separar(input()+'+')
+    funcion = separar(input())
     print('La integral es:')
     integrar(funcion)
     volver_al_menu()
@@ -441,7 +442,7 @@ def derivacion():
     borrarPantalla()
     print('''Ingrese la funcion que desee derivar
             (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
-    funcion = separar(input()+'+')
+    funcion = separar(input())
     print('La derivada es:')
     derivar(funcion)
     volver_al_menu()
