@@ -496,6 +496,7 @@ def graficar():
     wn = turtle.Screen()
     wn.title('Cuadratica')
     wn.screensize(300,300)
+    plano()
     alex = turtle.Turtle()
     tess = turtle.Turtle()
     alex.pensize(1.5)
