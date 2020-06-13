@@ -296,30 +296,13 @@ def radicar():
     print(str(ind)+'√'+str(nume)+'='+str(raiz))
     volver_al_menu()
 
-def ecuacion_cuadratica():
+def ecuacion_cuadratica(funcion,variable):
     """
     Funcion para resolver ecuaciones de segundo grado
     :param ecuacion: str de la expresion algebraica
     """
     borrarPantalla()
-    print("""Escriba su ecuacion
-          (con formato= Cv^2+/-Cv+/-C=C
-          donde C es el coeficiente y v es la variable)
-          """)
-    n = input()
-    abecedario = 'abcdefghijklmnopqrstuvwxyz'
-    for v in abecedario:
-        if v in n:
-            variable = v
-            break
-    lista = []
-    cont,c = 0,0
-    n = n.replace('=','-')+'='
-    for t in range(len(n)):
-        if n[t] == '+' or n[t] == '-' or n[t] == '=':
-            lista.append(n[cont:t])
-            cont = t
-    for i in lista:
+    for i in funcion:
         if variable in i:
             for j in range(len(i)):
                 if '^2' in i:
@@ -342,27 +325,26 @@ def ecuacion_cuadratica():
     volver_al_menu()
 
 def separar(a):
+    alfabeto = 'abcefghijklmnopqrstuvwxyz'
     lista = []
     cont = 0
     a += '+'
     for t in range(len(a)):
-        if a[t] == '+':
-            lista.append(a[cont:t])
+        if a[t] == '+' or a[t] == '-':
+            lista1.append(a[cont:t])
             cont = t
-        elif a[t] == '-':
-            lista.append(a[cont:t])
-            cont = t
-    return lista
+    for i in range(len(lista)):
+        for v in alfabeto:
+            if v in lista[i]:
+                variable_encontrada = v
+                break
+        break
+    return lista,variable_encontrada
 
-def integrar(funcion_a_integrar):
+def integrar(funcion_a_integrar,variable):
     print('La integral es:')
-    alfabeto = 'abcefghijklmnopqrstuvwxyz'
     contador = 0
     for i in range(len(funcion_a_integrar)):
-        for v in alfabeto:
-            if v in funcion_a_integrar[i]:
-                variable = v
-                break
         if variable in funcion_a_integrar[i]:
             if '^' in funcion_a_integrar[i]:
                 for t in range(len(funcion_a_integrar[i])):
@@ -387,15 +369,10 @@ def integrar(funcion_a_integrar):
             print(str(funcion_a_integrar[i])+'x',end='')
     print('+C')
 
-def derivar(funcion_a_derivar):
+def derivar(funcion_a_derivar,variable):
     print('La derivada es:')
-    alfabeto = 'abcefghijklmnopqrstuvwxyz'
     contador = 0
     for i in range(len(funcion_a_derivar)):
-        for v in alfabeto:
-            if v in funcion_a_derivar[i]:
-                variable = v
-                break
         if variable in funcion_a_derivar[i]:
             if '^' in funcion_a_derivar[i]:
                 for t in range(len(funcion_a_derivar[i])):
@@ -432,11 +409,13 @@ def operacion_de_fucniones(operacion):
     borrarPantalla()
     print('''Ingrese la funcion
             (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
-    funcion = separar(input())
-    if operacion == 8:
-        derivar(funcion)
+    funcion,letra = separar(input())
+    if operacion == 7:
+        cuadratica(funcion,letra)
+    elif operacion == 8:
+        derivar(funcion,letra)
     elif operacion == 9:
-        integrar(funcion)
+        integrar(funcion,letra)
     volver_al_menu()
 
 def plano():
