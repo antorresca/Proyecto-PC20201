@@ -19,14 +19,304 @@ def Matematicas():
         ''')
         try :
             mate[int(input())]()
+            respuesta = VolverAntes()
         except KeyError:
             print('La opcion seleccionada no se encuentra en la lista presentada')
-            time.sleep(5)
+            time.sleep(2)
         except ValueError:
             print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
-            time.sleep(5)
-        respuesta = VolverAntes()
-    VolverInicio()()  
+            time.sleep(2) 
+    return
+
+def OperacionesBasicas():
+    basica = {1: Sumar,2: Restar,3: Multiplicar,4: Radicar,5: Potenciar,6: Otro}
+    bas = True
+    while bas:
+        borrarPantalla()
+        print(''''Elija una operacion, SOLO DIGITE EL NUMERO DE LA OPCION:
+        \t 1)Suma
+        \t 2)Resta
+        \t 3)Multiplicacion
+        \t 4)Radicacion
+        \t 5)Potenciacion
+        \t 6)Operacion combinada
+        ''')
+        try:
+            basica[int(input())]()
+            bas = False
+        except:
+            print('Ha ingresado una opcion invalida,intente de nuevo')
+            time.sleep(2)
+    return
+
+def Sumar():
+    borrarPantalla()
+    suma = 0
+    print('Ingrese los valores a sumar')
+    m = input()
+    if '+' in m:
+        numeros = list(map(float, (m.split('+'))))
+    else:
+        numeros = list(map(float, (m.split())))
+    for i in numeros:
+        suma += i
+    print('El resultado total de la suma es: ', suma)
+    time.sleep(5)
+    return
+
+def Restar():
+    borrarPantalla()
+    print("ingrese los numeros que se van a restar separados por un espacio: ")
+    numeros = list(map(float, (input().split())))
+    resta = 0
+    for i in range(len(numeros)):
+        if i == 0:
+            resta = numeros[i]
+        else:
+            resta -= numeros[i]
+    print('El resultado es:',resta)
+    time.sleep(5)
+    return
+
+def Multiplicar():
+    borrarPantalla()
+    print('Ingrese los numeros que desea multiplicar')
+    m = input()
+    if '*' in m:
+        numeros = list(map(float, (m.split('*'))))
+    else:
+        numeros = list(map(float, (m.split())))
+    mult = 1
+    for j in numeros:
+        mult *= j
+    print('el resultado de su multiplicaión es: ',mult)
+    time.sleep(5)
+    return
+
+def Dividir():
+    borrarPantalla()
+    print('Ingrese la cantidad de numeros que desea dividir')
+    d = int(input())
+    division = 1
+    for h in range(d):
+        print('ingrese numero [',h+1,']:')
+        num = float(input())
+        if num == 0:
+            print('el numero que ingresó es 0,No es posible dividir entre 0')
+            break
+        elif h == 0:
+            division = num
+        else:
+            division = division/num
+    if division == 1:
+        print('')
+    else:
+        print('su respuesta en decimal es: ',division,'y en entero es:',int(division))
+    time.sleep(5)
+    return
+
+def Potenciar():
+    borrarPantalla()
+    print('Ingrese la base:')
+    base = float(input())
+    print('ingrese exponente')
+    exp = float(input())
+    resultado= base**exp
+    print(str(base)+'^'+str(exp)+'='+str(resultado))
+    time.sleep(5)
+    return
+
+def Radicar():
+    borrarPantalla()
+    print('Ingrese el radicando: ')
+    nume = float(input())
+    print('Ingrese el indice: ')
+    ind = float(input())
+    raiz = nume**(1/ind)
+    print(str(ind)+'√'+str(nume)+'='+str(raiz))
+    time.sleep(5)
+    return
+
+def Otro():
+    borrarPantalla()
+    print('Ingrese su operacion:')
+    operacion = separar(input())
+    print(operacion)
+    time.sleep(5)
+    return
+
+def OperacionesVariables():
+    Avanzado = {1: Ecuaciones,2: Derivar,3: Integrar}
+    Av = True
+    while Av:
+        borrarPantalla()
+        print('''Ingrese la opcion que desee:
+        \t 1)Ecuaciones
+        \t 2)Derivacion
+        \t 3)Integracion Indefinida
+        ''')
+        try:
+            opcion = int(input())
+            if opcion in Avanzado.keys():
+                borrarPantalla()
+                print('''Ingrese la funcion
+                        (Con formato Pv^e donde P: coeficiente, v: variable , e: exponente)''')
+                funcion = separar(input().replace('=','-'))
+                letra = identificar(funcion)
+                Avanzado[opcion](funcion,letra)
+                Av = False
+            else:
+                print('Ha ingresado una opcion invalida,intente de nuevo')
+                time.sleep(3)
+        except:
+            print('1Ha ingresado una opcion invalida,intente de nuevo')
+            time.sleep(3)
+
+def Ecuaciones(lista,variable):
+    lista.sort(key = len)
+    for n in lista:
+        if '^2' in n:
+            cuadratica(lista,variable)
+            break
+        else:
+            normal(lista,variable)
+            break
+    return
+
+def normal(ecuacion,variable):
+    independiente = 0
+    for elemento in ecuacion:
+        if variable in elemento:
+            if elemento[0] == variable:
+                algebra = 1
+            else:
+                algebra = int(elemento.split(variable)[0])
+        else:
+            independiente += float(elemento)
+    print(variable+'='+str((-1*independiente)/algebra))
+    return
+
+def cuadratica(ecuacion,variable):
+    """
+    Funcion para resolver ecuaciones de segundo grado
+    :param ecuacion: str de la expresion algebraica
+    """
+    borrarPantalla()
+    c = 0
+    for i in ecuacion:
+        if variable in i:
+            for j in range(len(i)):
+                if '^2' in i:
+                    if i[j] == '^':
+                        a = float(i[:j-1])
+                else:
+                    if i[j] == variable:
+                        b = float(i[:j])
+        else:
+            c += float(i)
+    X1 = (-b+((b**2)-4*a*c)**0.5)/(2*a)
+    X2 = (-b-((b**2)-4*a*c)**0.5)/(2*a)
+    if  type(X1) == complex or type(X2) == complex:
+        print('No tiene respuesta dentro de los reales, ¿Quiere ver los resultados de todos modos? si/no')
+        respuesta = input().lower()
+        if respuesta == 'si' or respuesta == 's' or respuesta == 'i':
+            print('X[1]=',X1,'\nX[2]=',X2) 
+    else:
+        print(variable+'[1]=',X1,'\n'+variable+'[2]=',X2)
+
+def Integrar(funcion_a_integrar,variable):
+    print('La integral es:')
+    contador = 0
+    for i in range(len(funcion_a_integrar)):
+        if variable in funcion_a_integrar[i]:
+            if '^' in funcion_a_integrar[i]:
+                for t in range(len(funcion_a_integrar[i])):
+                    if funcion_a_integrar[i][t] == '^':
+                        exponente = float(funcion_a_integrar[i][t+1:])+1
+                        break
+            else:
+                exponente = 2
+            for y in range(len(funcion_a_integrar[i])):
+                if funcion_a_integrar[i][y] == variable:
+                    coeficiente = float(funcion_a_integrar[i][:y])
+                    break
+            resultado = coeficiente/exponente
+            if contador != 0:
+                if resultado>0:
+                    resultado = '+'+str(resultado) 
+            if resultado == 1:
+                print(str(variable)+'^'+str(exponente),end='')
+            else:
+                print(str(resultado)+str(variable)+'^'+str(exponente),end='')
+        else:
+            print(str(funcion_a_integrar[i])+'x',end='')
+    print('+C')
+
+def Derivar(funcion_a_derivar,variable):
+    print('La derivada es:')
+    contador = 0
+    for i in range(len(funcion_a_derivar)):
+        if variable in funcion_a_derivar[i]:
+            if '^' in funcion_a_derivar[i]:
+                for t in range(len(funcion_a_derivar[i])):
+                    if funcion_a_derivar[i][t] == '^':
+                        exponente = float(funcion_a_derivar[i][t+1:])-1
+                        break
+            else:
+                exponente = 0
+            for y in range(len(funcion_a_derivar[i])):
+                if funcion_a_derivar[i][y] == variable:
+                    coeficiente = float(funcion_a_derivar[i][:y])
+                    break
+            resultado = coeficiente*(exponente+1)
+            if contador != 0:
+                if resultado>0:
+                    resultado = '+'+str(resultado) 
+            if resultado == 1:
+                if exponente == 1:
+                    print(str(variable),end='')
+                elif exponente == 0:
+                    print(str(resultado),end='')
+                else:
+                   print(str(variable)+'^'+str(exponente),end='')
+            else:
+                if exponente == 1:
+                    print(str(resultado)+str(variable),end='')
+                elif exponente == 0:
+                    print(str(resultado),end='')
+                else:
+                    print(str(resultado)+str(variable)+'^'+str(exponente),end='')
+            contador += 1
+
+def separar(a):
+    lista = []
+    op = ['+','-','*','/']
+    cont = 0
+    a += '+'
+    for t in range(len(a)):
+        if cont < t:
+            if a[t] in op:
+                try:
+                    if a[t+1] in op:
+                        lista.append(a[cont:t+3])
+                        cont = t+3
+                    else:
+                        lista.append(a[cont:t])
+                        cont = t
+                except:
+                    lista.append(a[cont:t])
+                    cont = t
+    return lista
+
+def identificar(lista_ecuacion):
+    alfabeto = 'abcefghijklmnopqrstuvwxyz'
+    for i in range(len(lista_ecuacion)):
+        for v in alfabeto:
+            if v in lista_ecuacion[i]:
+                variable_encontrada = v
+                break
+        break
+    return variable_encontrada
 
 def fisica():
     """ 
@@ -172,229 +462,6 @@ def quimica():
         print("Rama no encontrada, Por favor, ingrese los datos nuevamente")
     print('*EN CONSTRUCCION*')
     
-def sumar():
-    """
-    Funcion de sumar cierta cantidad de numeros ingresados por el usuario
-    """
-    borrarPantalla()
-    suma = 0
-    print('Ingrese los valores a sumar')
-    m = input()
-    if '+' in m:
-        numeros = list(map(float, (m.split('+'))))
-    else:
-        numeros = list(map(float, (m.split())))
-    for i in numeros:
-        suma += i
-    print('El resultado total de la suma es: ', suma)
-
-def restar():
-    """
-    Funcion para restar cierta cantidad de numeros ingresados por el usuario
-    :param n: cantidad de numeros que el usuario quiere sumar
-    :param a: numeros que se sumaran
-    """
-    borrarPantalla()
-    print("ingrese los numeros que se van a restar separados por un espacio: ")
-    numeros = list(map(float, (input().split())))
-    resta = 0
-    for i in range(len(numeros)):
-        if i == 0:
-            resta = numeros[i]
-        else:
-            resta -= numeros[i]
-    print('El resultado es:',resta)
-
-def multiplicar():
-    """
-    Funcion para multiplicar la cantidad de numeros que desee el usuario
-    """
-    borrarPantalla()
-    print('Ingrese los numeros que desea multiplicar')
-    m = input()
-    if '*' in m:
-        numeros = list(map(float, (m.split('*'))))
-    else:
-        numeros = list(map(float, (m.split())))
-    mult = 1
-    for j in numeros:
-        mult *= j
-    print('el resultado de su multiplicaión es: ',mult)
-
-def dividir():
-    """
-    Funcion para dividir cierta cantidad de elementos
-    """
-    borrarPantalla()
-    print('Ingrese la cantidad de numeros que desea dividir')
-    d = int(input())
-    division = 1
-    for h in range(d):
-        print('ingrese numero [',h+1,']:')
-        num = float(input())
-        if num == 0:
-            print('el numero que ingresó es 0,No es posible dividir entre 0')
-            break
-        elif h == 0:
-            division = num
-        else:
-            division = division/num
-    if division == 0:
-    else:
-        print('su respuesta en decimal es: ',division,'y en entero es:',int(division))
-
-def potenciar():
-    """
-    Funcion para encontrar la potencia de un numero
-    """
-    borrarPantalla()
-    print('Ingrese la base:')
-    base = float(input())
-    print('ingrese exponente')
-    exp = float(input())
-    resultado= base**exp
-    print(str(base)+'^'+str(exp)+'='+str(resultado))
-
-def radicar():
-    """
-    Funcion para sacarle la raiz a un numero que el usuario de
-    """
-    borrarPantalla()
-    print('Ingrese el radicando: ')
-    nume = float(input())
-    print('Ingrese el indice: ')
-    ind = float(input())
-    raiz = nume**(1/ind)
-    print(str(ind)+'√'+str(nume)+'='+str(raiz))
-
-def ecuaciones(lista,variable):
-    lista.sort(key = len)
-    for n in lista:
-        if '^2' in n:
-            cuadratica(lista,variable)
-            break
-        else:
-            normal(lista,variable)
-            break
-    return
-
-def normal(ecuacion,variable):
-    independiente = 0
-    for elemento in ecuacion:
-        if variable in elemento:
-            if elemento[0] == variable:
-                algebra = 1
-            else:
-                algebra = int(elemento.split(variable)[0])
-        else:
-            independiente += float(elemento)
-    print(variable+'='+str((-1*independiente)/algebra))
-    return
-
-def cuadratica(ecuacion,variable):
-    """
-    Funcion para resolver ecuaciones de segundo grado
-    :param ecuacion: str de la expresion algebraica
-    """
-    borrarPantalla()
-    c = 0
-    for i in funcion:
-        if variable in i:
-            for j in range(len(i)):
-                if '^2' in i:
-                    if i[j] == '^':
-                        a = float(i[:j-1])
-                else:
-                    if i[j] == variable:
-                        b = float(i[:j])
-        else:
-            c += float(i)
-    X1 = (-b+((b**2)-4*a*c)**0.5)/(2*a)
-    X2 = (-b-((b**2)-4*a*c)**0.5)/(2*a)
-    if  type(X1) == complex or type(X2) == complex:
-        print('No tiene respuesta dentro de los reales, ¿Quiere ver los resultados de todos modos? si/no')
-        respuesta = input().lower()
-        if respuesta == 'si' or respuesta == 's' or respuesta == 'i':
-            print('X[1]=',X1,'\nX[2]=',X2) 
-    else:
-        print(variable+'[1]=',X1,'\n'+variable+'[2]=',X2)
-
-def integrar(funcion_a_integrar,variable):
-    print('La integral es:')
-    contador = 0
-    for i in range(len(funcion_a_integrar)):
-        if variable in funcion_a_integrar[i]:
-            if '^' in funcion_a_integrar[i]:
-                for t in range(len(funcion_a_integrar[i])):
-                    if funcion_a_integrar[i][t] == '^':
-                        exponente = float(funcion_a_integrar[i][t+1:])+1
-                        break
-            else:
-                exponente = 2
-            for y in range(len(funcion_a_integrar[i])):
-                if funcion_a_integrar[i][y] == variable:
-                    coeficiente = float(funcion_a_integrar[i][:y])
-                    break
-            resultado = coeficiente/exponente
-            if contador != 0:
-                if resultado>0:
-                    resultado = '+'+str(resultado) 
-            if resultado == 1:
-                print(str(variable)+'^'+str(exponente),end='')
-            else:
-                print(str(resultado)+str(variable)+'^'+str(exponente),end='')
-        else:
-            print(str(funcion_a_integrar[i])+'x',end='')
-    print('+C')
-
-def derivar(funcion_a_derivar,variable):
-    print('La derivada es:')
-    contador = 0
-    for i in range(len(funcion_a_derivar)):
-        if variable in funcion_a_derivar[i]:
-            if '^' in funcion_a_derivar[i]:
-                for t in range(len(funcion_a_derivar[i])):
-                    if funcion_a_derivar[i][t] == '^':
-                        exponente = float(funcion_a_derivar[i][t+1:])-1
-                        break
-            else:
-                exponente = 0
-            for y in range(len(funcion_a_derivar[i])):
-                if funcion_a_derivar[i][y] == variable:
-                    coeficiente = float(funcion_a_derivar[i][:y])
-                    break
-            resultado = coeficiente*(exponente+1)
-            if contador != 0:
-                if resultado>0:
-                    resultado = '+'+str(resultado) 
-            if resultado == 1:
-                if exponente == 1:
-                    print(str(variable),end='')
-                elif exponente == 0:
-                    print(str(resultado),end='')
-                else:
-                   print(str(variable)+'^'+str(exponente),end='')
-            else:
-                if exponente == 1:
-                    print(str(resultado)+str(variable),end='')
-                elif exponente == 0:
-                    print(str(resultado),end='')
-                else:
-                    print(str(resultado)+str(variable)+'^'+str(exponente),end='')
-            contador += 1
-
-def operacion_de_funciones(operacion):  
-    borrarPantalla()
-    print('''Ingrese la funcion
-            (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
-    funcion,letra = separar(input().replace('=','-'))
-    if operacion == 7:
-        ecuaciones(funcion,letra)
-    elif operacion == 8:
-        derivar(funcion,letra)
-    elif operacion == 9:
-        integrar(funcion,letra)
-
 def cinematica(): 
   """
   La funcion cinematica tiene como proposito direccionar a las funciones contenidas
@@ -460,11 +527,11 @@ def aceleracion():
     """)
     Incognita = str(input()) 
     Incognita = Incognita.upper()  
-    if Incognita == "DISTANCIA":
-        distancia()
-    elif Incognita == "VELOCIDAD":
-        velocidad()
-    elif Incognita == "ACELERACION":
+    #if Incognita == "DISTANCIA":
+        #distancia()
+    #elif Incognita == "VELOCIDAD":
+        #velocidad()
+    if Incognita == "ACELERACION":
         aceleracion()
     else:
         print("Variable o proceso no encontrado")
@@ -592,42 +659,10 @@ def Cuartiles(Datos):
         else:
             print('ERROR')
 
-#def OperacionesBasicas():
-
-def separar(a):
-    lista = []
-    op = ['+','-','*','/']
-    cont = 0
-    a += '+'
-    for t in range(len(a)):
-        if cont < t:
-            if a[t] in op:
-                try:
-                    if a[t+1] in op:
-                        lista.append(a[cont:t+3])
-                        cont = t+3
-                    else:
-                        lista.append(a[cont:t])
-                        cont = t
-                except:
-                    lista.append(a[cont:t])
-                    cont = t
-    return lista
-
-def identificar(lista_ecuacion):
-    alfabeto = 'abcefghijklmnopqrstuvwxyz'
-    for i in range(len(lista_ecuacion)):
-        for v in alfabeto:
-            if v in lista[i]:
-                variable_encontrada = v
-                break
-        break
-    return variable_encontrada
-
 def VolverAntes():
-    print('¿Desea regresar al menú anterior? Si/No')
+    print('¿Desea regresar al menú de la funcion? Si/No')
     respuesta = input()
-    if respuest.lower() == 'si':
+    if respuesta.lower() == 'si':
         return True
     else:
         return False
@@ -635,17 +670,13 @@ def VolverAntes():
 def VolverInicio():
     print('¿Desea regresar al menú principal? Si/No')
     respuesta = input()
-    if respuest.lower() == 'si':
-        return main
+    if respuesta.lower() == 'si':
+        return True
     else:
-        return salida
-
-def salida():
-    print('Vuelva Pronto')
-    time.sleep(2)
+        return False
 
 def main():
-    funciones = {1:Matematicas,2:Estadistica,3:Fisica}
+    funciones = {1:Matematicas}
     bandera = True
     while bandera:
         borrarPantalla()
@@ -657,8 +688,10 @@ def main():
         ''')
         try:
             funciones[int(input())]()
-            respuesta = VolverInicio()()
+            bandera = VolverInicio()
         except:
-            print('***OPCIÓN INVALIDA***')         
+            print('***OPCIÓN INVALIDA***')     
+    print('Vuelva Pronto')
+    time.sleep(2)    
         
 main()
