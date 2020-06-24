@@ -1,23 +1,26 @@
 import os
 import turtle
 Datos = []
+
 def borrarPantalla():
    os.system ("clear")
    os.system ("cls")   
 
 def matematicas():
+    mate = {1:suma()}
     borrarPantalla()
     print(''' BIENVENIDO A LA SECCION MATEMATICAS!
             ELIJA UNA FUNCIÓN: 
             \t 1)Suma
             \t 2)Resta
-            \t 3)Multiplicación
+            \t 3)Multiplicacion
             \t 4)División
-            \t 5)Potenciación
-            \t 6)Radicación
-            \t 7)Ecuacion cuadratica
+            \t 5)Potenciacion
+            \t 6)Radicacion
+            \t 7)Ecuacion
             \t 8)Derivacion
             \t 9)Integracion
+            \t 10)Grafica
             ''')
     mate = int(input())
     if mate == 1:
@@ -38,14 +41,10 @@ def matematicas():
     elif mate == 6:
         borrarPantalla()
         radicar()
-    elif mate == 7:
-        borrarPantalla()
-        ecuacion_cuadratica()
-    elif mate == 8:
-        borrarPantalla()
-        derivacion()
-    elif mate == 9:
-        integracion()
+    elif mate == 7 or mate == 8 or mate == 9:
+        operacion_de_funciones(mate)
+    elif mate == 10:
+        graficar()
     else:
         volver_al_menu()
 
@@ -72,7 +71,8 @@ def fisica():
         print('ondas')
     else:
         print("Rama no encontrada, Por favor, ingrese los datos nuevamente")
-        fisica()   
+        fisica()
+
 def estadistica():
     print('''ELIJA UNA OPCIÓN:
             \t 1)Crear Datos
@@ -94,6 +94,7 @@ def estadistica():
             FuncionesEst()
     else:
         volver_al_menu()
+
 def CrearDatos():
     if len(Datos) == 0:
         AgregarDatos()
@@ -101,6 +102,7 @@ def CrearDatos():
         for i in range(len(Datos)):
             Datos.remove(Datos[0])
         AgregarDatos()
+
 def AgregarDatos():
     print('Ingrese cantidad de valores: ')
     n = int(input())
@@ -295,30 +297,38 @@ def radicar():
     print(str(ind)+'√'+str(nume)+'='+str(raiz))
     volver_al_menu()
 
-def ecuacion_cuadratica():
+def ecuaciones(lista,variable):
+    lista.sort(key = len)
+    for n in lista:
+        if '^2' in n:
+            cuadratica(lista,variable)
+            break
+        else:
+            normal(lista,variable)
+            break
+    return
+
+def normal(ecuacion,variable):
+    independiente = 0
+    for elemento in ecuacion:
+        if variable in elemento:
+            if elemento[0] == variable:
+                algebra = 1
+            else:
+                algebra = int(elemento.split(variable)[0])
+        else:
+            independiente += float(elemento)
+    print(variable+'='+str((-1*independiente)/algebra))
+    return
+
+def cuadratica(ecuacion,variable):
     """
     Funcion para resolver ecuaciones de segundo grado
     :param ecuacion: str de la expresion algebraica
     """
     borrarPantalla()
-    print("""Escriba su ecuacion
-          (con formato= Cv^2+/-Cv+/-C=C
-          donde C es el coeficiente y v es la variable)
-          """)
-    n = input()
-    abecedario = 'abcdefghijklmnopqrstuvwxyz'
-    for v in abecedario:
-        if v in n:
-            variable = v
-            break
-    lista = []
-    cont,c = 0,0
-    n = n.replace('=','-')+'='
-    for t in range(len(n)):
-        if n[t] == '+' or n[t] == '-' or n[t] == '=':
-            lista.append(n[cont:t])
-            cont = t
-    for i in lista:
+    c = 0
+    for i in funcion:
         if variable in i:
             for j in range(len(i)):
                 if '^2' in i:
@@ -337,29 +347,30 @@ def ecuacion_cuadratica():
         if respuesta == 'si' or respuesta == 's' or respuesta == 'i':
             print('X[1]=',X1,'\nX[2]=',X2) 
     else:
-        print('X[1]=',X1,'\nX[2]=',X2)
+        print(variable+'[1]=',X1,'\n'+variable+'[2]=',X2)
     volver_al_menu()
 
 def separar(a):
+    alfabeto = 'abcefghijklmnopqrstuvwxyz'
     lista = []
     cont = 0
+    a += '+'
     for t in range(len(a)):
-        if a[t] == '+':
+        if a[t] == '+' or a[t] == '-':
             lista.append(a[cont:t])
             cont = t
-        elif a[t] == '-':
-            lista.append(a[cont:t])
-            cont = t
-    return lista
+    for i in range(len(lista)):
+        for v in alfabeto:
+            if v in lista[i]:
+                variable_encontrada = v
+                break
+        break
+    return lista,variable_encontrada
 
-def integrar(funcion_a_integrar):
-    alfabeto = 'abcefghijklmnopqrstuvwxyz'
+def integrar(funcion_a_integrar,variable):
+    print('La integral es:')
     contador = 0
     for i in range(len(funcion_a_integrar)):
-        for v in alfabeto:
-            if v in funcion_a_integrar[i]:
-                variable = v
-                break
         if variable in funcion_a_integrar[i]:
             if '^' in funcion_a_integrar[i]:
                 for t in range(len(funcion_a_integrar[i])):
@@ -384,14 +395,10 @@ def integrar(funcion_a_integrar):
             print(str(funcion_a_integrar[i])+'x',end='')
     print('+C')
 
-def derivar(funcion_a_derivar):
-    alfabeto = 'abcefghijklmnopqrstuvwxyz'
+def derivar(funcion_a_derivar,variable):
+    print('La derivada es:')
     contador = 0
     for i in range(len(funcion_a_derivar)):
-        for v in alfabeto:
-            if v in funcion_a_derivar[i]:
-                variable = v
-                break
         if variable in funcion_a_derivar[i]:
             if '^' in funcion_a_derivar[i]:
                 for t in range(len(funcion_a_derivar[i])):
@@ -424,24 +431,44 @@ def derivar(funcion_a_derivar):
                     print(str(resultado)+str(variable)+'^'+str(exponente),end='')
             contador += 1
 
-def integracion():  
+def operacion_de_funciones(operacion):  
     borrarPantalla()
-    print('''Ingrese la funcion que desee integrar
+    print('''Ingrese la funcion
             (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
-    funcion = separar(input()+'+')
-    print('La integral es:')
-    integrar(funcion)
+    funcion,letra = separar(input().replace('=','-'))
+    if operacion == 7:
+        ecuaciones(funcion,letra)
+    elif operacion == 8:
+        derivar(funcion,letra)
+    elif operacion == 9:
+        integrar(funcion,letra)
     volver_al_menu()
 
-def derivacion():
-    borrarPantalla()
-    print('''Ingrese la funcion que desee derivar
-            (Pv^e donde P: coeficiente, v: variable , e: exponente)''')
-    funcion = separar(input()+'+')
-    print('La derivada es:')
-    derivar(funcion)
-    volver_al_menu()
-    
+
+    wn = turtle.Screen()
+    turtle.setup(350,350)
+    wn.title('Cuadratica')
+    wn.screensize(300,300)
+    plano()
+    alex = turtle.Turtle()
+    tess = turtle.Turtle()
+    alex.pensize(1.5)
+    tess.pensize(1.5)
+    alex.speed(0)
+    tess.speed(0)
+    alex.color('blue')
+    tess.color('blue')
+    for n in range(125):
+        if ((n**2)/25) <= 126:
+            alex.goto(n,(n**2)/25)
+            tess.goto(-n,((-n)**2)/25)
+        else:
+            break
+    alex.hideturtle()
+    tess.hideturtle()
+    wn.exitonclick()
+    volver_al_menu()  
+
 def volver_al_menu():
     """
     Funcion para volver a el menu principal del programa
@@ -503,7 +530,7 @@ def cinematica():
     print("La velocidad es ", velocidad,"metros/segundo")
     volver_al_menu()
 
-  def aceleracion():
+def aceleracion():
     """
     funcion en la cual se piden dos valores, velocidad y tiempo para conocer una 
     aceleracion segun la ecuacion aceleracion = velocidad / tiempo
@@ -516,21 +543,21 @@ def cinematica():
     print("La aceleracion es ", aceleracion,"metros/segundo^2")
     volver_al_menu()
   
-  print ("""
-   Por favor, definir la incognita:
-   Un string que sea la variable fisica a encontar o el fenomeno fisco a comprender.
-  """)
-  Incognita = str(input()) 
-  Incognita = Incognita.upper()  
-  if Incognita == "DISTANCIA":
-    distancia()
-  elif Incognita == "VELOCIDAD":
-    velocidad()
-  elif Incognita == "ACELERACION":
-    aceleracion()
-  else:
-    print("Variable o proceso no encontrado")
-    volver_al_menu()
+    print ("""
+    Por favor, definir la incognita:
+    Un string que sea la variable fisica a encontar o el fenomeno fisco a comprender.
+    """)
+    Incognita = str(input()) 
+    Incognita = Incognita.upper()  
+    if Incognita == "DISTANCIA":
+        distancia()
+    elif Incognita == "VELOCIDAD":
+        velocidad()
+    elif Incognita == "ACELERACION":
+        aceleracion()
+    else:
+        print("Variable o proceso no encontrado")
+        volver_al_menu()
     
 def dinamica():
   """
@@ -658,10 +685,6 @@ def Cuartiles(Datos):
     volver_al_menu()
    
 def main():
-    """
-    Funcion para desplegar el menu de opciones de la calculadora
-    :param opcion: numero de la opcion que eligió el usuario
-    """
     borrarPantalla()
     print('''ELIJA UNA OPCIÓN:
             \t 1)MATEMÁTICAS
