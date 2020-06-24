@@ -1,52 +1,32 @@
 import os
 import turtle
+import time
 Datos = []
 
 def borrarPantalla():
    os.system ("clear")
    os.system ("cls")   
 
-def matematicas():
-    mate = {1:suma()}
-    borrarPantalla()
-    print(''' BIENVENIDO A LA SECCION MATEMATICAS!
-            ELIJA UNA FUNCIÓN: 
-            \t 1)Suma
-            \t 2)Resta
-            \t 3)Multiplicacion
-            \t 4)División
-            \t 5)Potenciacion
-            \t 6)Radicacion
-            \t 7)Ecuacion
-            \t 8)Derivacion
-            \t 9)Integracion
-            \t 10)Grafica
-            ''')
-    mate = int(input())
-    if mate == 1:
+def Matematicas():
+    mate = {1: OperacionesBasicas,2: OperacionesVariables}
+    respuesta = True
+    while respuesta:
         borrarPantalla()
-        sumar()
-    elif mate == 2:
-        borrarPantalla()
-        restar()
-    elif mate == 3:
-        borrarPantalla()
-        multiplicar()
-    elif mate == 4:
-        borrarPantalla()
-        dividir()
-    elif mate == 5:
-        borrarPantalla()
-        potenciar()
-    elif mate == 6:
-        borrarPantalla()
-        radicar()
-    elif mate == 7 or mate == 8 or mate == 9:
-        operacion_de_funciones(mate)
-    elif mate == 10:
-        graficar()
-    else:
-        volver_al_menu()
+        print(''' BIENVENIDO A LA SECCION MATEMATICAS!
+        ELIJA UNA FUNCIÓN: 
+        \t 1)Operaciones basicas
+        \t 2)Operaciones con variables
+        ''')
+        try :
+            mate[int(input())]()
+        except KeyError:
+            print('La opcion seleccionada no se encuentra en la lista presentada')
+            time.sleep(5)
+        except ValueError:
+            print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
+            time.sleep(5)
+        respuesta = VolverAntes()
+    VolverInicio()()  
 
 def fisica():
     """ 
@@ -92,8 +72,6 @@ def estadistica():
             estadistica()
         else:
             FuncionesEst()
-    else:
-        volver_al_menu()
 
 def CrearDatos():
     if len(Datos) == 0:
@@ -193,7 +171,6 @@ def quimica():
     else:
         print("Rama no encontrada, Por favor, ingrese los datos nuevamente")
     print('*EN CONSTRUCCION*')
-    volver_al_menu()  
     
 def sumar():
     """
@@ -210,7 +187,6 @@ def sumar():
     for i in numeros:
         suma += i
     print('El resultado total de la suma es: ', suma)
-    volver_al_menu()
 
 def restar():
     """
@@ -228,7 +204,6 @@ def restar():
         else:
             resta -= numeros[i]
     print('El resultado es:',resta)
-    volver_al_menu()
 
 def multiplicar():
     """
@@ -245,7 +220,6 @@ def multiplicar():
     for j in numeros:
         mult *= j
     print('el resultado de su multiplicaión es: ',mult)
-    volver_al_menu()
 
 def dividir():
     """
@@ -266,10 +240,8 @@ def dividir():
         else:
             division = division/num
     if division == 0:
-        volver_al_menu()
     else:
         print('su respuesta en decimal es: ',division,'y en entero es:',int(division))
-    volver_al_menu()
 
 def potenciar():
     """
@@ -282,7 +254,6 @@ def potenciar():
     exp = float(input())
     resultado= base**exp
     print(str(base)+'^'+str(exp)+'='+str(resultado))
-    volver_al_menu()
 
 def radicar():
     """
@@ -295,7 +266,6 @@ def radicar():
     ind = float(input())
     raiz = nume**(1/ind)
     print(str(ind)+'√'+str(nume)+'='+str(raiz))
-    volver_al_menu()
 
 def ecuaciones(lista,variable):
     lista.sort(key = len)
@@ -348,24 +318,6 @@ def cuadratica(ecuacion,variable):
             print('X[1]=',X1,'\nX[2]=',X2) 
     else:
         print(variable+'[1]=',X1,'\n'+variable+'[2]=',X2)
-    volver_al_menu()
-
-def separar(a):
-    alfabeto = 'abcefghijklmnopqrstuvwxyz'
-    lista = []
-    cont = 0
-    a += '+'
-    for t in range(len(a)):
-        if a[t] == '+' or a[t] == '-':
-            lista.append(a[cont:t])
-            cont = t
-    for i in range(len(lista)):
-        for v in alfabeto:
-            if v in lista[i]:
-                variable_encontrada = v
-                break
-        break
-    return lista,variable_encontrada
 
 def integrar(funcion_a_integrar,variable):
     print('La integral es:')
@@ -442,44 +394,6 @@ def operacion_de_funciones(operacion):
         derivar(funcion,letra)
     elif operacion == 9:
         integrar(funcion,letra)
-    volver_al_menu()
-
-
-    wn = turtle.Screen()
-    turtle.setup(350,350)
-    wn.title('Cuadratica')
-    wn.screensize(300,300)
-    plano()
-    alex = turtle.Turtle()
-    tess = turtle.Turtle()
-    alex.pensize(1.5)
-    tess.pensize(1.5)
-    alex.speed(0)
-    tess.speed(0)
-    alex.color('blue')
-    tess.color('blue')
-    for n in range(125):
-        if ((n**2)/25) <= 126:
-            alex.goto(n,(n**2)/25)
-            tess.goto(-n,((-n)**2)/25)
-        else:
-            break
-    alex.hideturtle()
-    tess.hideturtle()
-    wn.exitonclick()
-    volver_al_menu()  
-
-def volver_al_menu():
-    """
-    Funcion para volver a el menu principal del programa
-    :param respuesta: Entrada string del usuario frente a la pregunta
-    """
-    print('¿Desea regresar al menú principal? Si/No')
-    respuesta = input()
-    if respuesta == 'si' or respuesta == 'Si' or respuesta == 'SI' or respuesta == 's' or respuesta == 'S':
-        main()
-    else:
-        print('Vuelva pronto!')
 
 def cinematica(): 
   """
@@ -516,7 +430,6 @@ def cinematica():
     tiempo = int(input())
     distancia = velocidad * tiempo
     print("La distancia es", distancia,"metros")
-    volver_al_menu()
 
   def velocidad():
     """
@@ -528,7 +441,6 @@ def cinematica():
     tiempo = int(input())
     velocidad = desplazamiento/tiempo
     print("La velocidad es ", velocidad,"metros/segundo")
-    volver_al_menu()
 
 def aceleracion():
     """
@@ -541,7 +453,6 @@ def aceleracion():
     tiempo = int(input())
     aceleracion = velocidad/tiempo
     print("La aceleracion es ", aceleracion,"metros/segundo^2")
-    volver_al_menu()
   
     print ("""
     Por favor, definir la incognita:
@@ -557,7 +468,6 @@ def aceleracion():
         aceleracion()
     else:
         print("Variable o proceso no encontrado")
-        volver_al_menu()
     
 def dinamica():
   """
@@ -647,7 +557,6 @@ def Percentiles(Datos):
       print('P'+str(k)+' =',round((Datos[(int(k*(len(Datos)+1)/100))-1]+Datos[(int(k*(len(Datos)+1)/100))]/2),2))
   else:
     print('ERROR')
-  volver_al_menu()
   
 def Cuartiles(Datos):
     """
@@ -682,27 +591,74 @@ def Cuartiles(Datos):
             print('Q3 =',round((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))]/2),2))
         else:
             print('ERROR')
-    volver_al_menu()
-   
-def main():
-    borrarPantalla()
-    print('''ELIJA UNA OPCIÓN:
-            \t 1)MATEMÁTICAS
-            \t 2)ESTADÍSTICA
-            \t 3)FÍSICA
-            \t 4)QUÍMICA
-            ''')
-    opcion = int(input())
-    if opcion == 1:
-        matematicas()
-    elif opcion == 2:
-        estadistica()
-    elif opcion == 3:
-        fisica()
-    elif opcion == 4:
-        quimica()
+
+#def OperacionesBasicas():
+
+def separar(a):
+    lista = []
+    op = ['+','-','*','/']
+    cont = 0
+    a += '+'
+    for t in range(len(a)):
+        if cont < t:
+            if a[t] in op:
+                try:
+                    if a[t+1] in op:
+                        lista.append(a[cont:t+3])
+                        cont = t+3
+                    else:
+                        lista.append(a[cont:t])
+                        cont = t
+                except:
+                    lista.append(a[cont:t])
+                    cont = t
+    return lista
+
+def identificar(lista_ecuacion):
+    alfabeto = 'abcefghijklmnopqrstuvwxyz'
+    for i in range(len(lista_ecuacion)):
+        for v in alfabeto:
+            if v in lista[i]:
+                variable_encontrada = v
+                break
+        break
+    return variable_encontrada
+
+def VolverAntes():
+    print('¿Desea regresar al menú anterior? Si/No')
+    respuesta = input()
+    if respuest.lower() == 'si':
+        return True
     else:
-        print('***OPCIÓN INVALIDA***')
-        main()
-       
+        return False
+    
+def VolverInicio():
+    print('¿Desea regresar al menú principal? Si/No')
+    respuesta = input()
+    if respuest.lower() == 'si':
+        return main
+    else:
+        return salida
+
+def salida():
+    print('Vuelva Pronto')
+    time.sleep(2)
+
+def main():
+    funciones = {1:Matematicas,2:Estadistica,3:Fisica}
+    bandera = True
+    while bandera:
+        borrarPantalla()
+        print('''ELIJA UNA OPCIÓN:
+        \t 1)MATEMÁTICAS
+        \t 2)ESTADÍSTICA
+        \t 3)FÍSICA
+        \t 4)QUÍMICA
+        ''')
+        try:
+            funciones[int(input())]()
+            respuesta = VolverInicio()()
+        except:
+            print('***OPCIÓN INVALIDA***')         
+        
 main()
