@@ -1,6 +1,7 @@
 import os
 import turtle
 import time
+import usuarios
 Datos = []
 
 def borrarPantalla():
@@ -691,7 +692,7 @@ def VolverInicio():
 
 def main():
     funciones = {1:Matematicas}
-    bandera = True
+    bandera = login()
     while bandera:
         borrarPantalla()
         print('''ELIJA UNA OPCIÓN:
@@ -707,5 +708,57 @@ def main():
             print('***OPCIÓN INVALIDA***')     
     print('Vuelva Pronto')
     time.sleep(2)    
-        
+
+def Peso(Mensaje, Semilla):
+    Peso_Palabra = []
+    for i in range(len(Mensaje)):
+        iPeso = 0
+        for x in range(len(Mensaje[i])):
+            iPeso += (ord(Mensaje[i][x])*(x+1))%Semilla
+        Peso_Palabra.append(iPeso)
+    return Peso_Palabra
+    
+def CheckSum(PesosLista, Semilla, Limite):
+    Checksum_List = [0]
+    for i in range(len(PesosLista)):
+        Check = (Checksum_List[i]+PesosLista[i])*Semilla
+        if Check > Limite:
+            Check = Check%Limite
+        Checksum_List.append(Check)
+    return Checksum_List
+    
+def contra(usuario):
+    Mensaje = usuario
+    Mensaje = Mensaje.split(' ')
+    Semilla = 113
+    Limite = 100000
+    PesosLista = Peso(Mensaje, Semilla)
+    CheckSumLista = CheckSum(PesosLista, Semilla, Limite)
+    resultado = CheckSumLista[len(CheckSumLista)-1]
+    return resultado
+    
+def login():
+    us = usuarios.usuarios
+    res = True
+    while res:
+        print('ingrese su usuario')
+        user = input()
+        if user in us.keys():
+            print('ingrese su clave')
+            con = int(input())
+            if us[user] == con:
+                print('ingreso')
+                res = False
+            else:
+                print('fail')
+        else:
+            print('su usuario es: '+user)
+            cont = contra(user)
+            print('su contrasena sera: ',cont)
+            us[user] = cont
+            time.sleep(5)
+    with open('usuarios.py','w') as usernames:
+        usernames.write('usuarios ='+str(us))
+    return True
+
 main()
