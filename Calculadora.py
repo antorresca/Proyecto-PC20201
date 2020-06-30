@@ -319,37 +319,49 @@ def identificar(lista_ecuacion):
     return variable_encontrada
 
 def fisica():
-    """ 
-    En la funcion 'fisica' se imprime un menu con las areas de la fisica que la calculadora,
-    por el momento acepta 4 areas. Esta funcion opera por medio de una cadena de ifs y elfis, la 
-    cual, acepta un numero que se asocia con  la rama en el print se menu de inicio de fisica al usuario. 
-    """ 
-    print (""" Por favor, definir el numero de la rama:
-    1) Cinematica
-    2) Dinamica
-    3) Electromagnetismo
-    4) Ondas
-    """)
-    Rama = int(input())
-    if Rama == 1:
-        cinematica()
-    elif Rama == 2:
-        dinamica()
-    elif Rama == 3:
-        print('electromagnetismo')
-    elif Rama == 4:
-        print('ondas')
-    else:
-        print("Rama no encontrada, Por favor, ingrese los datos nuevamente")
-        fisica()
+    fis = {1: cinematica,2: dinamica} #falta electromagnetismo y ondas
+    rta = True
+    while rta:
+        borrarPantalla()
+        print (""" BIENVENIDO A LA SECCION FISICA
+        Por favor, digite el numero de la rama:
+        \t 1) Cinematica
+        \t 2) Dinamica
+        \t 3) Electromagnetismo
+        \t 4) Ondas
+        """)
+        try:
+            fis[int(input())]()
+            rta = VolverAntes()
+        except KeyError:
+            print('La opcion seleccionada no se encuentra en la lista presentada')
+            time.sleep(2)
+        except ValueError:
+            print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
+            time.sleep(2)
+    return
 
 def estadistica():
-    print('''ELIJA UNA OPCIÓN:
+    est = {1: CrearDatos,2: AgregarDatos}
+    Rta = True
+    while Rta:
+        borrarPantalla()
+        print('''ELIJA UNA OPCIÓN:
             \t 1)Crear Datos
             \t 2)Agregar Datos
             \t 3)Operaciones estadisticas
             \t 4)Volver al menu principal
             ''')
+        try:
+            est[int(input())]
+            Rta = VolverAntes()
+        except KeyError:
+            print('La opcion seleccionada no se encuentra en la lista presentada')
+            time.sleep(2)
+        except ValueError:
+            print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
+            time.sleep(2)
+    ''' 
     OpcionesDatos = int(input())
     if OpcionesDatos == 1:
         CrearDatos()
@@ -362,6 +374,8 @@ def estadistica():
             estadistica()
         else:
             FuncionesEst()
+    '''
+    return
 
 def CrearDatos():
     if len(Datos) == 0:
