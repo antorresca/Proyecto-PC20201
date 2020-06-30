@@ -319,7 +319,7 @@ def identificar(lista_ecuacion):
         break
     return variable_encontrada
 
-def fisica():
+def Fisica():
     fis = {1: cinematica,2: dinamica} #falta electromagnetismo y ondas
     rta = True
     while rta:
@@ -342,7 +342,7 @@ def fisica():
             time.sleep(2)
     return
 
-def estadistica():
+def Estadistica():
     est = {1: CrearDatos,2: AgregarDatos}
     Rta = True
     while Rta:
@@ -451,31 +451,6 @@ def FuncionesEst():
     elif Funcion == 7:
         Cuartiles(Datos)
         estadistica()
-
-def quimica():
-    """ 
-    *EN CONSTRUCCION*
-    Funcion con el menu de las areas de la quimica
-    :param area:numero entero de la opcion de la rama
-    """ 
-    print (""" Definir la rama:
-            1) Estequiometria
-            2) Gases ideales
-            3) Equilbrios quimicos
-            4) Enlaces intarmoleculares
-    """)
-    Area = int(input())
-    if Area == 1:
-        print('estequiometria')
-    elif Area == 2:
-        print('gases')
-    elif Area == 2:
-        print('equilibrios')
-    elif Area == 2:
-        print('enlaces')
-    else:
-        print("Rama no encontrada, Por favor, ingrese los datos nuevamente")
-    print('*EN CONSTRUCCION*')
     
 def cinematica(): 
   """
@@ -691,7 +666,7 @@ def VolverInicio():
         return False
 
 def main():
-    funciones = {1:Matematicas}
+    funciones = {1:Matematicas,2:Estadistica,3:Fisica}
     bandera = login()
     while bandera:
         borrarPantalla()
@@ -699,7 +674,6 @@ def main():
         \t 1)MATEMÁTICAS
         \t 2)ESTADÍSTICA
         \t 3)FÍSICA
-        \t 4)QUÍMICA
         ''')
         try:
             funciones[int(input())]()
