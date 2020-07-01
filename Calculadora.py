@@ -453,6 +453,7 @@ def AgregarDatos():
     n = int(input())
     Datos_entrada = []
     for i in range(n):
+        print('Ingrese valor:',i+1)
         xi = float(input())
         Datos_entrada.append(xi)
     Datos_entrada.sort()
@@ -518,7 +519,7 @@ def Mediana(Datos):
     En caso de ser par, retorna el promedio entre los dos datos centrales
     """
     if len(Datos) % 2 == 0:
-        mediana = round(((Datos[(len(Datos)-1)/2]+Datos[len(Datos)/2])/2),2)
+        mediana = round(((Datos[(len(Datos)-1)//2]+Datos[len(Datos)//2])//2),2)
     else:
         mediana = Datos[int(len(Datos)/2)]
     return 'La mediana es:',mediana
@@ -654,8 +655,8 @@ def CheckSum(PesosLista, Semilla, Limite):
 def contra(usuario):
     Mensaje = usuario
     Mensaje = Mensaje.split(' ')
-    Semilla = 113
-    Limite = 100000
+    Semilla = 213
+    Limite = 1000000
     PesosLista = Peso(Mensaje, Semilla)
     CheckSumLista = CheckSum(PesosLista, Semilla, Limite)
     resultado = CheckSumLista[len(CheckSumLista)-1]
@@ -664,26 +665,47 @@ def contra(usuario):
 def login():
     us = usuarios.usuarios
     res = True
+    errores = 0
     while res:
         borrarPantalla()
         print('ingrese su usuario')
         user = input()
         if user in us.keys():
             print('ingrese su clave')
-            con = int(input())
+            con = input()
             if us[user] == con:
                 print('ingreso')
                 res = False
             else:
-                print('fail')
+                errores += 1
+                print('contrasena incorrecta')
+                if errores < 3:
+                    print('Le quedan',3- errores,'intentos')
+                elif errores == 3:
+                    del us[user]
+                    print('Su usuario se ha eliminado de la base de datos')
         else:
             print('su usuario es: '+user)
-            cont = contra(user)
+            cont = str(contra(user))
             print('su contrasena sera: ',cont)
-            us[user] = cont
-            time.sleep(5)
+            print('¿Desea cambiar su contrasena? Si/No')
+            cambio = input()
+            if cambio.lower() == 'si':
+                print('Ingrese su nueva contrasena')
+                cont = input()
+            while True:
+                print('Confirme la contrasena por favor')
+                conf = input()
+                if cont == conf:
+                    us[user] = cont
+                    print('Usuario y contrasena registrado correctamente')
+                    break
+                else:
+                    print('Las contrasenas no coinciden')
+                    time.sleep(2)
+        time.sleep(5)
     with open('usuarios.py','w') as usernames:
-        usernames.write('usuarios ='+str(us))
+        usernames.write('usuarios ='+str(us)+'\n')
     return True
 
 def main():
