@@ -349,7 +349,6 @@ def Estadistica():
         print('''ELIJA UNA OPCIÓN:
             \t 1)Agregar Datos
             \t 2)Operaciones estadisticas
-            \t 3)Volver al menu principal
             ''')
         try:
             entrada = int(input())
@@ -382,7 +381,6 @@ def AgregarDatos():
 def FuncionesEst(Datos):
     """
     Menú de funciones propias de la estadística
-
     """
     FEst = {1: MediaAritmetica,2: Mediana,6: Percentiles, 7:Cuartiles} 
     while True:
@@ -398,10 +396,10 @@ def FuncionesEst(Datos):
         try:
             funcion = int(input())
             if funcion >=3 and funcion <=5:
-                PoblacionMuestra(Datos,funcion)
+                print(PoblacionMuestra(Datos,funcion))
                 break
             else:
-                FEst[funcion](Datos)
+                print(FEst[funcion](Datos))
         except:
             print('Opcion invalida')
     return
