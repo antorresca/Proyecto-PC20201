@@ -2,7 +2,6 @@ import os
 import turtle
 import time
 import usuarios
-Datos = []
 
 def borrarPantalla():
    os.system ("clear")
@@ -343,18 +342,24 @@ def Fisica():
     return
 
 def Estadistica():
-    est = {1: CrearDatos,2: AgregarDatos}
+    est = {1: AgregarDatos,2: FuncionesEst}
     Rta = True
     while Rta:
         borrarPantalla()
         print('''ELIJA UNA OPCIÓN:
-            \t 1)Crear Datos
-            \t 2)Agregar Datos
-            \t 3)Operaciones estadisticas
-            \t 4)Volver al menu principal
+            \t 1)Agregar Datos
+            \t 2)Operaciones estadisticas
+            \t 3)Volver al menu principal
             ''')
         try:
-            est[int(input())]
+            entrada = int(input())
+            if entrada == 1:
+                Datos = est[entrada]()
+            else:
+                try:
+                    est[entrada](Datos)
+                except NameError:
+                    print('No se han ingresado Datos, por favor eliga la opcion 1 para continuar')
             Rta = VolverAntes()
         except KeyError:
             print('La opcion seleccionada no se encuentra en la lista presentada')
@@ -362,45 +367,26 @@ def Estadistica():
         except ValueError:
             print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
             time.sleep(2)
-    ''' 
-    OpcionesDatos = int(input())
-    if OpcionesDatos == 1:
-        CrearDatos()
-    elif OpcionesDatos == 2:
-        AgregarDatos()
-    elif OpcionesDatos == 3:
-        if len(Datos) == 0:
-            print(Datos)
-            print('No hay datos a procesar, ingrése los datos')
-            estadistica()
-        else:
-            FuncionesEst()
-    '''
     return
-
-def CrearDatos():
-    if len(Datos) == 0:
-        AgregarDatos()
-    else:
-        for i in range(len(Datos)):
-            Datos.remove(Datos[0])
-        AgregarDatos()
 
 def AgregarDatos():
     print('Ingrese cantidad de valores: ')
     n = int(input())
+    Datos_entrada = []
     for i in range(n):
         xi = float(input())
-        Datos.append(xi)
-    Datos.sort()
-    estadistica()
+        Datos_entrada.append(xi)
+    Datos_entrada.sort()
+    return Datos_entrada
 
-def FuncionesEst():
+def FuncionesEst(Datos):
     """
     Menú de funciones propias de la estadística
 
     """
-    print('''ELIJA UNA FUNCIÓN: 
+    FEst = {1: MediaAritmetica,2: Mediana,6: Percentiles, 7:Cuartiles} 
+    while True:
+        print('''ELIJA UNA FUNCIÓN: 
         \t 1)Media
         \t 2)Mediana
         \t 3)Varianza
@@ -409,49 +395,32 @@ def FuncionesEst():
         \t 6)Percentiles
         \t 7)Cuartiles
         ''')
-    Funcion = int(input())
-    if Funcion == 1:
-        promedio = MediaAritmetica(Datos)
-        print('Promedio =',promedio)
-        estadistica()
-    elif Funcion == 2:
-        mediana = Mediana(Datos)
-        print('Mediana =',mediana)
-        estadistica()
-    elif Funcion == 3:
+        try:
+            funcion = int(input())
+            if funcion >=3 and funcion <=5:
+                PoblacionMuestra(Datos,funcion)
+                break
+            else:
+                FEst[funcion](Datos)
+        except:
+            print('Opcion invalida')
+    return
+
+def PoblacionMuestra(Datos,opcion):
+    PM = {3: Varianza,4: DesviacionEstandar,5: CoeficienteDeVariacion}
+    while True:
         print('''Elija una opción:
         \t 1) Poblacional
         \t 2) Muestral
         ''')
-        PM = int(input())
-        varianza = Varianza(Datos, PM)
-        print('Varianza =',varianza)
-        estadistica()
-    elif Funcion == 4:
-        print('''Elija una opción:
-        \t 1) Poblacional
-        \t 2) Muestral
-        ''')
-        PM = int(input())
-        s = DesviacionEstandar(Datos, PM)
-        print('Desviacion =',s)
-        estadistica()
-    elif Funcion == 5:
-        print('''Elija una opción:
-        \t 1) Poblacional
-        \t 2) Muestral
-        ''')
-        PM = int(input())
-        CV = CoeficienteDeVariacion(Datos, PM)
-        print('C.V. ='+str(CV)+'%')
-        estadistica()
-    elif Funcion == 6:
-        Percentiles(Datos)
-        estadistica()
-    elif Funcion == 7:
-        Cuartiles(Datos)
-        estadistica()
-    
+        try:
+            PM[opcion](Datos,int(input()))
+            break
+        except:
+            print('Opcion invalida vuelva a intentar')
+            time.sleep(5)
+    return    
+
 def cinematica(): 
   """
   La funcion cinematica tiene como proposito direccionar a las funciones contenidas
@@ -533,50 +502,47 @@ def dinamica():
   print()
 
 def MediaAritmetica(Datos):
-  """
-  Funcion que permite calcular la media de una lista de datos
-  La lista suma cada uno de los datos y los divide entre el número de datos
-  """
-  sumaprom = 0
-  for i in range(len(Datos)):
-    sumaprom += Datos[i]
-  promedio = round((sumaprom/len(Datos)),2)
-  return promedio
+    """
+    Funcion que permite calcular la media de una lista de datos
+    La lista suma cada uno de los datos y los divide entre el número de datos
+    """
+    sumaprom = 0
+    for i in range(len(Datos)):
+        sumaprom += Datos[i]
+    promedio = round((sumaprom/len(Datos)),2)
+    return 'El promedio es:',promedio
     
 def Mediana(Datos):
-  """
-  En caso de que el número de datos sea impar, retorna el dato en la posición central
-  En caso de ser par, retorna el promedio entre los dos datos centrales
-  """
-  if len(Datos) % 2 == 0:
-    mediana = round(((Datos[(len(Datos)-1)/2]+Datos[len(Datos)/2])/2),2)
-    return mediana
-  else:
-    mediana = Datos[int(len(Datos)/2)]
-    return mediana
+    """
+    En caso de que el número de datos sea impar, retorna el dato en la posición central
+    En caso de ser par, retorna el promedio entre los dos datos centrales
+    """
+    if len(Datos) % 2 == 0:
+        mediana = round(((Datos[(len(Datos)-1)/2]+Datos[len(Datos)/2])/2),2)
+    else:
+        mediana = Datos[int(len(Datos)/2)]
+    return 'La mediana es:',mediana
 
 def Varianza(Datos, PM):
-  """
-  Dependiendo del valor del parámetro PM calcula la varianza poblacional o muestral
-  Llama a la cunción MediaAritmetica()
-  Suma los cuadrados del resultado de restar el dato en la posición i con la mediana
-  En caso de ser poblacional el valor se divide por n y si es muestral se divide por n-1
-  Y retorna el valor varianza con 2 decimales
-
-  """
-  promedio = MediaAritmetica(Datos)
-  if PM == 1:
-    sumvarianza = 0
-    for i in range(len(Datos)):
-        sumvarianza += ((Datos[i]-promedio)**2)
-    varianza = round((sumvarianza/len(Datos)),2)
-    return varianza
-  elif PM == 2:
-    sumvarianza = 0
-    for i in range(len(Datos)):
-      sumvarianza += ((Datos[i]-promedio)**2)
-    varianza = round((sumvarianza/(len(Datos)-1)),2)
-    return varianza
+    """
+    Dependiendo del valor del parámetro PM calcula la varianza poblacional o muestral
+    Llama a la cunción MediaAritmetica()
+    Suma los cuadrados del resultado de restar el dato en la posición i con la mediana
+    En caso de ser poblacional el valor se divide por n y si es muestral se divide por n-1
+    Y retorna el valor varianza con 2 decimales
+    """
+    promedio = MediaAritmetica(Datos)
+    if PM == 1:
+        sumvarianza = 0
+        for i in range(len(Datos)):
+            sumvarianza += ((Datos[i]-promedio)**2)
+        varianza = round((sumvarianza/len(Datos)),2)
+    elif PM == 2:
+        sumvarianza = 0
+        for i in range(len(Datos)):
+            sumvarianza += ((Datos[i]-promedio)**2)
+        varianza = round((sumvarianza/(len(Datos)-1)),2)
+    return 'La varianza es:',varianza
 
 def DesviacionEstandar(Datos, PM):
     """
@@ -585,7 +551,7 @@ def DesviacionEstandar(Datos, PM):
     """
     varianza = Varianza(Datos,PM)
     s = round((varianza**0.5),2)
-    return s
+    return 'La desviacion estandar es:',promedio
 
 def CoeficienteDeVariacion(Datos, PM):
   """
@@ -597,23 +563,23 @@ def CoeficienteDeVariacion(Datos, PM):
   s = DesviacionEstandar(Datos, PM)
   promedio = MediaAritmetica(Datos)
   CV = round(((s/promedio)*100),2)
-  return CV
+  return 'El coeficiente de variacion es: ',CV
 
 def Percentiles(Datos):
-  """
-  :param k: Número que corresponde al percentil que se desea buscar, este número debe estar entre 1 y 99
-  En caso de que el número de datos sea impar, imprime el dato en la posición correspondiente del percentil
-  En caso de ser par, imprime el promedio entre los dos datos cercanos a las posición correspondiente al percentil
-  """
-  print('Ingrese el percentil:')
-  k = int(input())
-  if (k > 0) and (k <= 100):
-    if len(Datos)%2 != 0:
-      print('P'+str(k)+' =',Datos[int((k*(len(Datos)+1)/100)-1)])
+    """
+    :param k: Número que corresponde al percentil que se desea buscar, este número debe estar entre 1 y 99
+    En caso de que el número de datos sea impar, imprime el dato en la posición correspondiente del percentil
+    En caso de ser par, imprime el promedio entre los dos datos cercanos a las posición correspondiente al percentil
+    """
+    print('Ingrese el percentil:')
+    k = int(input())
+    if (k > 0) and (k <= 100):
+        if len(Datos)%2 != 0:
+            print('P'+str(k)+' =',Datos[int((k*(len(Datos)+1)/100)-1)])
+        else:
+            print('P'+str(k)+' =',round((Datos[(int(k*(len(Datos)+1)/100))-1]+Datos[(int(k*(len(Datos)+1)/100))]/2),2))
     else:
-      print('P'+str(k)+' =',round((Datos[(int(k*(len(Datos)+1)/100))-1]+Datos[(int(k*(len(Datos)+1)/100))]/2),2))
-  else:
-    print('ERROR')
+        print('ERROR')
   
 def Cuartiles(Datos):
     """
