@@ -341,85 +341,6 @@ def Fisica():
             time.sleep(2)
     return
 
-def Estadistica():
-    est = {1: AgregarDatos,2: FuncionesEst}
-    Rta = True
-    while Rta:
-        borrarPantalla()
-        print('''ELIJA UNA OPCIÓN:
-            \t 1)Agregar Datos
-            \t 2)Operaciones estadisticas
-            ''')
-        try:
-            entrada = int(input())
-            if entrada == 1:
-                Datos = est[entrada]()
-            else:
-                try:
-                    est[entrada](Datos)
-                except NameError:
-                    print('No se han ingresado Datos, por favor eliga la opcion 1 para continuar')
-            Rta = VolverAntes()
-        except KeyError:
-            print('La opcion seleccionada no se encuentra en la lista presentada')
-            time.sleep(2)
-        except ValueError:
-            print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
-            time.sleep(2)
-    return
-
-def AgregarDatos():
-    print('Ingrese cantidad de valores: ')
-    n = int(input())
-    Datos_entrada = []
-    for i in range(n):
-        xi = float(input())
-        Datos_entrada.append(xi)
-    Datos_entrada.sort()
-    return Datos_entrada
-
-def FuncionesEst(Datos):
-    """
-    Menú de funciones propias de la estadística
-    """
-    FEst = {1: MediaAritmetica,2: Mediana,6: Percentiles, 7:Cuartiles} 
-    Fe = True
-    while Fe:
-        print('''ELIJA UNA FUNCIÓN: 
-        \t 1)Media
-        \t 2)Mediana
-        \t 3)Varianza
-        \t 4)Desviación estandar
-        \t 5)Coeficiente de variación
-        \t 6)Percentiles
-        \t 7)Cuartiles
-        ''')
-        try:
-            funcion = int(input())
-            if funcion >=3 and funcion <=5:
-                salida = PoblacionMuestra(Datos,funcion)
-            else:
-                salida = FEst[funcion](Datos)
-            print(salida[0],salida[1])
-            Fe = VolverAntes()
-        except:
-            print('Opcion invalida')
-    return
-
-def PoblacionMuestra(Datos,opcion):
-    PM = {3: Varianza,4: DesviacionEstandar,5: CoeficienteDeVariacion}
-    while True:
-        print('''Elija una opción:
-        \t 1) Poblacional
-        \t 2) Muestral
-        ''')
-        try:
-            Pob = int(input())
-            return PM[opcion](Datos,Pob)
-        except:
-            print('Opcion invalida vuelva a intentar')
-            time.sleep(5)    
-
 def cinematica(): 
   """
   La funcion cinematica tiene como proposito direccionar a las funciones contenidas
@@ -500,6 +421,86 @@ def dinamica():
   """
   print()
 
+def Estadistica():
+    est = {1: AgregarDatos,2: FuncionesEst}
+    Rta = True
+    while Rta:
+        borrarPantalla()
+        print('''ELIJA UNA OPCIÓN:
+            \t 1)Agregar Datos
+            \t 2)Operaciones estadisticas
+            ''')
+        try:
+            entrada = int(input())
+            if entrada == 1:
+                Datos = est[entrada]()
+            else:
+                try:
+                    est[entrada](Datos)
+                except NameError:
+                    print('No se han ingresado Datos, por favor eliga la opcion 1 para continuar')
+            Rta = VolverAntes()
+        except KeyError:
+            print('La opcion seleccionada no se encuentra en la lista presentada')
+            time.sleep(2)
+        except ValueError:
+            print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
+            time.sleep(2)
+    return
+
+def AgregarDatos():
+    print('Ingrese cantidad de valores: ')
+    n = int(input())
+    Datos_entrada = []
+    for i in range(n):
+        xi = float(input())
+        Datos_entrada.append(xi)
+    Datos_entrada.sort()
+    return Datos_entrada
+
+def FuncionesEst(Datos):
+    """
+    Menú de funciones propias de la estadística
+    """
+    FEst = {1: MediaAritmetica,2: Mediana,6: Percentiles, 7:Cuartiles} 
+    Fe = True
+    while Fe:
+        borrarPantalla()
+        print('''ELIJA UNA FUNCIÓN: 
+        \t 1)Media
+        \t 2)Mediana
+        \t 3)Varianza
+        \t 4)Desviación estandar
+        \t 5)Coeficiente de variación
+        \t 6)Percentiles
+        \t 7)Cuartiles
+        ''')
+        try:
+            funcion = int(input())
+            if funcion >=3 and funcion <=5:
+                salida = PoblacionMuestra(Datos,funcion)
+            else:
+                salida = FEst[funcion](Datos)
+            print(salida[0],salida[1])
+            Fe = VolverAntes()
+        except:
+            print('Opcion invalida')
+    return
+
+def PoblacionMuestra(Datos,opcion):
+    PM = {3: Varianza,4: DesviacionEstandar,5: CoeficienteDeVariacion}
+    while True:
+        print('''Elija una opción:
+        \t 1) Poblacional
+        \t 2) Muestral
+        ''')
+        try:
+            Pob = int(input())
+            return PM[opcion](Datos,Pob)
+        except:
+            print('Opcion invalida vuelva a intentar')
+            time.sleep(5)    
+
 def MediaAritmetica(Datos):
     """
     Funcion que permite calcular la media de una lista de datos
@@ -560,7 +561,7 @@ def CoeficienteDeVariacion(Datos, PM):
 
   """
   s = DesviacionEstandar(Datos, PM)[1]
-  promedio = MediaAritmetica(Datos)
+  promedio = MediaAritmetica(Datos)[1]
   CV = round(((s/promedio)*100),2)
   return 'El coeficiente de variacion es: ',CV
 
@@ -574,12 +575,13 @@ def Percentiles(Datos):
     k = int(input())
     if (k > 0) and (k <= 100):
         if len(Datos)%2 != 0:
-            print('P'+str(k)+' =',Datos[int((k*(len(Datos)+1)/100)-1)])
+            percentil = 'P'+str(k)+' =',Datos[int((k*(len(Datos)+1)/100)-1)]
         else:
-            print('P'+str(k)+' =',round((Datos[(int(k*(len(Datos)+1)/100))-1]+Datos[(int(k*(len(Datos)+1)/100))]/2),2))
+            percentil = 'P'+str(k)+' =',round((Datos[(int(k*(len(Datos)+1)/100))-1]+Datos[(int(k*(len(Datos)+1)/100))]/2),2)
     else:
-        print('ERROR')
-  
+        percentil = 'ERROR',''
+    return percentil
+
 def Cuartiles(Datos):
     """
     Menú de cuartiles
@@ -595,24 +597,25 @@ def Cuartiles(Datos):
     k = int(input())
     if len(Datos)%2 != 0:
         if k == 1:
-            print('Q1 =',Datos[int((k*(len(Datos)+1)/4)-1)])
+            respuesta = 'Q1 =',Datos[int((k*(len(Datos)+1)/4)-1)]
         elif k == 2:
-            mediana = Mediana(Datos)
-            print('Q2 =', mediana)
+            mediana = Mediana(Datos)[1]
+            respuesta = 'Q2 =', mediana
         elif k == 3:
-            print('Q3 =',Datos[int((k*(len(Datos)+1)/4)-1)])
+            respuesta = 'Q3 =',Datos[int((k*(len(Datos)+1)/4)-1)]
         else:
-            print('ERROR')
+            respuesta = 'ERROR',''
     else:
         if k == 1:
-            print('Q1 =',round((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))]/2),2))
+            respuesta = 'Q1 =',round((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))]/2),2)
         elif k == 2:
-            mediana = Mediana(Datos)
-            print('Q2 =', mediana)
+            mediana = Mediana(Datos)[1]
+            respuesta = 'Q2 =', mediana
         elif k == 3:
-            print('Q3 =',round((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))]/2),2))
+            respuesta = 'Q3 =',round((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))]/2),2)
         else:
-            print('ERROR')
+            respuesta = 'ERROR',''
+    return respuesta
 
 def VolverAntes():
     print('¿Desea regresar al menú de la funcion? Si/No')
@@ -629,24 +632,6 @@ def VolverInicio():
         return True
     else:
         return False
-
-def main():
-    funciones = {1:Matematicas,2:Estadistica,3:Fisica}
-    bandera = login()
-    while bandera:
-        borrarPantalla()
-        print('''ELIJA UNA OPCIÓN:
-        \t 1)MATEMÁTICAS
-        \t 2)ESTADÍSTICA
-        \t 3)FÍSICA
-        ''')
-        try:
-            funciones[int(input())]()
-            bandera = VolverInicio()
-        except:
-            print('***OPCIÓN INVALIDA***')     
-    print('Vuelva Pronto')
-    time.sleep(2)    
 
 def Peso(Mensaje, Semilla):
     Peso_Palabra = []
@@ -680,6 +665,7 @@ def login():
     us = usuarios.usuarios
     res = True
     while res:
+        borrarPantalla()
         print('ingrese su usuario')
         user = input()
         if user in us.keys():
@@ -699,5 +685,23 @@ def login():
     with open('usuarios.py','w') as usernames:
         usernames.write('usuarios ='+str(us))
     return True
+
+def main():
+    funciones = {1:Matematicas,2:Estadistica,3:Fisica}
+    bandera = login()
+    while bandera:
+        borrarPantalla()
+        print('''ELIJA UNA OPCIÓN:
+        \t 1)MATEMÁTICAS
+        \t 2)ESTADÍSTICA
+        \t 3)FÍSICA
+        ''')
+        try:
+            funciones[int(input())]()
+            bandera = VolverInicio()
+        except:
+            print('***OPCIÓN INVALIDA***')     
+    print('Vuelva Pronto')
+    time.sleep(2)    
 
 main()
