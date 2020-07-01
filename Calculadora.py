@@ -422,6 +422,7 @@ def dinamica():
   print()
 
 def Estadistica():
+    global Datos
     est = {1: AgregarDatos,2: FuncionesEst}
     Rta = True
     while Rta:
