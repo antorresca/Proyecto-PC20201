@@ -383,7 +383,8 @@ def FuncionesEst(Datos):
     Menú de funciones propias de la estadística
     """
     FEst = {1: MediaAritmetica,2: Mediana,6: Percentiles, 7:Cuartiles} 
-    while True:
+    Fe = True
+    while Fe:
         print('''ELIJA UNA FUNCIÓN: 
         \t 1)Media
         \t 2)Mediana
@@ -396,10 +397,11 @@ def FuncionesEst(Datos):
         try:
             funcion = int(input())
             if funcion >=3 and funcion <=5:
-                print(PoblacionMuestra(Datos,funcion))
-                break
+                salida = PoblacionMuestra(Datos,funcion)
             else:
-                print(FEst[funcion](Datos))
+                salida = FEst[funcion](Datos)
+            print(salida[0],salida[1])
+            Fe = VolverAntes()
         except:
             print('Opcion invalida')
     return
@@ -412,12 +414,11 @@ def PoblacionMuestra(Datos,opcion):
         \t 2) Muestral
         ''')
         try:
-            PM[opcion](Datos,int(input()))
-            break
+            Pob = int(input())
+            return PM[opcion](Datos,Pob)
         except:
             print('Opcion invalida vuelva a intentar')
-            time.sleep(5)
-    return    
+            time.sleep(5)    
 
 def cinematica(): 
   """
@@ -507,7 +508,7 @@ def MediaAritmetica(Datos):
     sumaprom = 0
     for i in range(len(Datos)):
         sumaprom += Datos[i]
-    promedio = round((sumaprom/len(Datos)),2)
+    promedio = round((sumaprom/len(Datos)),2) 
     return 'El promedio es:',promedio
     
 def Mediana(Datos):
@@ -529,7 +530,7 @@ def Varianza(Datos, PM):
     En caso de ser poblacional el valor se divide por n y si es muestral se divide por n-1
     Y retorna el valor varianza con 2 decimales
     """
-    promedio = MediaAritmetica(Datos)
+    promedio = MediaAritmetica(Datos)[1]
     if PM == 1:
         sumvarianza = 0
         for i in range(len(Datos)):
@@ -547,9 +548,9 @@ def DesviacionEstandar(Datos, PM):
     Llama a la funcion Varianza() y calcula la raíz cuadrada del valor varianza
     Retorna el valor s (Desviacion Estandar) con 2 decimales
     """
-    varianza = Varianza(Datos,PM)
+    varianza = Varianza(Datos,PM)[1]
     s = round((varianza**0.5),2)
-    return 'La desviacion estandar es:',promedio
+    return 'La desviacion estandar es:',s
 
 def CoeficienteDeVariacion(Datos, PM):
   """
@@ -558,7 +559,7 @@ def CoeficienteDeVariacion(Datos, PM):
   Retorna el valor CV con dos decimales
 
   """
-  s = DesviacionEstandar(Datos, PM)
+  s = DesviacionEstandar(Datos, PM)[1]
   promedio = MediaAritmetica(Datos)
   CV = round(((s/promedio)*100),2)
   return 'El coeficiente de variacion es: ',CV
