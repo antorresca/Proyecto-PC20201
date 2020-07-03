@@ -61,7 +61,6 @@ def Sumar():
     for i in numeros:
         suma += i
     print('El resultado total de la suma es: ', suma)
-    time.sleep(5)
     return
 
 def Restar():
@@ -75,7 +74,6 @@ def Restar():
         else:
             resta -= numeros[i]
     print('El resultado es:',resta)
-    time.sleep(5)
     return
 
 def Multiplicar():
@@ -90,7 +88,6 @@ def Multiplicar():
     for j in numeros:
         mult *= j
     print('el resultado de su multiplicaión es: ',mult)
-    time.sleep(5)
     return
 
 def Dividir():
@@ -112,7 +109,6 @@ def Dividir():
         print('')
     else:
         print('su respuesta en decimal es: ',division,'y en entero es:',int(division))
-    time.sleep(5)
     return
 
 def Potenciar():
@@ -123,7 +119,6 @@ def Potenciar():
     exp = float(input())
     resultado= base**exp
     print(str(base)+'^'+str(exp)+'='+str(resultado))
-    time.sleep(5)
     return
 
 def Radicar():
@@ -134,7 +129,6 @@ def Radicar():
     ind = float(input())
     raiz = nume**(1/ind)
     print(str(ind)+'√'+str(nume)+'='+str(raiz))
-    time.sleep(5)
     return
 
 def Otro():
@@ -142,7 +136,6 @@ def Otro():
     print('Ingrese su operacion:')
     operacion = separar(input())
     print(operacion)
-    time.sleep(5)
     return
 
 def OperacionesVariables():
@@ -620,6 +613,7 @@ def Cuartiles(Datos):
     return respuesta
 
 def VolverAntes():
+    time.sleep(2)
     print('¿Desea regresar al menú de la funcion? Si/No')
     respuesta = input()
     if respuesta.lower() == 'si':
@@ -628,6 +622,7 @@ def VolverAntes():
         return False
     
 def VolverInicio():
+    time.sleep(1)
     print('¿Desea regresar al menú principal? Si/No')
     respuesta = input()
     if respuesta.lower() == 'si':
@@ -675,7 +670,17 @@ def login():
             print('ingrese su clave')
             con = input()
             if us[user] == con:
-                print('ingreso')
+                g = '█'
+                for t in range(101):
+                    print('Cargando . . .',t,'% ',(t//2)*g,end='\r')
+                    if t <= 50:
+                        time.sleep(0.1)
+                    elif t == 80:
+                        time.sleep(0.2)
+                    elif t == 90:
+                        time.sleep(0.2)
+                    else:
+                        time.sleep(0.05)
                 res = False
             else:
                 errores += 1
@@ -703,8 +708,7 @@ def login():
                     break
                 else:
                     print('Las contrasenas no coinciden')
-                    time.sleep(2)
-        time.sleep(5)
+                    time.sleep(1.5)
     with open('usuarios.py','w') as usernames:
         usernames.write('usuarios ='+str(us)+'\n')
     return True
