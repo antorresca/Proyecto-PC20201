@@ -134,8 +134,35 @@ def Radicar():
 def Otro():
     borrarPantalla()
     print('Ingrese su operacion:')
-    operacion = separar(input())
-    print(operacion)
+    separado = separar(input())
+    print(separado)
+    op = ['^','x','/','+','-']
+    operaciones = []
+    for elemento in range(len(separado)):
+        for t in range(len(separado[elemento])):
+            if separado[elemento][t] in op:
+                operaciones.append(separado[elemento][t])
+                operaciones.append(separado[elemento][t+1])
+                break
+            else:
+                operaciones.append(separado[elemento][t])
+    for t in op:
+        if t in operaciones:
+            g = operaciones.index(t)
+            if t == '^':
+                resultado = int(operaciones[g-1])**int(operaciones[g+1])
+            elif t == 'x':
+                resultado = int(operaciones[g-1])*int(operaciones[g+1])          
+            elif t == '/':
+                resultado =  int(operaciones[g-1])/int(operaciones[g+1])
+            elif t == '+':
+                resultado =  int(operaciones[g-1])+int(operaciones[g+1])
+            elif t == '-':
+                resultado = int(operaciones[g-1])-int(operaciones[g+1])
+            del operaciones[g]
+            operaciones[g-1] = resultado
+            del operaciones[g]
+    print(operaciones[0])
     return
 
 def OperacionesVariables():
@@ -283,7 +310,7 @@ def Derivar(funcion_a_derivar,variable):
 
 def separar(a):
     lista = []
-    op = ['+','-','*','/']
+    op = ['^','x','+','-','*','/']
     cont = 0
     a += '+'
     for t in range(len(a)):
