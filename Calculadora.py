@@ -639,24 +639,6 @@ def Cuartiles(Datos):
             respuesta = 'ERROR',''
     return respuesta
 
-def VolverAntes():
-    time.sleep(2)
-    print('¿Desea regresar al menú de la funcion? Si/No')
-    respuesta = input()
-    if respuesta.lower() == 'si':
-        return True
-    else:
-        return False
-    
-def VolverInicio():
-    time.sleep(1)
-    print('¿Desea regresar al menú principal? Si/No')
-    respuesta = input()
-    if respuesta.lower() == 'si':
-        return True
-    else:
-        return False
-
 def Peso(Mensaje, Semilla):
     Peso_Palabra = []
     for i in range(len(Mensaje)):
@@ -686,6 +668,7 @@ def contra(usuario):
     return resultado
     
 def login():
+    global user
     us = usuarios.usuarios
     res = True
     errores = 0
@@ -1000,10 +983,45 @@ def logo_principal():
     escribir(d)   
     pantalla.exitonclick()
 
+def GuardarHistorial(Inicio,fin):
+    try:
+        os.mkdir('Archivos usuarios')
+    except FileExistsError:
+        os.mkdir('Archivos usuarios/'+user)
+    with open('Archivos usuarios/'+user+'/Historial','+a') as HUser:
+        HUser.write('Entrada: '+inicio+'\n')
+        for linea in historial:
+            HUser.write(linea+'\n')
+            for contenido in historial[linea]:
+                HUser.write(contenido+'\n')
+        HUser.write('Salida: '+fin+'\n')
+    return
+
+def VolverAntes():
+    time.sleep(2)
+    print('¿Desea regresar al menú de la funcion? Si/No')
+    respuesta = input()
+    if respuesta.lower() == 'si':
+        return True
+    else:
+        return False
+    
+def VolverInicio():
+    time.sleep(1)
+    print('¿Desea regresar al menú principal? Si/No')
+    respuesta = input()
+    if respuesta.lower() == 'si':
+        return True
+    else:
+        return False
+
 def main():
+    global historial
+    historial = {'Matemticas':[],'Estadistica':[],'Fisica':[]}
     logo_principal()
     funciones = {1:Matematicas,2:Estadistica,3:Fisica}
     bandera = login()
+    entrada = time.strftime("%d-%m-%Y %H:%M", time.localtime())
     while bandera:
         borrarPantalla()
         print('''ELIJA UNA OPCIÓN:
@@ -1016,6 +1034,11 @@ def main():
             bandera = VolverInicio()
         except:
             print('***OPCIÓN INVALIDA***')     
+    salida = time.strftime("%d-%m-%Y %H:%M", time.localtime())
+    print('Desea guardar su historial?')
+    respuestahisto = input().lower()
+    if respuestahisto == 'si':
+        GuardarHistorial(entrada,salida)
     print('Vuelva Pronto')
     time.sleep(2)    
 
