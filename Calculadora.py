@@ -7,6 +7,7 @@ except:
     g = open('usuarios.py', 'w')
     g.write('usuarios = {}')
     g.close()
+
 def borrarPantalla():
    os.system ("clear")
    os.system ("cls")   
@@ -446,6 +447,7 @@ def dinamica():
   print()
 
 def Estadistica():
+    global Datos
     est = {1: AgregarDatos,2: FuncionesEst}
     Rta = True
     while Rta:
@@ -457,7 +459,15 @@ def Estadistica():
         try:
             entrada = int(input())
             if entrada == 1:
-                Datos = est[entrada]()
+                try:
+                    if Datos != []:
+                        print('Ya se han agregado unos datos,¿desea borrarlos para agregar unos nuevos? Si/No')
+                        borrar = input().lower()
+                        if borrar == 'si':
+                            Datos = []
+                            Datos = est[entrada]()
+                except:
+                    Datos = est[entrada]()
             else:
                 try:
                     est[entrada](Datos)
@@ -477,7 +487,7 @@ def AgregarDatos():
     n = int(input())
     Datos_entrada = []
     for i in range(n):
-        print('Ingrese valor:',i+1)
+        print('Ingrese valor numero [',i+1,']')
         xi = float(input())
         Datos_entrada.append(xi)
     Datos_entrada.sort()
@@ -672,7 +682,10 @@ def contra(usuario):
     
 def login():
     global user
-    us = usuarios.usuarios
+    try:
+        us = usuarios.usuarios
+    except:
+        us = {}
     res = True
     errores = 0
     while res:
@@ -683,7 +696,7 @@ def login():
             print('ingrese su clave')
             con = input()
             if us[user] == con:
-                g = ' '
+                g = chr(9608)
                 for t in range(101):
                     print('Cargando . . .',t,'% ',(t//2)*g,end='\r')
                     if t <= 50:
@@ -990,10 +1003,11 @@ def GuardarHistorial(inicio,fin):
     try:
         os.mkdir('Archivos usuarios')
     except FileExistsError:
-        try:
-            os.mkdir('Archivos usuarios/'+user)
-        except FileExistsError:
-            print('')
+        print('')
+    try:
+        os.mkdir('Archivos usuarios/'+user)
+    except FileExistsError:
+        print('')
     with open('Archivos usuarios/'+user+'/Historial','+a') as HUser:
         HUser.write('Entrada: '+inicio+'\n')
         for linea in historial:
