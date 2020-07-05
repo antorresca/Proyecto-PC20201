@@ -636,7 +636,9 @@ def Cuartiles(Datos):
           \t 3) Q3
     ''')
     k = int(input())
-    if len(Datos)%2 != 0:
+    if len(Datos) <3:
+        respuesta = 'El numero de datos es muy pequeño', ''
+    elif len(Datos)%2 != 0:
         if k == 1:
             respuesta = 'Q1 =',Datos[int((k*(len(Datos)+1)/4)-1)]
         elif k == 2:
@@ -646,7 +648,7 @@ def Cuartiles(Datos):
             respuesta = 'Q3 =',Datos[int((k*(len(Datos)+1)/4)-1)]
         else:
             respuesta = 'ERROR',''
-    else:
+    elif len(Datos)%2 == 0:
         if k == 1:
             respuesta = 'Q1 =',round((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))]/2),2)
         elif k == 2:
