@@ -983,11 +983,14 @@ def logo_principal():
     escribir(d)   
     pantalla.exitonclick()
 
-def GuardarHistorial(Inicio,fin):
+def GuardarHistorial(inicio,fin):
     try:
         os.mkdir('Archivos usuarios')
     except FileExistsError:
-        os.mkdir('Archivos usuarios/'+user)
+        try:
+            os.mkdir('Archivos usuarios/'+user)
+        except FileExistsError:
+            print('')
     with open('Archivos usuarios/'+user+'/Historial','+a') as HUser:
         HUser.write('Entrada: '+inicio+'\n')
         for linea in historial:
