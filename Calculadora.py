@@ -608,7 +608,7 @@ def CoeficienteDeVariacion(Datos, PM):
 
 def Percentiles(Datos):
     """
-    :param k: Número que corresponde al percentil que se desea buscar, este número debe estar entre 1 y 99
+    :param Datos: Número que corresponde al percentil que se desea buscar, este número debe estar entre 1 y 99
     En caso de que el número de datos sea impar, imprime el dato en la posición correspondiente del percentil
     En caso de ser par, imprime el promedio entre los dos datos cercanos a las posición correspondiente al percentil
     """
@@ -618,7 +618,7 @@ def Percentiles(Datos):
         if len(Datos)%2 != 0:
             percentil = 'P'+str(k)+' =',Datos[int((k*(len(Datos)+1)/100)-1)]
         else:
-            percentil = 'P'+str(k)+' =',round((Datos[(int(k*(len(Datos)+1)/100))-1]+Datos[(int(k*(len(Datos)+1)/100))]/2),2)
+            percentil = 'P'+str(k)+' =',round(((Datos[(int(k*(len(Datos)+1)/100))-1]+Datos[(int(k*(len(Datos)+1)/100))])/2),2)
     else:
         percentil = 'ERROR',''
     return percentil
@@ -636,9 +636,7 @@ def Cuartiles(Datos):
           \t 3) Q3
     ''')
     k = int(input())
-    if len(Datos) <3:
-        respuesta = 'El numero de datos es muy pequeño', ''
-    elif len(Datos)%2 != 0:
+    if len(Datos)%2 != 0:
         if k == 1:
             respuesta = 'Q1 =',Datos[int((k*(len(Datos)+1)/4)-1)]
         elif k == 2:
@@ -648,14 +646,14 @@ def Cuartiles(Datos):
             respuesta = 'Q3 =',Datos[int((k*(len(Datos)+1)/4)-1)]
         else:
             respuesta = 'ERROR',''
-    elif len(Datos)%2 == 0:
+    else:
         if k == 1:
-            respuesta = 'Q1 =',round((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))]/2),2)
+            respuesta = 'Q1 =',round(((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))])/2),2)
         elif k == 2:
             mediana = Mediana(Datos)[1]
             respuesta = 'Q2 =', mediana
         elif k == 3:
-            respuesta = 'Q3 =',round((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))]/2),2)
+            respuesta = 'Q3 =',round(((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))])/2),2)
         else:
             respuesta = 'ERROR',''
     return respuesta
