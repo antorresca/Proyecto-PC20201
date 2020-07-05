@@ -1,8 +1,12 @@
 import os
 import turtle
 import time
-import usuarios
-
+try:
+    import usuarios
+except:
+    g = open('usuarios.py', 'w')
+    g.write('usuarios = {}')
+    g.close()
 def borrarPantalla():
    os.system ("clear")
    os.system ("cls")   
@@ -442,7 +446,6 @@ def dinamica():
   print()
 
 def Estadistica():
-    global Datos
     est = {1: AgregarDatos,2: FuncionesEst}
     Rta = True
     while Rta:
@@ -680,7 +683,7 @@ def login():
             print('ingrese su clave')
             con = input()
             if us[user] == con:
-                g = '█'
+                g = ' '
                 for t in range(101):
                     print('Cargando . . .',t,'% ',(t//2)*g,end='\r')
                     if t <= 50:
