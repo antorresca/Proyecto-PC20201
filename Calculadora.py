@@ -447,27 +447,19 @@ def dinamica():
   print()
 
 def Estadistica():
-    global Datos
-    est = {1: AgregarDatos,2: FuncionesEst}
+    est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst}
     Rta = True
     while Rta:
         borrarPantalla()
         print('''ELIJA UNA OPCIÓN:
-            \t 1)Agregar Datos
-            \t 2)Operaciones estadisticas
+            \t 1)Crear Datos
+            \t 2)Agregar Datos
+            \t 3)Operaciones estadisticas
             ''')
         try:
             entrada = int(input())
             if entrada == 1:
-                try:
-                    if Datos != []:
-                        print('Ya se han agregado unos datos,¿desea borrarlos para agregar unos nuevos? Si/No')
-                        borrar = input().lower()
-                        if borrar == 'si':
-                            Datos = []
-                            Datos = est[entrada]()
-                except:
-                    Datos = est[entrada]()
+                Datos = est[entrada]()
             else:
                 try:
                     est[entrada](Datos)
@@ -482,16 +474,30 @@ def Estadistica():
             time.sleep(2)
     return
 
-def AgregarDatos():
+def CrearDatos():
     print('Ingrese cantidad de valores: ')
     n = int(input())
     Datos_entrada = []
     for i in range(n):
-        print('Ingrese valor numero [',i+1,']')
+        print('Ingrese valor:',i+1)
         xi = float(input())
         Datos_entrada.append(xi)
     Datos_entrada.sort()
     return Datos_entrada
+
+def AgregarDatos(ListaDeDatos):
+    """
+    :param ListaDeDatos: Lista de datos anteriormente ingresados
+    La función agrega nuevos elementos a la lista de datos con la que se está trabajando
+    """
+    print('Ingrese cantidad de valores: ')
+    n = int(input())
+    for i in range(n):
+        print('Ingrese valor:',i+1)
+        xi = float(input())
+        ListaDeDatos.append(xi)
+    ListaDeDatos.sort()
+    return ListaDeDatos
 
 def FuncionesEst(Datos):
     """
