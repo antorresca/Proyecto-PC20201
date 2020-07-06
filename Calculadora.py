@@ -1,7 +1,12 @@
 import os
 import turtle
 import time
-import usuarios
+try:
+    import usuarios
+except:
+    g = open('usuarios.py', 'w')
+    g.write('usuarios = {}')
+    g.close()
 
 def borrarPantalla():
     os.system ("cls")   
@@ -28,7 +33,7 @@ def Matematicas():
     return
 
 def OperacionesBasicas():
-    basica = {1: Sumar,2: Restar,3: Multiplicar,4: Radicar,5: Potenciar,6: Otro}
+    basica = {1: Sumar,2: Restar,3: Multiplicar,4: Dividir,5: Radicar,6: Potenciar,7: Otro}
     bas = True
     while bas:
         borrarPantalla()
@@ -36,9 +41,10 @@ def OperacionesBasicas():
         \t 1)Suma
         \t 2)Resta
         \t 3)Multiplicacion
-        \t 4)Radicacion
-        \t 5)Potenciacion
-        \t 6)Operacion combinada
+        \t 4)Division
+        \t 5)Radicacion
+        \t 6)Potenciacion
+        \t 7)Operacion combinada
         ''')
         try:
             basica[int(input())]()
@@ -60,6 +66,7 @@ def Sumar():
     for i in numeros:
         suma += i
     print('El resultado total de la suma es: ', suma)
+    historial['Matematicas'].append('Suma \n\t'+'+'.join(str(x) for x in numeros)+' = '+str(suma))
     return
 
 def Restar():
@@ -73,6 +80,7 @@ def Restar():
         else:
             resta -= numeros[i]
     print('El resultado es:',resta)
+    historial['Matematicas'].append('Resta \n\t'+'-'.join(str(x) for x in numeros)+' = '+str(resta))
     return
 
 def Multiplicar():
@@ -87,27 +95,25 @@ def Multiplicar():
     for j in numeros:
         mult *= j
     print('el resultado de su multiplicaión es: ',mult)
+    historial['Matematicas'].append('Multiplicacion \n\t'+'x'.join(str(x) for x in numeros)+' = '+str(mult))
     return
 
 def Dividir():
     borrarPantalla()
-    print('Ingrese la cantidad de numeros que desea dividir')
-    d = int(input())
-    division = 1
-    for h in range(d):
-        print('ingrese numero [',h+1,']:')
-        num = float(input())
-        if num == 0:
-            print('el numero que ingresó es 0,No es posible dividir entre 0')
-            break
-        elif h == 0:
-            division = num
-        else:
-            division = division/num
-    if division == 1:
-        print('')
-    else:
-        print('su respuesta en decimal es: ',division,'y en entero es:',int(division))
+    print('Ingrese los numeros que desea dividir separados por un \'/\'')
+    d = list(map(int,input().split('/')))
+    division =1
+    try:
+        for num in range(len(d)):
+            if num == 0:
+                division = d[num]
+            else:
+                division /= num
+        print('su respuesta es: ',division,)
+        historial['Matematicas'].append('Division \n\t'+'/'.join(str(x) for x in numeros)+'='+str(division))
+    except ZeroDivisionError:
+        print('No es posible dividir entre cero (0)')
+        historial['Matematicas'].append('Division \n\tNo es posible division entre cero '+'/'.join(str(x) for x in numeros))
     return
 
 def Potenciar():
@@ -118,6 +124,7 @@ def Potenciar():
     exp = float(input())
     resultado= base**exp
     print(str(base)+'^'+str(exp)+'='+str(resultado))
+    historial['Matematicas'].append('Potenciacion \n\t'+str(base)+'^'+str(exp)+'='+str(resultado))
     return
 
 def Radicar():
@@ -446,9 +453,10 @@ def aceleracion():
   
 def constantes_cinematica():
     """
-    funcion en la que se tienen guardadadas constantes, mediadas estandarizadas o 
-    relaciones en un diccionario llamado ""cte_cinematica"", de tal modo de que el usuario las pueda visualizar
-    en pantalla
+    Parametros: N.A
+    Definicion: En esta funcion se  genera un submenu para direccionar a un 
+    imprimible en pantalla con el valor de una constante o  a una relacion entre dos 
+    unidades de medidas distintas, con la ayuda de la funcion regla_de_tres 
     """
     rta = True
     while rta:
@@ -489,7 +497,7 @@ def dinamica_y_energia():
     asi como funciones que se usan dentro de las funciones de calculo como 'sumatoria'.
     Esta tiene como entrada un string con el nombre de la variable a conocer.   
     """
-    dicc_dinamica= {1:fuerza,2:masa,3:presion,4:trabajo,5:potencia,6:constantes_dinamica}
+    dicc_dinamica= {1:fuerza,2:masa,3:presion,4:trabajo,5:potencia_jules,6:constantes_dinamica}
     rta = True
     while rta:
         borrarPantalla()
@@ -591,7 +599,7 @@ def masa():
 def presion():
     """
     Parametros: N.A
-    Definicion: En esta funcion se  
+    Definicion: En esta funcion se encarga de encontrar la presio, puede hacerse ingresando datos de fuerza o calculandolos
     """ 
     dicc_ingreso = {1:input ,2:fuerza} 
     rta = True
@@ -624,7 +632,7 @@ def presion():
 def trabajo():
     """
     Parametros: N.A
-    Definicion: En esta funcion se  
+    Definicion: En esta funcion se  encuentra el valor del trabajo, puede que con un ingreso de datos o con la funcion de fuerza
     """
     dicc_ingreso = {1:input ,2:fuerza} 
     rta = True
@@ -654,7 +662,7 @@ def trabajo():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
 
-def potencia():
+def potencia_jules():
     """
     Parametros: N.A
     Definicion: En esta funcion se  
@@ -690,8 +698,10 @@ def potencia():
 def constantes_dinamica():
     """
     Parametros: N.A
-    Definicion: En esta funcion se  
-    """ 
+    Definicion: En esta funcion se  genera un submenu para direccionar a un 
+    imprimible en pantalla con el valor de una constante o  a una relacion entre dos 
+    unidades de medidas distintas, con la ayuda de la funcion regla_de_tres 
+    """     
     rta = True
     while rta:
         borrarPantalla()
@@ -783,13 +793,112 @@ def carga():
 def calculadora_resistencia():
     """
     Parametros: N.A
-    Definicion: En esta funcion se  
+    Definicion: En esta funcion se usa la libreria turtle para imprimir le dibujo de 
+    una resistencia con su valor calculado 
     """ 
+    global pantalla
+    print("Por favor ingrese el numero de bandas de la resistencia: Opciones( 3 - 4 - 5 )")
+    bandas = int(input())
+    resistencia = lectura_resistencias(bandas)
+    print(resistencia)
+    pantalla.reset()
+    
+
+def lectura_resistencias(bandas):
+    """
+    Parametros: N.A
+    Definicion: En esta funcion se usa la libreria turtle para imprimir le dibujo de 
+    una resistencia con su valor calculado 
+    """ 
+    borrarPantalla()
+    dicc_digitos = {"negro":[0,"black"],"cafe":[1,"brown"],"rojo":[2,"darkred"],"naranja":[3,"darkorange1"],"amarillo":[4,"yellow"],"verde":[5,"darkgreen"],"azul":[6,"blue1"],"violeta":[7,"darkorchid3"],"gris":[8,"darkgrey"],"blanco":[9,"azure"]}
+    dicc_factor = {"negro":[1,"black"],"cafe":[10,"brown"],"rojo":[100,"darkred"],"naranja":[1000,"darkorange1"],"amarillo":[10000,"yellow"],"verde":[100000,"darkgreen"],"azul":[1000000,"blue1"],"violeta":[10000000,"darkorchid3"],"oro":[0.1,"darkgoldenrod"],"plata":[0.01,"azure3"]}
+    dicc_tolerancia = {"negro":["+/- 1%","black"],"cafe":["+/- 2%","brown"],"verde":["+/- 0.5%","darkgreen"],"azul":["+/- 0.25%","blue1"],"violeta":["+/- 0.1%","darkorchid3"],"gris":["+/- 0.05%","darkgrey"],"oro":["+/- 5%","darkgoldenrod"],"plata":["+/- 10%","azure3"],"otro":["+/- 20%","beige"]}
+    lista_bandas=[]
+    print(
+    """Ingrese los colores de las bandas de la resistencia de acuerdo con la siguiente lista:
+    Digito:         Factor:         Tolerancia:       
+    Negro           Negro           Negro
+    Cafe            Cafe            Cafe
+    Rojo            Rojo            -
+    Naranja         Naranja         -
+    Amarillo        Amarillo        -
+    Verde           Verde           Verde
+    Azul            Azul            Azul
+    Violeta         Violeta         Violeta
+    Gris            -               Gris
+    Blanco          -               -
+    -               Oro             Oro
+    -               Plata           Plata
+    """)
+    if bandas == 3:
+        valor = 0
+        factor_digital = 1
+        for banda_leida in range(bandas-1):
+            print("Banda (Digito) ",str(banda_leida+1)+") :")
+            banda_leida = str(input())
+            banda_leida = banda_leida.lower()
+            valor += dicc_digitos[banda_leida][0]*factor_digital
+            factor_digital *= 10
+            lista_bandas += [dicc_digitos[banda_leida][1]]
+        print("Banda (Factor) ",str(bandas)+") :")
+        banda_leida = str(input())
+        banda_leida = banda_leida.lower()
+        valor = str(valor*dicc_factor[banda_leida][0])+ dicc_tolerancia["otro"][0]
+        lista_bandas += [dicc_factor[banda_leida][1]]+[dicc_tolerancia["otro"][1]]
+        lista_final = [lista_bandas] +[valor]
+
+    elif bandas == 4:
+        valor = 0
+        factor_digital = 1
+        for banda_leida in range(bandas-2):
+            print("Banda (Digito) ",str(banda_leida+1)+") :")
+            banda_leida = str(input())
+            banda_leida = banda_leida.lower()
+            valor += dicc_digitos[banda_leida][0]*factor_digital
+            factor_digital *= 10
+            lista_bandas += [dicc_digitos[banda_leida][1]]
+        print("Banda (Factor) ",str(bandas-1)+") :")
+        banda_leida = str(input())
+        banda_leida = banda_leida.lower()
+        lista_bandas += [dicc_factor[banda_leida][1]]
+        valor = str(valor*dicc_factor[banda_leida][0])
+        print("Banda (Tolerancia) ",str(bandas)+") :")
+        banda_leida = str(input())
+        banda_leida = banda_leida.lower()
+        valor += dicc_tolerancia[banda_leida][0]
+        lista_bandas += [dicc_tolerancia[banda_leida][1]]
+        lista_final = [lista_bandas] +[valor]
+
+    elif bandas == 5:
+        valor = 0
+        factor_digital = 1
+        for banda_leida in range(bandas-2):
+            print("Banda (Digito) ",str(banda_leida+1)+") :")
+            banda_leida = str(input())
+            banda_leida = banda_leida.lower()
+            valor += dicc_digitos[banda_leida][0]*factor_digital
+            factor_digital *= 10
+            lista_bandas += [dicc_digitos[banda_leida][1]]
+        print("Banda (Factor) ",str(bandas-1)+") :")
+        banda_leida = str(input())
+        banda_leida = banda_leida.lower()
+        lista_bandas += [dicc_factor[banda_leida][1]]
+        valor = str(valor*dicc_factor[banda_leida][0])
+        print("Banda (Tolerancia)",str(bandas)+") :")
+        banda_leida = str(input())
+        banda_leida = banda_leida.lower()
+        valor += dicc_tolerancia[banda_leida][0]
+        lista_bandas += [dicc_tolerancia[banda_leida][1]]
+        lista_final = [lista_bandas] +[valor]
+    return(lista_final)
+
 def constantes_electromagnetismo():
     """
-    funcion en la que se tienen guardadadas constantes, mediadas estandarizadas o 
-    relaciones en un diccionario llamado ""cte_electromagnetismo"", de tal modo de
-    que el usuario las pueda visualizar en pantalla
+    Parametros: N.A
+    Definicion: En esta funcion se  genera un submenu para direccionar a un 
+    imprimible en pantalla con el valor de una constante o  a una relacion entre dos 
+    unidades de medidas distintas, con la ayuda de la funcion regla_de_tres 
     """
     rta = True
     while rta:
@@ -859,9 +968,10 @@ def ondas():
 
 def constantes_ondas():
     """
-    funcion en la que se tienen guardadadas constantes, mediadas estandarizadas o 
-    relaciones en un diccionario llamado ""cte_cinematica"", de tal modo de que el usuario las pueda visualizar
-    en pantalla
+    Parametros: N.A
+    Definicion: En esta funcion se  genera un submenu para direccionar a un 
+    imprimible en pantalla con el valor de una constante o  a una relacion entre dos 
+    unidades de medidas distintas, con la ayuda de la funcion regla_de_tres 
     """
     rta = True
     while rta:
@@ -896,9 +1006,8 @@ def constantes_ondas():
 
 def sumatoria(variable_a_sumar):
     """
-    La funcion sumatoria es una funcion interna, la cual sirve para varias 
-    funciones de calculo dentro de la funcion 'cinematica', esta se llama en cada una
-    de las funciones. 
+    Parametros: variable_a_sumar= cadena de caracteres con el nombre de la variable a calcular
+    Definicion: En esta funcion se  encara de invocar sumatorias y luego hacer una diferencia
     """
     print('Por favor, ingresar las magnitudes de', variable_a_sumar," en su respectiva medidia del S.I y terminar con (0)")
     Sumatoria = 0
@@ -911,7 +1020,7 @@ def sumatoria(variable_a_sumar):
     
 def delta(variable_a_sumar):
     """
-    Parametros: N.A
+    Parametros: variable_a_sumar= cadena de caracteres con el nombre de la variable a calcular
     Definicion: En esta funcion se  encara de invocar sumatorias y luego hacer una diferencia
     """ 
     print("En la siguente funcion hara un delta, por favor, tenga en cuenta que se haran dos sumatorias de magnitudes")
@@ -944,14 +1053,14 @@ def regla_de_tres(relacion):
         print(int(relacion))
 
 def Estadistica():
-    global Datos
-    est = {1: AgregarDatos,2: FuncionesEst}
+    est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst}
     Rta = True
     while Rta:
         borrarPantalla()
         print('''ELIJA UNA OPCIÓN:
-            \t 1)Agregar Datos
-            \t 2)Operaciones estadisticas
+            \t 1)Crear Datos
+            \t 2)Agregar Datos
+            \t 3)Operaciones estadisticas
             ''')
         try:
             entrada = int(input())
@@ -971,7 +1080,7 @@ def Estadistica():
             time.sleep(2)
     return
 
-def AgregarDatos():
+def CrearDatos():
     print('Ingrese cantidad de valores: ')
     n = int(input())
     Datos_entrada = []
@@ -981,6 +1090,20 @@ def AgregarDatos():
         Datos_entrada.append(xi)
     Datos_entrada.sort()
     return Datos_entrada
+
+def AgregarDatos(ListaDeDatos):
+    """
+    :param ListaDeDatos: Lista de datos anteriormente ingresados
+    La función agrega nuevos elementos a la lista de datos con la que se está trabajando
+    """
+    print('Ingrese cantidad de valores: ')
+    n = int(input())
+    for i in range(n):
+        print('Ingrese valor:',i+1)
+        xi = float(input())
+        ListaDeDatos.append(xi)
+    ListaDeDatos.sort()
+    return ListaDeDatos
 
 def FuncionesEst(Datos):
     """
@@ -1091,7 +1214,7 @@ def CoeficienteDeVariacion(Datos, PM):
 
 def Percentiles(Datos):
     """
-    :param k: Número que corresponde al percentil que se desea buscar, este número debe estar entre 1 y 99
+    :param Datos: Número que corresponde al percentil que se desea buscar, este número debe estar entre 1 y 99
     En caso de que el número de datos sea impar, imprime el dato en la posición correspondiente del percentil
     En caso de ser par, imprime el promedio entre los dos datos cercanos a las posición correspondiente al percentil
     """
@@ -1101,7 +1224,7 @@ def Percentiles(Datos):
         if len(Datos)%2 != 0:
             percentil = 'P'+str(k)+' =',Datos[int((k*(len(Datos)+1)/100)-1)]
         else:
-            percentil = 'P'+str(k)+' =',round((Datos[(int(k*(len(Datos)+1)/100))-1]+Datos[(int(k*(len(Datos)+1)/100))]/2),2)
+            percentil = 'P'+str(k)+' =',round(((Datos[(int(k*(len(Datos)+1)/100))-1]+Datos[(int(k*(len(Datos)+1)/100))])/2),2)
     else:
         percentil = 'ERROR',''
     return percentil
@@ -1131,33 +1254,15 @@ def Cuartiles(Datos):
             respuesta = 'ERROR',''
     else:
         if k == 1:
-            respuesta = 'Q1 =',round((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))]/2),2)
+            respuesta = 'Q1 =',round(((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))])/2),2)
         elif k == 2:
             mediana = Mediana(Datos)[1]
             respuesta = 'Q2 =', mediana
         elif k == 3:
-            respuesta = 'Q3 =',round((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))]/2),2)
+            respuesta = 'Q3 =',round(((Datos[(int(k*(len(Datos)+1)/4))-1]+Datos[(int(k*(len(Datos)+1)/4))])/2),2)
         else:
             respuesta = 'ERROR',''
     return respuesta
-
-def VolverAntes():
-    time.sleep(2)
-    print('¿Desea regresar al menú de la funcion? Si/No')
-    respuesta = input()
-    if respuesta.lower() == 'si':
-        return True
-    else:
-        return False
-    
-def VolverInicio():
-    time.sleep(1)
-    print('¿Desea regresar al menú principal? Si/No')
-    respuesta = input()
-    if respuesta.lower() == 'si':
-        return True
-    else:
-        return False
 
 def Peso(Mensaje, Semilla):
     Peso_Palabra = []
@@ -1188,7 +1293,11 @@ def contra(usuario):
     return resultado
     
 def login():
-    us = usuarios.usuarios
+    global user
+    try:
+        us = usuarios.usuarios
+    except:
+        us = {}
     res = True
     errores = 0
     while res:
@@ -1199,7 +1308,7 @@ def login():
             print('ingrese su clave')
             con = input()
             if us[user] == con:
-                g = '█'
+                g = chr(9608)
                 for t in range(101):
                     print('Cargando . . .',t,'% ',(t//2)*g,end='\r')
                     if t <= 50:
@@ -1487,10 +1596,11 @@ def logo_principal():
     Envia mensajes en la ventana de turtle
     Se cierra con un click del usuario 
     """
+    global pantalla
     pantalla = turtle.Screen()
     pantalla.title("Logo FEM")
-    pantalla.setup(width=800,height=1000)
-    pantalla.bgcolor("white")
+    pantalla.setup(800,1000,200,0)
+    pantalla.bgcolor("light blue")
     a = turtle.Turtle()
     b = turtle.Turtle()
     c = turtle.Turtle()
@@ -1498,7 +1608,7 @@ def logo_principal():
     a.pensize(2)
     b.pensize(6)
     c.pensize(2)
-    d.pensize(20)
+    d.pensize(10)
     a.pencolor("green")
     b.pencolor("black")
     c.pencolor("black")
@@ -1507,11 +1617,57 @@ def logo_principal():
     nombre(c)
     escribir(d)   
     pantalla.exitonclick()
+    pantalla.title("Calculadora_resistencias")
+
+
+def GuardarHistorial(inicio,fin):
+    try:
+        os.mkdir('Archivos usuarios')
+    except FileExistsError:
+        print('')
+    try:
+        os.mkdir('Archivos usuarios/'+user)
+    except FileExistsError:
+        print('')
+    with open('Archivos usuarios/'+user+'/Historial','+a') as HUser:
+        HUser.write('--------------------------------------------------------------------------------\n')
+        HUser.write('Entrada: '+inicio+'\n')
+        for linea in historial:
+            HUser.write(linea+'\n')
+            if len(historial[linea]) != 0:
+                for contenido in historial[linea]:
+                    HUser.write('\t'+contenido+'\n')
+            else:
+                HUser.write('\tNo se realizaron operaciones en esta funcion\n')
+        HUser.write('Salida: '+fin+'\n')
+        HUser.write('')
+    return
+
+def VolverAntes():
+    time.sleep(2)
+    print('¿Desea regresar al menú de la funcion? Si/No')
+    respuesta = input()
+    if respuesta.lower() == 'si':
+        return True
+    else:
+        return False
+    
+def VolverInicio():
+    time.sleep(1)
+    print('¿Desea regresar al menú principal? Si/No')
+    respuesta = input()
+    if respuesta.lower() == 'si':
+        return True
+    else:
+        return False
 
 def main():
+    global historial
+    historial = {'Matematicas':[],'Estadistica':[],'Fisica':[]}
     logo_principal()
     funciones = {1:Matematicas,2:Estadistica,3:Fisica}
     bandera = login()
+    entrada = time.strftime("%d-%m-%Y %H:%M", time.localtime())
     while bandera:
         borrarPantalla()
         print('''ELIJA UNA OPCIÓN:
@@ -1523,7 +1679,13 @@ def main():
             funciones[int(input())]()
             bandera = VolverInicio()
         except:
+            time.sleep(10)
             print('***OPCIÓN INVALIDA***')     
+    salida = time.strftime("%d-%m-%Y %H:%M", time.localtime())
+    print('Desea guardar su historial?')
+    respuestahisto = input().lower()
+    if respuestahisto == 'si':
+        GuardarHistorial(entrada,salida)
     print('Vuelva Pronto')
     time.sleep(10)    
 
