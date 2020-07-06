@@ -502,13 +502,14 @@ def Estadistica():
             \t 1)Crear Datos
             \t 2)Agregar Datos
             \t 3)Operaciones estadisticas
+            \t 4)Graficas Estadisticas
             ''')
         try:
             entrada = int(input())
             if entrada == 1:
                 Datos = est[entrada]()
             elif entrada == 2:
-                Datos = est[entrada]()
+                Datos = est[entrada](Datos)
             else:
                 try:
                     est[entrada](Datos)
