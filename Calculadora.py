@@ -584,26 +584,12 @@ def AgruparDatos(iDatos):
     return DatosAgrupados
 def GraficoPastel(DatosAgrupados):
     plt.style.use('seaborn-colorblind')
-    # Language Popularity
     slices = DatosAgrupados[2]
     labels = ['Intervalo'+str(DatosAgrupados[0][i]) for i in range(len(DatosAgrupados[1]))]
     plt.pie(slices, labels=labels, shadow=True, autopct='%1.1f%%', wedgeprops={'edgecolor': 'black'})
+    print('Ingrese un titulo para el diagrama de pastel:')
     Titulo = input()
     plt.title(Titulo)
-    plt.tight_layout()
-    plt.show()
-def GraficoDebarras(DatosAgrupados):
-    plt.style.use('seaborn-colorblind')
-    ages_x = [(DatosAgrupados[1][i]) for i in range(len(DatosAgrupados[1]))]
-    dev_y = DatosAgrupados[2]
-    plt.bar(ages_x, dev_y)
-    plt.legend()
-    print('Ingrese un titulo para el diagrama de barras:')
-    Titulo = input()
-    plt.title(Titulo)
-    plt.xlabel('Intervalos')
-    plt.ylabel('# de datos en el intervalo')
-    plt.grid(True)
     plt.tight_layout()
     plt.show()
 def Histograma(Datos, DatosAgrupados, Mediana):
@@ -631,7 +617,7 @@ def Ojiva(DatosAgrupados):
     plt.plot(ages_x, dev_y, color='#444444',marker='*', label='All Devs')
     plt.xlabel('Marcas de clase del intervalo')
     plt.ylabel('Frecuencias relativas acumuladas')
-    print('Ingrese un titulo para el diagrama de barras:')
+    print('Ingrese un titulo para el diagrama de Ojiva:')
     Titulo = input()
     plt.title(Titulo)
     plt.legend()
