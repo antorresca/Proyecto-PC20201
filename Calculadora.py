@@ -140,39 +140,65 @@ def Radicar():
 def Otro():
     borrarPantalla()
     print('Ingrese su operacion:')
-    separado = separar(input())
-    print(separado)
-    op = ['^','x','/','+','-']
+    operacion_comb = input()
+    separado = separar(operacion_comb.replace('x','*'))
+    op = ['^','x','*','/','+','-']
     operaciones = []
     for elemento in range(len(separado)):
         for t in range(len(separado[elemento])):
             if separado[elemento][t] in op:
-                operaciones.append(separado[elemento][t])
-                operaciones.append(separado[elemento][t+1])
+                if separado[elemento][t] == '-':
+                    operaciones.append('+')
+                else:
+                    operaciones.append(separado[elemento][t])
+                fin = 1
+                while True:
+                    try:
+                        if separado[elemento][t+fin] not in op:
+                            fin += 1
+                    except:
+                        if separado[elemento][t] == '-':
+                            operaciones.append('-'+separado[elemento][t+1:t+fin+1])
+                        else:
+                            operaciones.append(separado[elemento][t+1:t+fin+1])
+                        break
                 break
             else:
-                operaciones.append(separado[elemento][t])
-    for t in op:
-        if t in operaciones:
-            g = operaciones.index(t)
-            if t == '^':
-                resultado = int(operaciones[g-1])**int(operaciones[g+1])
-            elif t == 'x':
-                resultado = int(operaciones[g-1])*int(operaciones[g+1])          
-            elif t == '/':
-                resultado =  int(operaciones[g-1])/int(operaciones[g+1])
-            elif t == '+':
-                resultado =  int(operaciones[g-1])+int(operaciones[g+1])
-            elif t == '-':
-                resultado = int(operaciones[g-1])-int(operaciones[g+1])
-            del operaciones[g]
-            operaciones[g-1] = resultado
-            del operaciones[g]
-    resultado_otros = ''.join(separado)+'='+str(operaciones[0])
+                fin = 1
+                while True:
+                    try:
+                        if separado[elemento][t+fin] not in op:
+                            fin += 1
+                    except:
+                        if separado[elemento][t] == '-':
+                            operaciones.append('-'+separado[elemento][t:t+fin+1])
+                        else:
+                            operaciones.append(separado[elemento][t:t+fin+1])
+                        break
+                break
+    for repeticion in range(len(operaciones)):
+        for t in op:
+            if t in operaciones:
+                g = operaciones.index(t)
+                if t == '^':
+                    resultado = int(operaciones[g-1])**int(operaciones[g+1])
+                elif t == 'x' or t == '*':
+                    resultado = int(operaciones[g-1])*int(operaciones[g+1])          
+                elif t == '/':
+                    resultado =  int(operaciones[g-1])/int(operaciones[g+1])
+                elif t == '+':
+                    resultado =  int(operaciones[g-1])+int(operaciones[g+1])
+                elif t == '-':
+                    resultado = int(operaciones[g-1])-int(operaciones[g+1])
+                del operaciones[g]
+                operaciones[g-1] = resultado
+                del operaciones[g]
+    resultado_otros = operacion_comb+'='+str(operaciones[0])
     return resultado_otros
 
 def OperacionesVariables():
     Avanzado = {1: Ecuaciones,2: Derivar,3: Integrar}
+    Ava = {1: 'Ecuacion',2: 'Derivada',3: 'Integral'}
     Av = True
     while Av:
         borrarPantalla()
@@ -188,11 +214,17 @@ def OperacionesVariables():
                 print('''Ingrese la funcion
                         (Con formato Pv^e donde P: coeficiente, v: variable , e: exponente)''')
                 entrada = input()
-                funcion = separar(entrada.replace('=','-'))
+                if opcion == 1:
+                    if determinar(entrada):
+                        funcion = separar(entrada.replace('=','-'))
+                    else:
+                        funcion = separar(entrada)
+                else:
+                    funcion = separar(entrada.replace('=','-'))
                 letra = identificar(funcion)
                 salida = Avanzado[opcion](funcion,letra)
                 print(salida)
-                historial['Matematicas'].append(str(Avanzado[opcion])+'\n\t'+entrada+salida)
+                historial['Matematicas'].append(Ava[opcion]+'\n\t'+entrada+salida)
                 Av = False
             else:
                 print('Ha ingresado una opcion invalida,intente de nuevo')
@@ -203,12 +235,15 @@ def OperacionesVariables():
     return
 
 def Ecuaciones(lista,variable):
-    lista.sort(key = len)
+    contador = 0
     for n in lista:
         if '^2' in n:
-            return Cuadratica(lista,variable)
-        else:
-            return Normal(lista,variable)
+            contador = 1
+            break
+    if contador == 1:
+        return Cuadratica(lista,variable)
+    else:
+        return Normal(lista,variable)
 
 def Normal(ecuacion,variable):
     independiente = 0
@@ -224,11 +259,8 @@ def Normal(ecuacion,variable):
     return resultado_normal
 
 def Cuadratica(ecuacion,variable):
-    """
-    Funcion para resolver ecuaciones de segundo grado
-    :param ecuacion: str de la expresion algebraica
-    """
-    borrarPantalla()
+    a = 0
+    b = 0
     c = 0
     for i in ecuacion:
         if variable in i:
@@ -318,9 +350,15 @@ def Derivar(funcion_a_derivar,variable):
             contador += 1
     return resultado_derivacion
 
+def determinar(f):
+    if '^2' in f:
+        return True
+    else:
+        return False
+
 def separar(a):
     lista = []
-    op = ['^','x','+','-','*','/']
+    op = ['^','+','-','*','/']
     cont = 0
     a += '+'
     for t in range(len(a)):
@@ -331,8 +369,12 @@ def separar(a):
                         lista.append(a[cont:t+3])
                         cont = t+3
                     else:
-                        lista.append(a[cont:t])
-                        cont = t
+                        if a[t] == '^':
+                            lista.append(a[cont:t+2])
+                            cont = t+2
+                        else:
+                            lista.append(a[cont:t])
+                            cont = t
                 except:
                     lista.append(a[cont:t])
                     cont = t
@@ -507,7 +549,9 @@ def FuncionesEst(Datos):
     Menú de funciones propias de la estadística
     """
     FEst = {1: MediaAritmetica,2: Mediana,6: Percentiles, 7:Cuartiles} 
+    FEs = {1: 'Media',2: 'Mediana',3: 'Varianza',4: 'Desviacion estandar',7: 'Coeficiente de variación',6: 'Percentil',7: 'Cuartil'}
     Fe = True
+    historial['Estadistica'].append('Datos \n\t'+str(Datos))
     while Fe:
         borrarPantalla()
         print('''ELIJA UNA FUNCIÓN: 
@@ -526,6 +570,7 @@ def FuncionesEst(Datos):
             else:
                 salida = FEst[funcion](Datos)
             print(salida[0],salida[1])
+            historial['Estadistica'].append(FEs[funcion]+'\n\t'+salida[0]+str(salida[1]))
             Fe = VolverAntes()
         except:
             print('Opcion invalida')
