@@ -66,6 +66,7 @@ def Sumar():
     for i in numeros:
         suma += i
     print('El resultado total de la suma es: ', suma)
+    historial['Matematicas'].append('Suma \n\t'+'+'.join(str(x) for x in numeros)+' = '+str(suma))
     return
 
 def Restar():
@@ -79,6 +80,7 @@ def Restar():
         else:
             resta -= numeros[i]
     print('El resultado es:',resta)
+    historial['Matematicas'].append('Resta \n\t'+'-'.join(str(x) for x in numeros)+' = '+str(resta))
     return
 
 def Multiplicar():
@@ -93,27 +95,25 @@ def Multiplicar():
     for j in numeros:
         mult *= j
     print('el resultado de su multiplicaión es: ',mult)
+    historial['Matematicas'].append('Multiplicacion \n\t'+'x'.join(str(x) for x in numeros)+' = '+str(mult))
     return
 
 def Dividir():
     borrarPantalla()
-    print('Ingrese la cantidad de numeros que desea dividir')
-    d = int(input())
-    division = 1
-    for h in range(d):
-        print('ingrese numero [',h+1,']:')
-        num = float(input())
-        if num == 0:
-            print('el numero que ingresó es 0,No es posible dividir entre 0')
-            break
-        elif h == 0:
-            division = num
-        else:
-            division = division/num
-    if division == 1:
-        print('')
-    else:
-        print('su respuesta en decimal es: ',division,'y en entero es:',int(division))
+    print('Ingrese los numeros que desea dividir separados por un \'/\'')
+    d = list(map(int,input().split('/')))
+    division =1
+    try:
+        for num in range(len(d)):
+            if num == 0:
+                division = d[num]
+            else:
+                division /= num
+        print('su respuesta es: ',division,)
+        historial['Matematicas'].append('Division \n\t'+'/'.join(str(x) for x in numeros)+'='+str(division))
+    except ZeroDivisionError:
+        print('No es posible dividir entre cero (0)')
+        historial['Matematicas'].append('Division \n\tNo es posible division entre cero '+'/'.join(str(x) for x in numeros))
     return
 
 def Potenciar():
@@ -124,6 +124,7 @@ def Potenciar():
     exp = float(input())
     resultado= base**exp
     print(str(base)+'^'+str(exp)+'='+str(resultado))
+    historial['Matematicas'].append('Potenciacion \n\t'+str(base)+'^'+str(exp)+'='+str(resultado))
     return
 
 def Radicar():
@@ -1043,7 +1044,7 @@ def VolverInicio():
 
 def main():
     global historial
-    historial = {'Matemticas':[],'Estadistica':[],'Fisica':[]}
+    historial = {'Matematicas':[],'Estadistica':[],'Fisica':[]}
     logo_principal()
     funciones = {1:Matematicas,2:Estadistica,3:Fisica}
     bandera = login()
