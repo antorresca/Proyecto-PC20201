@@ -507,6 +507,8 @@ def Estadistica():
             entrada = int(input())
             if entrada == 1:
                 Datos = est[entrada]()
+            elif entrada == 2:
+                Datos = est[entrada]()
             else:
                 try:
                     est[entrada](Datos)
