@@ -1,6 +1,7 @@
 import os
 import turtle
 import time
+from matplotlib import pyplot as plt
 try:
     import usuarios
 except:
@@ -451,7 +452,7 @@ def dinamica():
   print()
 
 def Estadistica():
-    est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst}
+    est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst, 4: GraficasEst}
     Rta = True
     while Rta:
         borrarPantalla()
@@ -479,14 +480,12 @@ def Estadistica():
     return
 
 def CrearDatos():
-    print('Ingrese cantidad de valores: ')
-    n = int(input())
-    Datos_entrada = []
-    for i in range(n):
-        print('Ingrese valor:',i+1)
-        xi = float(input())
-        Datos_entrada.append(xi)
+    print('Ingrese los datos separados por un espacio')
+    Datos_entrada = input()
+    Datos_entrada = Datos_entrada.split()
+    Datos_entrada = list(map(float, Datos_entrada))
     Datos_entrada.sort()
+    print('El numero de datos ingresado es: '+str(len(Datos_entrada)))
     return Datos_entrada
 
 def AgregarDatos(ListaDeDatos):
@@ -545,7 +544,118 @@ def PoblacionMuestra(Datos,opcion):
         except:
             print('Opcion invalida vuelva a intentar')
             time.sleep(5)    
-
+def AgruparDatos(iDatos):
+    DatosAgrupados = []
+    Rango = (max(iDatos)-min(iDatos))
+    NumIntervalos = int(Rango**0.5)
+    Amplitud = round((Rango/NumIntervalos),1)
+    Intervalos = []
+    LimiteInf = min(iDatos)
+    for i in range(NumIntervalos-1):
+        LimiteSup = round((LimiteInf+Amplitud),1)
+        iIntervalo = (LimiteInf,LimiteSup)
+        Intervalos.append(iIntervalo)
+        LimiteInf = LimiteSup
+    iIntervalo = (LimiteInf, max(iDatos))
+    Intervalos.append(iIntervalo)
+    DatosAgrupados.append(Intervalos)
+    MarcasDeClase = [round(((Intervalos[i][0]+Intervalos[i][1])/2),1) for i in range(NumIntervalos)]
+    DatosAgrupados.append(MarcasDeClase)
+    FrecuenciasAbs = [0 for i in range(NumIntervalos)]
+    for i in range(NumIntervalos):
+        for j in range(len(iDatos)):
+            if (iDatos[j] >= Intervalos[i][0]) and (iDatos[j] < Intervalos[i][1]):
+                FrecuenciasAbs[i] += 1
+    if (iDatos[j] >= Intervalos[len(Intervalos)-1][0]) and (iDatos[j] <= Intervalos[len(Intervalos)-1][1]):
+        FrecuenciasAbs[NumIntervalos-1] +=1
+    DatosAgrupados.append(FrecuenciasAbs)
+    FrecuenciasAbsAcum = [FrecuenciasAbs[0]]
+    for i in range(1,len(FrecuenciasAbs)):
+        iFrecuenciaAbsAcum = FrecuenciasAbs[i] + FrecuenciasAbsAcum[i-1]
+        FrecuenciasAbsAcum.append(iFrecuenciaAbsAcum)
+    DatosAgrupados.append(FrecuenciasAbsAcum)
+    FrecuenciasRel = [round((FrecuenciasAbs[i]/len(iDatos)),2) for i in range(NumIntervalos)]
+    DatosAgrupados.append(FrecuenciasRel)
+    FrecuenciasRelAcum = [FrecuenciasRel[0]]
+    for i in range(1,len(FrecuenciasAbs)):
+        iFrecuenciaRelAcum = FrecuenciasRel[i] + FrecuenciasRelAcum[i-1]
+        FrecuenciasRelAcum.append(iFrecuenciaRelAcum)
+    DatosAgrupados.append(FrecuenciasRelAcum)
+    return DatosAgrupados
+def GraficoPastel(DatosAgrupados):
+    plt.style.use('seaborn-colorblind')
+    # Language Popularity
+    slices = DatosAgrupados[2]
+    labels = ['Intervalo'+str(DatosAgrupados[0][i]) for i in range(len(DatosAgrupados[1]))]
+    plt.pie(slices, labels=labels, shadow=True, autopct='%1.1f%%', wedgeprops={'edgecolor': 'black'})
+    Titulo = input()
+    plt.title(Titulo)
+    plt.tight_layout()
+    plt.show()
+def GraficoDebarras(DatosAgrupados):
+    plt.style.use('seaborn-colorblind')
+    ages_x = [(DatosAgrupados[1][i]) for i in range(len(DatosAgrupados[1]))]
+    dev_y = DatosAgrupados[2]
+    plt.bar(ages_x, dev_y)
+    plt.legend()
+    print('Ingrese un titulo para el diagrama de barras:')
+    Titulo = input()
+    plt.title(Titulo)
+    plt.xlabel('Intervalos')
+    plt.ylabel('# de datos en el intervalo')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+def Histograma(Datos, DatosAgrupados, Mediana):
+    plt.style.use('fivethirtyeight')
+    NumBins = len(DatosAgrupados[0])
+    bins = []
+    for i in range(len(DatosAgrupados[0])):
+        bins.append(DatosAgrupados[0][i][0])
+        bins.append(DatosAgrupados[0][i][1])
+    plt.hist(Datos,color='#e377c2', bins=bins, edgecolor='black')
+    color = '#ff7f0e'
+    plt.axvline(Mediana, color=color, label='Mediana', linewidth=2)
+    plt.legend()
+    print('Ingrese un titulo para el diagrama de barras:')
+    Titulo = input()
+    plt.title(Titulo)
+    plt.xlabel('Intervalos')
+    plt.ylabel('# de elementos por intervalo')
+    plt.tight_layout()
+    plt.show()
+def Ojiva(DatosAgrupados):
+    plt.style.use('seaborn-colorblind')
+    ages_x = DatosAgrupados[1]
+    dev_y = DatosAgrupados[5]
+    plt.plot(ages_x, dev_y, color='#444444',marker='*', label='All Devs')
+    plt.xlabel('Marcas de clase del intervalo')
+    plt.ylabel('Frecuencias relativas acumuladas')
+    print('Ingrese un titulo para el diagrama de barras:')
+    Titulo = input()
+    plt.title(Titulo)
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+def GraficasEst(Datos):
+    grafs = {1: GraficoPastel, 2: Histograma, 3: Ojiva}
+    DatosAgrupados = AgruparDatos(Datos)
+    Fe = True
+    while Fe:
+        borrarPantalla()
+        print('''ELIJA UNA FUNCIÓN: 
+        \t 1)Grafico Pastel
+        \t 2)Histograma
+        \t 3)Ojiva
+        ''')
+        try:
+            funcion = int(input())
+            salida = grafs[funcion](DatosAgrupados)
+            Fe = VolverAntes()
+        except:
+            print('Opcion invalida')
+    return
 def MediaAritmetica(Datos):
     """
     Funcion que permite calcular la media de una lista de datos
