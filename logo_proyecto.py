@@ -138,7 +138,7 @@ def logo_principal():
             dibujar(puntos,tortuga)
             if grado > 0:
                 for numero in range(2,4):
-                koch(division(puntos,numero),grado-1, tortuga)
+                    koch(division(puntos,numero),grado-1, tortuga)
         tortuga.hideturtle()
         tortuga.speed(10000)
         koch(division(puntos,3),espaciador,tortuga)
