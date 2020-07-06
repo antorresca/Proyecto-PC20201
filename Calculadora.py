@@ -34,7 +34,7 @@ def Matematicas():
     return
 
 def OperacionesBasicas():
-    basica = {1: Sumar,2: Restar,3: Multiplicar,4: Radicar,5: Potenciar,6: Otro}
+    basica = {1: Sumar,2: Restar,3: Multiplicar,4: Dividir,5: Radicar,6: Potenciar,7: Otro}
     bas = True
     while bas:
         borrarPantalla()
@@ -42,9 +42,10 @@ def OperacionesBasicas():
         \t 1)Suma
         \t 2)Resta
         \t 3)Multiplicacion
-        \t 4)Radicacion
-        \t 5)Potenciacion
-        \t 6)Operacion combinada
+        \t 4)Division
+        \t 5)Radicacion
+        \t 6)Potenciacion
+        \t 7)Operacion combinada
         ''')
         try:
             basica[int(input())]()
@@ -756,6 +757,7 @@ def logo_principal():
     Envia mensajes en la ventana de turtle
     Se cierra con un click del usuario 
     """
+    wn = turtle.Screen()
     def imagen(tortuga):
         """
         parametros:
@@ -840,9 +842,9 @@ def logo_principal():
         tortuga.hideturtle()
         tortuga.up()
         tortuga.goto(0,-30)
-        tortuga.write("\"fuente de investigacion\"",align=("center"),font=("castellar",20,"normal"))
+        tortuga.write("\"fuente de investigacion\"",align=("center"),font=("castellar",25,"normal"))
         tortuga.goto(0,-350)
-        tortuga.write("(Haga click en la ventana para continuar)",align=("center"),font=("times new roman",30,"normal"))   
+        tortuga.write("(Haga click en la ventana para continuar)",align=("center"),font=("times new roman",20,"normal"))   
     def fractal(tortuga,espaciador,puntos):
         """
         Parametros:
@@ -929,7 +931,7 @@ def logo_principal():
         tortuga.right(90)
         tortuga.end_fill()
         tortuga.color("black")
-        tortuga.fillcolor("white")
+        tortuga.fillcolor("black")
         tortuga.begin_fill()
         tortuga.forward(130)
         tortuga.left(90)
@@ -987,8 +989,8 @@ def logo_principal():
         tortuga.end_fill()
     pantalla = turtle.Screen()
     pantalla.title("Logo FEM")
-    pantalla.setup(width=800,height=1000)
-    pantalla.bgcolor("white")
+    pantalla.setup(800,1000,200,0)
+    pantalla.bgcolor("light blue")
     a = turtle.Turtle()
     b = turtle.Turtle()
     c = turtle.Turtle()
@@ -996,7 +998,7 @@ def logo_principal():
     a.pensize(2)
     b.pensize(6)
     c.pensize(2)
-    d.pensize(20)
+    d.pensize(10)
     a.pencolor("green")
     b.pencolor("black")
     c.pencolor("black")
@@ -1016,12 +1018,17 @@ def GuardarHistorial(inicio,fin):
     except FileExistsError:
         print('')
     with open('Archivos usuarios/'+user+'/Historial','+a') as HUser:
+        HUser.write('--------------------------------------------------------------------------------\n')
         HUser.write('Entrada: '+inicio+'\n')
         for linea in historial:
             HUser.write(linea+'\n')
-            for contenido in historial[linea]:
-                HUser.write(contenido+'\n')
+            if len(historial[linea]) != 0:
+                for contenido in historial[linea]:
+                    HUser.write('\t'+contenido+'\n')
+            else:
+                HUser.write('\tNo se realizaron operaciones en esta funcion\n')
         HUser.write('Salida: '+fin+'\n')
+        HUser.write('')
     return
 
 def VolverAntes():
