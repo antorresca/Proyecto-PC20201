@@ -1,7 +1,7 @@
 import os
 import turtle
 import time
-#from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt
 try:
     import usuarios
 except:
@@ -1293,6 +1293,7 @@ def cambio_temp(lista):
 def Estadistica():
     est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst, 4: GraficasEst}
     Rta = True
+    global Datos
     while Rta:
         borrarPantalla()
         print('''ELIJA UNA OPCIÓN:
