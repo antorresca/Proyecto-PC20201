@@ -1,7 +1,7 @@
 import os
 import turtle
 import time
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt
 try:
     import usuarios
 except:
@@ -457,7 +457,7 @@ def distancia():
     funcion de calculo que se apoya en la funcion "sumatoria" para calcular la 
     distancia segun la ecuacion distancia = velocidad x tiempo.
     """
-    velocidad = sumatoria('velocidad')
+    velocidad = sumatoria('velocidad',True)
     if velocidad > 299792458 or -299792458 > velocidad:
         print("La velocidad no puede sobrepasar la costante de la velocidad de la luz, por favor ingrese datos reales")
     else:
@@ -471,7 +471,7 @@ def velocidad():
     funcion de calculo que se apoya en la funcion "sumatoria" para calcular la 
     velocidad segun la ecuacion velocidad = distancia / tiempo.
     """
-    desplazamiento=sumatoria('desplazamiento')
+    desplazamiento=sumatoria('desplazamiento',True)
     print ("Por favor, defina la magnitud en segundos del tiempo:")
     tiempo = float(input())
     velocidad = round(desplazamiento/tiempo,3)
@@ -506,13 +506,14 @@ def constantes_cinematica():
     rta = True
     while rta:
         borrarPantalla()
-        cte_cinematica = {1:"La velocidad de la luz es de 299792458 m/s en el vacio",2:"La velocidad del sonido es de 343 m/s en el aire",3:[[1,3.6],["m/s","Kmh"],"velocidad"],4:[[1,2.54],["in","cm"],"distancia"]}
+        cte_cinematica = {5:[[1,0.447],["mi/h","m/s"]],1:"La velocidad de la luz es de 299792458 m/s en el vacio",2:"La velocidad del sonido es de 343 m/s en el aire",3:[[1,3.6],["m/s","Kmh"]],4:[[1,2.54],["in","cm"]]}
         print (""" BIENVENIDO A LA SECCION DE CONSTANTES DE CINEMATICA
         Por favor, digite el numero de la constante, relacion o proceso:
         \t 1) Velociadad de la luz
         \t 2) Velocidad del sonido
         \t 3) km/h : m/s
         \t 4) in : cm
+        \t 5) mi/h : m/s
         """)
         try:
             entrada = int(input())
@@ -542,7 +543,7 @@ def dinamica_y_energia():
     asi como funciones que se usan dentro de las funciones de calculo como 'sumatoria'.
     Esta tiene como entrada un string con el nombre de la variable a conocer.   
     """
-    dicc_dinamica= {1:fuerza,2:masa,3:presion,4:trabajo,5:potencia_jules,6:constantes_dinamica}
+    dicc_dinamica= {1:fuerza,2:masa,3:presion,4:trabajo,5:potencia_mecanica,6:constantes_dinamica}
     rta = True
     while rta:
         borrarPantalla()
@@ -691,7 +692,7 @@ def trabajo():
         try:
             f = float(dicc_ingreso[int(input())]())
             print("Por favor, ingrese la magnitud de la distancia ")
-            distancia = sumatoria("distancia")
+            distancia = sumatoria("distancia",True)
             print("El valor del trabajo es de", str(f*distancia), "J")
             rta = VolverAntes()
         except FloatingPointError:
@@ -707,7 +708,7 @@ def trabajo():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
 
-def potencia_jules():
+def potencia_mecanica():
     """
     Parametros: N.A
     Definicion: En esta funcion se  
@@ -750,13 +751,15 @@ def constantes_dinamica():
     rta = True
     while rta:
         borrarPantalla()
-        cte_cinematica = {1:"El peso en la tierra es de 9.871 m/s^2",2:"La constante de gravitacion universal de 6.67 X 10^-11 Nm^2/kg",3:[[1,101325],["Pa","ATM"]],4:[[1,4184],["Kcal","J"]]}
+        cte_cinematica = {1:"El peso en la tierra es de 9.871 m/s^2",2:"La constante de gravitacion universal de 6.67 X 10^-11 Nm^2/kg",3:[[1,101325],["Pa","atm"]],4:[[1,4184],["Kcal","J"]],5:[[1,14.7]["atm" , "lb/pulg^2" ]],6:[[1,4.448]["lb" , "N"  ]]}
         print (""" BIENVENIDO A LA SECCION DE CONSTANTES DE DINAMICA
         Por favor, digite el numero de la constante, relacion o proceso:
         \t 1) Peso en la tierra
         \t 2) Constante de gravitacion universal
-        \t 3) Pa : ATM
+        \t 3) Pa : atm
         \t 4) J : Kcal
+        \t 5) atm : lb/pulg^2 
+        \t 6) lb : N 
         """)
         try:
             entrada = int(input())
@@ -786,7 +789,7 @@ def electromagnetismo():
     asi como funciones que se usan dentro de las funciones de calculo como 'sumatoria'.
     Esta tiene como entrada un string con el nombre de la variable a conocer.   
     """
-    dicc_electromagnetismo= {1:voltaje,2:corriente,3:resistencia,4:carga,5:lectura_resistencia,6:constantes_electromagnetismo} 
+    dicc_electromagnetismo= {1:voltaje,2:corriente,3:resistencia,4:potencia_electrica,5:lectura_resistencias,6:constantes_electromagnetismo} 
     rta = True
     while rta:
         borrarPantalla()
@@ -795,9 +798,9 @@ def electromagnetismo():
         \t 1) Voltaje
         \t 2) Corriente
         \t 3) Resistencia
-        \t 4) Carga
+        \t 4) Potencia electrica
         \t 5) Calculadora de resistencias
-        \t 4) Constantes o conversor de medidas
+        \t 6) Constantes o conversor de medidas
         """)
         try:
             dicc_electromagnetismo[int(input())]()
@@ -818,31 +821,131 @@ def electromagnetismo():
 def voltaje():
     """
     Parametros: N.A
-    Definicion: En esta funcion se  
+    Definicion: En esta funcion se  encarga de hacer una relacion del voltaje
     """ 
+    print("""
+    Por favor, ingrese el numero de la variable que le falta:
+    1) Corriente ( I )
+    2) Resistencia ( R )
+    3) Potencia ( P )
+    """)
+    entrada = int(input())
+    if entrada == 1:
+        print("Ingrese la magnitud de la potencia en vatios")
+        potencia = float(input())
+        print("Ingrese la magnitud de la resitencia en Ohms")
+        resistencia = float(input())
+        print("El voltaje es de :",str(round((potencia*resistencia)^(1/2),3)),"Voltios")
+    elif entrada == 2:
+        print("Ingrese la magnitud de la potencia en vatios")
+        potencia = float(input())
+        print("Ingrese la magnitud de la corriente en Amperios")
+        corriente = float(input())
+        print("El voltaje es de :",str(round((potencia/corriente),3)),"Voltios")
+    elif entrada == 3:
+        print("Ingrese la magnitud de la corriente en Amperios")
+        corriente = float(input())
+        print("Ingrese la magnitud de la resitencia en Ohms")
+        resistencia = float(input())
+        print("El voltaje es de :",str(round((potencia*resistencia),3)),"Voltios")
+
 def corriente():
     """
     Parametros: N.A
     Definicion: En esta funcion se  
     """ 
+    print("""
+    Por favor, ingrese el numero de la variable que le falta:
+    1) Resistencia ( R )
+    2) Voltaje ( V )
+    3) Potencia ( P )
+    """)
+    entrada = int(input())
+    if entrada == 1:
+        print("Ingrese la magnitud de la tension(voltaje) en Voltios")
+        voltaje = float(input())
+        print("Ingrese la magnitud de la potencia en vatios")
+        potencia = float(input())
+        print("La corriente es de :",str(round((potencia/voltaje),3)),"Amperios")
+    elif entrada == 2:
+        print("Ingrese la magnitud de la potencia en vatios")
+        potencia = float(input())
+        print("Ingrese la magnitud de la resitencia en Ohms")
+        resistencia = float(input())
+        print("La corriente es de :",str(round((potencia/resistencia)*(1/2),3)),"Amperios")
+    elif entrada == 3:
+        print("Ingrese la magnitud de la resitencia en Ohms")
+        resistencia = float(input())
+        print("Ingrese la magnitud de la tension(voltaje) en Voltios")
+        voltaje = float(input())
+        print("La corriente es de :",str(round(voltaje/resistencia,3)),"Amperios")
+
 def resistencia():
     """
     Parametros: N.A
     Definicion: En esta funcion se  
     """ 
-def carga():
-    """
-    Parametros: N.A
-    Definicion: En esta funcion se  
-    """ 
-    
+    print("""
+    Por favor, ingrese el numero de la variable que le falta:
+    1) Corriente ( I )
+    2) Voltaje ( V )
+    3) Potencia ( P )
+    """)
+    entrada = int(input())
+    if entrada == 1:
+        print("Ingrese la magnitud de la tension(voltaje) en Voltios")
+        voltaje = float(input())
+        print("Ingrese la magnitud de la potencia en vatios")
+        potencia = float(input())
+        print("La resistencia es de :",str(round((voltaje**2)/(potencia),3)),"Ohms")
+    elif entrada == 2:
+        print("Ingrese la magnitud de la potencia en vatios")
+        potencia = float(input())
+        print("Ingrese la magnitud de la corriente en Amperios")
+        corriente = float(input())
+        print("La resistencia es de :",str(round((potencia)/(corriente**2),3)),"Ohms")
+    elif entrada == 3:
+        print("Ingrese la magnitud de la corriente en Amperios")
+        corriente = float(input())
+        print("Ingrese la magnitud de la tension(voltaje) en Voltios")
+        voltaje = float(input())
+        print("La resistencia es de :",str(round(voltaje/corriente,3)),"Ohms")
 
-def lectura_resistencias(bandas):
+def potencia_electrica():
+    print("""
+    Por favor, ingrese el numero de la variable que le falta:
+    1) Corriente ( I )
+    2) Voltaje ( V )
+    3) Resistencia ( R )
+    """)
+    entrada = int(input())
+    if entrada == 1:
+        print("Ingrese la magnitud de la tension(voltaje) en Voltios")
+        voltaje = float(input())
+        print("Ingrese la magnitud de la resitencia en Ohms")
+        resistencia = float(input())
+        print("La potencia es de :",str(round((voltaje**2)/(resistencia),3)),"Vatios")
+    elif entrada == 2:
+        print("Ingrese la magnitud de la resitencia en Ohms")
+        resistencia = float(input())
+        print("Ingrese la magnitud de la corriente en Amperios")
+        corriente = float(input())
+        print("La potencia es de :",str(round((corriente**2)*resistencia),3),"Vatios")
+    elif entrada == 3:
+        print("Ingrese la magnitud de la corriente en Amperios")
+        corriente = float(input())
+        print("Ingrese la magnitud de la tension(voltaje) en Voltios")
+        voltaje = float(input())
+        print("La potencia es de :",str(round((corriente*voltaje),3)),"Vatios")
+
+def lectura_resistencias():
     """
     Parametros: N.A
     Definicion: En esta funcion se usa la libreria turtle para imprimir le dibujo de 
     una resistencia con su valor calculado 
     """ 
+    print("Por favor ingrese el numero de bandas de la resistencia: Opciones( 3 - 4 - 5 )")
+    bandas = int(input())
     borrarPantalla()
     dicc_digitos = {"negro":[0,"black"],"cafe":[1,"brown"],"rojo":[2,"darkred"],"naranja":[3,"darkorange1"],"amarillo":[4,"yellow"],"verde":[5,"darkgreen"],"azul":[6,"blue1"],"violeta":[7,"darkorchid3"],"gris":[8,"darkgrey"],"blanco":[9,"azure"]}
     dicc_factor = {"negro":[1,"black"],"cafe":[10,"brown"],"rojo":[100,"darkred"],"naranja":[1000,"darkorange1"],"amarillo":[10000,"yellow"],"verde":[100000,"darkgreen"],"azul":[1000000,"blue1"],"violeta":[10000000,"darkorchid3"],"oro":[0.1,"darkgoldenrod"],"plata":[0.01,"azure3"]}
@@ -877,9 +980,9 @@ def lectura_resistencias(bandas):
         print("Banda (Factor) ",str(bandas)+") :")
         banda_leida = str(input())
         banda_leida = banda_leida.lower()
-        valor = str(valor*dicc_factor[banda_leida][0])+ dicc_tolerancia["otro"][0]
+        valor = str(valor*dicc_factor[banda_leida][0]) , dicc_tolerancia["otro"][0]
         lista_bandas += [dicc_factor[banda_leida][1]]+[dicc_tolerancia["otro"][1]]
-        lista_final = [lista_bandas] +[valor]
+        lista_final = [lista_bandas], [valor]
 
     elif bandas == 4:
         valor = 0
@@ -923,9 +1026,10 @@ def lectura_resistencias(bandas):
         banda_leida = banda_leida.lower()
         valor += dicc_tolerancia[banda_leida][0]
         lista_bandas += [dicc_tolerancia[banda_leida][1]]
-        lista_final = [lista_bandas] +[valor]
+        lista_final = [lista_bandas] + [valor] + [bandas]
+    print("El valor de la resistencia es de :"+valor+"Ohms")
     return(lista_final)
-
+    
 def constantes_electromagnetismo():
     """
     Parametros: N.A
@@ -936,11 +1040,11 @@ def constantes_electromagnetismo():
     rta = True
     while rta:
         borrarPantalla()
-        cte_electromagnetismo = {1:"La velocidad de la luz es de 299792458 m/s en el vacio",2:"La velocidad del sonido es de 343 m/s en el aire",3:[[1,3.6],["m/s","Kmh"]],4:[[1,2.54],["in","cm"]]}
+        cte_electromagnetismo = {1:"La constante de Coulumb es 8.99*10^9 N*m^2/C^2",2:"La carga de un electron es de 1.6 * 10^-19 N*m^2/kg^2",3:[[1,3.6],["m/s","Kmh"]],4:[[1,2.54],["in","cm"]]}
         print (""" BIENVENIDO A LA SECCION DE CONSTANTES DE ELECTROMAGNETISMO
         Por favor, digite el numero de la constante, relacion o proceso:
-        \t 1) Velociadad de la luz
-        \t 2) Velocidad del sonido
+        \t 1) Constante de Coulumb
+        \t 2) Carga de un electron
         \t 3) km/h : m/s
         \t 4) in : cm
         """)
@@ -966,22 +1070,23 @@ def constantes_electromagnetismo():
 
 def ondas():
     """
-    La funcion cinematica tiene como proposito direccionar a las funciones contenidas
+    La funcion ondas tiene como proposito direccionar a las funciones contenidas
     en esta, las cuales son las que realizan los calculos. Esta tiene un diccioanrio
     llamado "dicc_ondas" con posibles constantes que pueden ser invocadas, 
     asi como funciones que se usan dentro de las funciones de calculo como 'sumatoria'.
     Esta tiene como entrada un string con el nombre de la variable a conocer.   
     """
-    dicc_ondas= {1:distancia,2:velocidad,3:aceleracion,4:constantes_ondas}
+    dicc_ondas= {1:vel_onda,2:frecuencia_onda,3:longitud_onda,4:cambio_temperatura,5:constantes_ondas}
     rta = True
     while rta:
         borrarPantalla()
         print (""" BIENVENIDO A LA SECCION ONDAS
         Por favor, digite el numero de la varaible o proceso:
-        \t 1) Velocidad
-        \t 2) Distancia
-        \t 3) Aceleracion
-        \t 4) Constantes o conversor de medidas
+        \t 1) Velocidad de una onda
+        \t 2) Frecuencia de una onda
+        \t 3) Longitud de onda
+        \t 4) Cambio de velocidad por temperatura
+        \t 5) Constantes o conversor de medidas
         """)
         try:
             dicc_ondas[int(input())]()
@@ -999,6 +1104,100 @@ def ondas():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(10)
 
+def vel_onda():
+    """
+    Parametros: N.A
+    Definicion: En esta funcion se  encarga de hacer una relacion del voltaje
+    """ 
+    print("Por favor, ingrese la magnitud de la longitud de onda en m")
+    longitud = float(input())
+    print("Por favor, ingrese la magnitud de la frecuencia en Hz")
+    frecuencia = float(input())
+    velocidad = round(longitud*frecuencia,3)
+    if velocidad > 299792458 or -299792458 > velocidad:
+        print("La velocidad no puede sobrepasar la costante de la velocidad de la luz, por favor ingrese datos reales ")
+    else:
+        print("La velocidad es de", str(round(velocidad,3)), "m/s")
+
+def frecuencia_onda():
+    dicc_ingreso = {1:input ,2:velocidad} 
+    rta = True
+    while rta:
+        borrarPantalla()
+        print ("""
+        Para el valor de velocidad desea:
+        1) Ingresarlo (en este caso debe ingresar le valor en m/s despues de marcar a opcion)
+        2) Calcularlo
+        """)
+        try:
+            vel = float(dicc_ingreso[int(input())]())
+            print("Por favor, ingrese la magnitud de la longitud de onda en m")
+            longitud = float(input())
+            print("El valor de la frecuencia es de", str(round(vel/longitud,3)) , "Hz")
+            rta = VolverAntes()
+        except FloatingPointError:
+            print('Ingrese, por favor, las magnitudes numericas reales separadas por un punto (.)')
+            time.sleep(5)
+        except KeyError:
+            print('La opcion seleccionada no se encuentra en la lista presentada')
+            time.sleep(5)
+        except ValueError:
+            print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
+            time.sleep(5)
+        except ZeroDivisionError:
+            print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
+            time.sleep(5)
+
+def longitud_onda():
+    dicc_ingreso = {1:input ,2: velocidad} 
+    rta = True
+    while rta:
+        borrarPantalla()
+        print ("""
+        Para el valor de velocidad desea:
+        1) Ingresarlo (en este caso debe ingresar le valor en m/s despues de marcar a opcion)
+        2) Calcularlo
+        """)
+        try:
+            vel = float(dicc_ingreso[int(input())]())
+            print("Por favor, ingrese la magnitud de la frecuencia en Hz")
+            frecuencia = float(input())
+            print("El valor de la longitud de onda es de", str(round(vel/frecuencia,3)), "m")
+            rta = VolverAntes()
+        except FloatingPointError:
+            print('Ingrese, por favor, las magnitudes numericas reales separadas por un punto (.)')
+            time.sleep(5)
+        except KeyError:
+            print('La opcion seleccionada no se encuentra en la lista presentada')
+            time.sleep(5)
+        except ValueError:
+            print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
+            time.sleep(5)
+        except ZeroDivisionError:
+            print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
+            time.sleep(5)
+    
+def cambio_temperatura():
+    """
+    Parametros: N.A
+    Definicion: En esta funcion se  encarga de hacer una relacion del voltaje
+    """ 
+    print("Por favor, ingrese la magnitud de la temperatura inicial en K")
+    temperatura_inicial = float(input())
+    print("Por favor, ingrese la magnitud de la temperatura final en K")
+    temperatura_final = float(input())
+    print("Por favor, ingrese la magnitud de la velocidad inicial en m/s")
+    velocidad_inicial = float(input())
+    if velocidad_inicial > 299792458 or -299792458 > velocidad_inicial:
+        print("La velocidad no puede sobrepasar la costante de la velocidad de la luz, por favor ingrese datos reales ")
+    else:
+        velocidad = velocidad_inicial*(temperatura_final/temperatura_inicial)**(1/2)
+        print(velocidad)
+        if velocidad > 299792458 or -299792458 > velocidad:
+            print("La velocidad no puede sobrepasar la costante de la velocidad de la luz, por favor ingrese datos reales ")
+        else:
+            print("La nueva velocidad es de", str(round(velocidad,3)), "m/s la anterior velocidad era:",str(round(velocidad_inicial,3)),"m/s" )
+  
 def constantes_ondas():
     """
     Parametros: N.A
@@ -1009,20 +1208,15 @@ def constantes_ondas():
     rta = True
     while rta:
         borrarPantalla()
-        cte_ondas = {1:"La velocidad de la luz es de 299792458 m/s en el vacio",2:"La velocidad del sonido es de 343 m/s en el aire",3:[[1,3.6],["m/s","Kmh"]],4:[[1,2.54],["in","cm"]]}
+        cte_ondas = {1:cambio_temp(["K","Cº"]),2:regla_de_tres([[1,10^-10],["Angstrom (A)","m"]])}
         print (""" BIENVENIDO A LA SECCION DE CONSTANTES DE ELECTROMAGNETISMO
         Por favor, digite el numero de la constante, relacion o proceso:
-        \t 1) Velociadad de la luz
-        \t 2) Velocidad del sonido
-        \t 3) km/h : m/s
-        \t 4) in : cm
+        \t 1) K : Cº
+        \t 2) Angstrom (A) : m
         """)
         try:
             entrada = int(input())
-            if entrada > 2:
-                regla_de_tres(cte_ondas[entrada])
-            else:
-                print(cte_ondas[entrada])
+            cte_ondas[entrada]
             rta = VolverAntes()
         except FloatingPointError:
             print('Ingrese, por favor, las magnitudes numericas reales separadas per un punto (.)')
@@ -1037,29 +1231,28 @@ def constantes_ondas():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(2)
 
-def sumatoria(variable_a_sumar):
+def sumatoria(variable_a_sumar,verdad):
     """
     Parametros: variable_a_sumar= cadena de caracteres con el nombre de la variable a calcular
+                verdad = booleano que define si solo se suman dos magnitudes
     Definicion: En esta funcion se  encara de invocar sumatorias y luego hacer una diferencia
     """
-    print('Por favor, ingresar las magnitudes de', variable_a_sumar," en su respectiva medidia del S.I y terminar con (0)")
-    Sumatoria = 0
-    while True:
-        magnitud = float(input())
-        if magnitud == 0:
-            break
-        Sumatoria += magnitud
-    return(Sumatoria)
-    
-def delta(variable_a_sumar):
-    """
-    Parametros: variable_a_sumar= cadena de caracteres con el nombre de la variable a calcular
-    Definicion: En esta funcion se  encara de invocar sumatorias y luego hacer una diferencia
-    """ 
-    print("En la siguente funcion hara un delta, por favor, tenga en cuenta que se haran dos sumatorias de magnitudes")
-    diferencia = sumatoria(variable_a_sumar)-sumatoria(variable_a_sumar)
-    borrarPantalla()
-    return diferencia
+    if verdad:
+        print('Por favor, ingresar las magnitudes de', variable_a_sumar," en su respectiva medidia del S.I y terminar con (0)")
+        Sumatoria = 0
+        while True:
+            magnitud = float(input())
+            if magnitud == 0:
+                break
+            Sumatoria += magnitud
+        return(Sumatoria)
+    else:
+        print('Por favor, ingresar dos magnitudes de', variable_a_sumar," en su respectiva medidia del S.I")
+        Sumatoria = 0
+        for magnitud in range(2):
+            magnitud = float(input())
+            Sumatoria += magnitud
+        return(Sumatoria)
 
 def regla_de_tres(relacion):
     """
@@ -1077,13 +1270,25 @@ def regla_de_tres(relacion):
     entrada = int(input())
     if entrada == 1:
         regla_tres = (variable_principal*relacion[0][1])/relacion[0][0]
-        print("El resultado es:",regla_tres,relacion[1][1])
+        print("El resultado es:",str(round(regla_tres,3)),relacion[1][1])
     elif entrada == 2:
         regla_tres = (variable_principal*relacion[0][0])/relacion[0][1]
-        print("El resultado es:",regla_tres,relacion[1][0])
+        print("El resultado es:",str(round(regla_tres,3)),relacion[1][0])
         
     else:
         print(int(relacion))
+
+def cambio_temp(lista):
+    print("Elija el numero de la variable:")
+    for unidad in lista:
+        print((str(lista.index(unidad)+1))+")",unidad)
+    entrada = int(input())
+    print("Ingrese la magnitude de la temperatura en", str(lista[entrada]))
+    temperatura = float(input())
+    if entrada == 1:
+        temperatura += 273.15
+    elif entrada == 2:
+        temperatura -= 273.15
 
 def Estadistica():
     est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst, 4: GraficasEst}
@@ -1183,7 +1388,8 @@ def PoblacionMuestra(Datos,opcion):
             return PM[opcion](Datos,Pob)
         except:
             print('Opcion invalida vuelva a intentar')
-            time.sleep(5)    
+            time.sleep(5)
+
 def AgruparDatos(iDatos):
     DatosAgrupados = []
     Rango = (max(iDatos)-min(iDatos))
@@ -1222,6 +1428,7 @@ def AgruparDatos(iDatos):
         FrecuenciasRelAcum.append(iFrecuenciaRelAcum)
     DatosAgrupados.append(FrecuenciasRelAcum)
     return DatosAgrupados
+
 def GraficoPastel(DatosAgrupados):
     plt.style.use('seaborn-colorblind')
     slices = DatosAgrupados[2]
@@ -1232,6 +1439,7 @@ def GraficoPastel(DatosAgrupados):
     plt.title(Titulo)
     plt.tight_layout()
     plt.show()
+
 def Histograma(Datos, DatosAgrupados, Mediana):
     plt.style.use('fivethirtyeight')
     NumBins = len(DatosAgrupados[0])
@@ -1250,6 +1458,7 @@ def Histograma(Datos, DatosAgrupados, Mediana):
     plt.ylabel('# de elementos por intervalo')
     plt.tight_layout()
     plt.show()
+
 def Ojiva(DatosAgrupados):
     plt.style.use('seaborn-colorblind')
     ages_x = DatosAgrupados[1]
@@ -1264,6 +1473,7 @@ def Ojiva(DatosAgrupados):
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
 def GraficasEst(Datos):
     grafs = {1: GraficoPastel, 2: Histograma, 3: Ojiva}
     DatosAgrupados = AgruparDatos(Datos)
@@ -1282,6 +1492,7 @@ def GraficasEst(Datos):
         except:
             print('Opcion invalida')
     return
+
 def MediaAritmetica(Datos):
     """
     Funcion que permite calcular la media de una lista de datos
@@ -1982,7 +2193,6 @@ def logo_principal():
     pantalla.exitonclick()
     pantalla.title("Calculadora_resistencias")
 
-
 def GuardarHistorial(inicio,fin):
     try:
         os.mkdir('Archivos usuarios')
@@ -2042,8 +2252,8 @@ def main():
             funciones[int(input())]()
             bandera = VolverInicio()
         except:
-            time.sleep(10)
-            print('***OPCIÓN INVALIDA***')     
+            print('***OPCIÓN INVALIDA***') 
+            time.sleep(3)    
     salida = time.strftime("%d-%m-%Y %H:%M", time.localtime())
     print('Desea guardar su historial?')
     respuestahisto = input().lower()
