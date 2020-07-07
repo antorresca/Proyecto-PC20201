@@ -62,7 +62,7 @@ def OperacionesBasicas():
 def Sumar():
     borrarPantalla()
     suma = 0
-    print('Ingrese los valores a sumar')
+    print('Ingrese los valores a sumar separados por un espacio o por \'+\' (si emplea decimales use \'.\')')
     m = input()
     if '+' in m:
         numeros = list(map(float, (m.split('+'))))
@@ -75,7 +75,7 @@ def Sumar():
 
 def Restar():
     borrarPantalla()
-    print("ingrese los numeros que se van a restar separados por un espacio: ")
+    print("ingrese los numeros que se van a restar separados por un espacio: (si emplea decimales use \'.\') ")
     numeros = list(map(float, (input().split())))
     resta = 0
     for i in range(len(numeros)):
@@ -88,7 +88,7 @@ def Restar():
 
 def Multiplicar():
     borrarPantalla()
-    print('Ingrese los numeros que desea multiplicar')
+    print('Ingrese los numeros que desea multiplicar separados por un espacio (si emplea decimales use \'.\')')
     m = input()
     if '*' in m:
         numeros = list(map(float, (m.split('*'))))
@@ -102,7 +102,7 @@ def Multiplicar():
 
 def Dividir():
     borrarPantalla()
-    print('Ingrese los numeros que desea dividir separados por un \'/\'')
+    print('Ingrese los numeros que desea dividir separados por un \'/\' (si emplea decimales use \'.\')')
     d = list(map(int,input().split('/')))
     division =1
     try:
@@ -118,9 +118,9 @@ def Dividir():
 
 def Potenciar():
     borrarPantalla()
-    print('Ingrese la base:')
+    print('Ingrese la base: (si emplea decimales use \'.\')')
     base = float(input())
-    print('ingrese exponente')
+    print('ingrese exponente (si emplea decimales use \'.\')')
     exp = float(input())
     resultado= base**exp
     resultado_potenciacion = str(base)+'^'+str(exp)+'='+str(resultado)
@@ -128,9 +128,9 @@ def Potenciar():
 
 def Radicar():
     borrarPantalla()
-    print('Ingrese el radicando: ')
+    print('Ingrese el radicando: (si emplea decimales use \'.\')')
     nume = float(input())
-    print('Ingrese el indice: ')
+    print('Ingrese el indice: (si emplea decimales use \'.\')')
     ind = float(input())
     raiz = nume**(1/ind)
     resultado_raiz = 'raiz'+str(ind)+'de'+str(nume)+'='+str(raiz)
@@ -138,7 +138,7 @@ def Radicar():
 
 def Otro():
     borrarPantalla()
-    print('Ingrese su operacion:')
+    print('Ingrese su operacion: (si emplea decimales use \'.\')')
     operacion_comb = input()
     separado = Separar(operacion_comb.replace('x','*'))
     op = ['^','x','*','/','+','-']
@@ -2149,7 +2149,7 @@ def main():
     global historial
     historial = {'Matematicas':[],'Estadistica':[],'Fisica':[]}
     Logo_principal()
-    funciones = {1:Matematicas,2:Estadistica,3:Fisica}
+    funciones = {1:Matematicas,2:Estadistica,3:Fisica,4:' '}
     bandera = Login()
     entrada = time.strftime("%d-%m-%Y %H:%M", time.localtime())
     while bandera:
@@ -2161,12 +2161,10 @@ def main():
         \t 4)Salida
         ''')
         try:
-            eleccion = int(input())
-            if eleccion < 4:
-                funciones[eleccion]()
-                bandera = VolverInicio()
-            elif eleccion == 4:
-                bandera = False
+            funciones[int(input())]()
+            bandera = VolverInicio()
+        except TypeError:
+            bandera = False
         except:
             print('***OPCIÓN INVALIDA***') 
             time.sleep(3)    
