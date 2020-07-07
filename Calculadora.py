@@ -1362,6 +1362,10 @@ def Estadistica():
     return
 
 def TablasEstadisticas(DatosNormales):
+    """
+    :DatosNormales: Lista de datos anteriormente ingresados
+    La función crea un archivo csv con el contenido de la tabla
+    """
     try:
         os.remove('Tabla_Estadistica.csv')
         time.sleep(1)
@@ -1409,7 +1413,8 @@ def AgregarDatos(ListaDeDatos):
 
 def FuncionesEst(Datos):
     """
-    Menú de funciones propias de la estadística
+    :Datos: Lista de datos anteriormente ingresados
+    La función funciona como menu para las operaciones basicas estadisticas
     """
     FEst = {1: MediaAritmetica,2: Mediana,6: Percentiles, 7:Cuartiles} 
     FEs = {1: 'Media',2: 'Mediana',3: 'Varianza',4: 'Desviacion estandar',5: 'Coeficiente de variación',6: 'Percentil',7: 'Cuartil'}
@@ -1440,6 +1445,11 @@ def FuncionesEst(Datos):
     return
 
 def PoblacionMuestra(Datos,opcion):
+    """
+    :Datos: Lista de datos anteriormente ingresados
+    :opcion: Esta define si se desea que se analice de manera poblacional o muestral
+    La función crea un archivo csv con el contenido de la tabla
+    """
     PM = {3: Varianza,4: DesviacionEstandar,5: CoeficienteDeVariacion}
     while True:
         print('''Elija una opción:
@@ -1454,6 +1464,10 @@ def PoblacionMuestra(Datos,opcion):
             time.sleep(5)
 
 def AgruparDatos(iDatos):
+    """
+    :iDatos: Lista de datos anteriormente ingresados
+    La función convierte los datos en una matriz de datos agrupados
+    """
     DatosAgrupados = []
     Rango = (max(iDatos)-min(iDatos))
     NumIntervalos = int(Rango**0.5)
@@ -1493,6 +1507,10 @@ def AgruparDatos(iDatos):
     return DatosAgrupados
 
 def GraficoPastel(DatosAgrupados):
+    """
+    :DatosAgrupados: Matriz con resumen de datos
+    La función crea una grafica de pastel con los datos ingresados
+    """
     plt.style.use('seaborn-colorblind')
     slices = DatosAgrupados[2]
     labels = ['Intervalo'+str(DatosAgrupados[0][i]) for i in range(len(DatosAgrupados[1]))]
@@ -1504,6 +1522,12 @@ def GraficoPastel(DatosAgrupados):
     plt.show()
 
 def Histograma(Datos, DatosAgrupados, Mediana):
+    """
+    :Datos: Lista de datos anteriormente ingresados
+    :DatosAgrupados: Matriz de datos
+    :Mediana: Valor de la mediana de los datos
+    La función crea un archivo csv con el contenido de la tabla
+    """
     plt.style.use('fivethirtyeight')
     NumBins = len(DatosAgrupados[0])
     bins = []
