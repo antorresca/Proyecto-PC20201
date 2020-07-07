@@ -140,7 +140,7 @@ def Otro():
     borrarPantalla()
     print('Ingrese su operacion:')
     operacion_comb = input()
-    separado = separar(operacion_comb.replace('x','*'))
+    separado = Separar(operacion_comb.replace('x','*'))
     op = ['^','x','*','/','+','-']
     operaciones = []
     for elemento in range(len(separado)):
@@ -175,7 +175,7 @@ def Otro():
                             operaciones.append(separado[elemento][t:t+fin+1])
                         break
                 break
-    for repeticion in range(len(operaciones)):
+    for rep in range(len(operaciones)):
         for t in op:
             if t in operaciones:
                 g = operaciones.index(t)
@@ -214,13 +214,13 @@ def OperacionesVariables():
                         (Con formato Pv^e donde P: coeficiente, v: variable , e: exponente)''')
                 entrada = input()
                 if opcion == 1:
-                    if determinar(entrada):
-                        funcion = separar(entrada.replace('=','-'))
+                    if Determinar(entrada):
+                        funcion = Separar(entrada.replace('=','-'))
                     else:
-                        funcion = separar(entrada)
+                        funcion = Separar(entrada)
                 else:
-                    funcion = separar(entrada.replace('=','-'))
-                letra = identificar(funcion)
+                    funcion = Separar(entrada.replace('=','-'))
+                letra = Identificar(funcion)
                 salida = Avanzado[opcion](funcion,letra)
                 print(salida)
                 historial['Matematicas'].append(Ava[opcion]+'\n\t'+entrada+salida)
@@ -349,13 +349,13 @@ def Derivar(funcion_a_derivar,variable):
             contador += 1
     return resultado_derivacion
 
-def determinar(f):
+def Determinar(f):
     if '^2' in f:
         return True
     else:
         return False
 
-def separar(a):
+def Separar(a):
     lista = []
     op = ['^','+','-','*','/']
     cont = 0
@@ -379,7 +379,7 @@ def separar(a):
                     cont = t
     return lista
 
-def identificar(lista_ecuacion):
+def Identificar(lista_ecuacion):
     alfabeto = 'abcefghijklmnopqrstuvwxyz'
     for i in range(len(lista_ecuacion)):
         for v in alfabeto:
@@ -395,7 +395,7 @@ def Fisica():
     Definicion: En esta funcion se define un menu que envia a las distintas funciones que representan un
     submenu que representa cada rama de la fisica escrita en el programa 
     """ 
-    fis = {1: cinematica ,2: dinamica_y_energia ,3:electromagnetismo ,4:ondas} 
+    fis = {1: Cinematica ,2: Dinamica_y_energia ,3:Electromagnetismo ,4:Ondas} 
     rta = True
     while rta:
         borrarPantalla()
@@ -417,7 +417,7 @@ def Fisica():
             time.sleep(2)
     return
   
-def cinematica(): 
+def Cinematica(): 
     """
     La funcion cinematica tiene como proposito direccionar a las funciones contenidas
     en esta, las cuales son las que realizan los calculos. Esta tiene un diccionario 
@@ -425,7 +425,7 @@ def cinematica():
     asi como funciones que se usan dentro de las funciones de calculo como 'sumatoria'.
     Esta tiene como entrada un string con el nombre de la variable a conocer.   
     """
-    dicc_cinematica= {1:distancia,2:velocidad,3:aceleracion,4:constantes_cinematica}
+    dicc_cinematica= {1:Distancia,2:Velocidad,3:Aceleracion,4:Constantes_cinematica}
     rta = True
     while rta:
         borrarPantalla()
@@ -452,12 +452,12 @@ def cinematica():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
         
-def distancia():
+def Distancia():
     """
     funcion de calculo que se apoya en la funcion "sumatoria" para calcular la 
     distancia segun la ecuacion distancia = velocidad x tiempo.
     """
-    velocidad = sumatoria('velocidad',True)
+    velocidad = Sumatoria('velocidad',True)
     if velocidad > 299792458 or -299792458 > velocidad:
         print("La velocidad no puede sobrepasar la costante de la velocidad de la luz, por favor ingrese datos reales")
     else:
@@ -465,13 +465,14 @@ def distancia():
         tiempo = float(input())
         distancia = round(velocidad * tiempo,3)
         print("La distancia es", distancia,"metros")
+        historial['Fisica'].append('Distancia \n\t'+str(distancia)+'metros')
         
-def velocidad():
+def Velocidad():
     """
     funcion de calculo que se apoya en la funcion "sumatoria" para calcular la 
     velocidad segun la ecuacion velocidad = distancia / tiempo.
     """
-    desplazamiento=sumatoria('desplazamiento',True)
+    desplazamiento=Sumatoria('desplazamiento',True)
     print ("Por favor, defina la magnitud en segundos del tiempo:")
     tiempo = float(input())
     velocidad = round(desplazamiento/tiempo,3)
@@ -479,8 +480,9 @@ def velocidad():
         print("La velocidad no puede sobrepasar la costante de la velocidad de la luz, por favor ingrese datos reales (Max Planck esta triste)")
     else:
         print("La velocidad es ", velocidad,"metros/segundo")
+        historial['Fisica'].append('Velocidad \n\t'+str(velocidad)+'metros/segundos')
 
-def aceleracion():
+def Aceleracion():
     """
     funcion en la cual se piden dos valores, velocidad y tiempo para conocer una 
     aceleracion segun la ecuacion aceleracion = velocidad / tiempo
@@ -494,9 +496,10 @@ def aceleracion():
         tiempo = float(input())
         aceleracion = round(velocidad/tiempo,3)
         print("La aceleracion es ", aceleracion,"metros/segundo^2")
+        historial['Fisica'].append('Aceleracion \n\t'+str(aceleracion)+'metros/segundos^2')
     return(aceleracion)
   
-def constantes_cinematica():
+def Constantes_cinematica():
     """
     Parametros: N.A
     Definicion: En esta funcion se  genera un submenu para direccionar a un 
@@ -518,7 +521,7 @@ def constantes_cinematica():
         try:
             entrada = int(input())
             if entrada > 2:
-                regla_de_tres(cte_cinematica[entrada])
+                Regla_de_tres(cte_cinematica[entrada])
             else:
                 print(cte_cinematica[entrada])
             rta = VolverAntes()
@@ -535,7 +538,7 @@ def constantes_cinematica():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(2)
 
-def dinamica_y_energia():
+def Dinamica_y_energia():
     """
     La funcion dinamica_y_energia tiene como proposito direccionar a las funciones contenidas
     en esta, las cuales son las que realizan los calculos. Esta tiene un diccionario 
@@ -543,7 +546,7 @@ def dinamica_y_energia():
     asi como funciones que se usan dentro de las funciones de calculo como 'sumatoria'.
     Esta tiene como entrada un string con el nombre de la variable a conocer.   
     """
-    dicc_dinamica= {1:fuerza,2:masa,3:presion,4:trabajo,5:potencia_mecanica,6:constantes_dinamica}
+    dicc_dinamica= {1:Fuerza,2:Masa,3:Presion,4:Trabajo,5:Potencia_mecanica,6:Constantes_dinamica}
     rta = True
     while rta:
         borrarPantalla()
@@ -572,14 +575,14 @@ def dinamica_y_energia():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
 
-def fuerza():
+def Fuerza():
     """
     Parametros: N.A
     Definicion: En esta funcion se da un menu para dedicir si se usa la funcion aceleracion
     para encontrar la aceleracion o ingresarla directamete, con esto se procede a buscar la 
     fuerza. 
     """ 
-    dicc_ingreso = {1:input ,2:aceleracion} 
+    dicc_ingreso = {1:input ,2:Aceleracion} 
     rta = True
     while rta:
         borrarPantalla()
@@ -593,6 +596,7 @@ def fuerza():
             print("Por favor, ingrese la magnitud de la masa en Kg")
             masa = float(input())
             print("El valor de la fuerza es de", str(a*masa), "N")
+            historial['Fisica'].append('Fuerza \n\t'+str(a*masa)+'N')
             rta = VolverAntes()
         except FloatingPointError:
             print('Ingrese, por favor, las magnitudes numericas reales separadas por un punto (.)')
@@ -607,14 +611,14 @@ def fuerza():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
         
-def masa():
+def Masa():
     """
     Parametros: N.A
     Definicion: En esta funcion se da un menu para dedicir si se usa la funcion aceleracion
     para encontrar la aceleracion o ingresarla directamete, con esto se procede a buscar la 
     masa. 
     """ 
-    dicc_ingreso = {1:input ,2:aceleracion} 
+    dicc_ingreso = {1:input ,2:Aceleracion} 
     rta = True
     while rta:
         borrarPantalla()
@@ -628,6 +632,7 @@ def masa():
             print("Por favor, ingrese la magnitud de la fuerza")
             fuerza = float(input())
             print("El valor de la masa es de", str(fuerza/a), "Kg")
+            historial['Fisica'].append('Masa \n\t'+str(fuerza/a)+'Kg')
             rta = VolverAntes()
         except FloatingPointError:
             print('Ingrese, por favor, las magnitudes numericas reales separadas por un punto (.)')
@@ -642,12 +647,12 @@ def masa():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
         
-def presion():
+def Presion():
     """
     Parametros: N.A
     Definicion: En esta funcion se encarga de encontrar la presio, puede hacerse ingresando datos de fuerza o calculandolos
     """ 
-    dicc_ingreso = {1:input ,2:fuerza} 
+    dicc_ingreso = {1:input ,2:Fuerza} 
     rta = True
     while rta:
         borrarPantalla()
@@ -661,6 +666,7 @@ def presion():
             print("Por favor, ingrese la magnitud del area en m^2")
             area = float(input())
             print("El valor de la presion es de", str(f/area), "Pa")
+            historial['Fisica'].append('Presion \n\t'+str(f/area)+'Pa')
             rta = VolverAntes()
         except FloatingPointError:
             print('Ingrese, por favor, las magnitudes numericas reales separadas por un punto (.)')
@@ -675,12 +681,12 @@ def presion():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
 
-def trabajo():
+def Trabajo():
     """
     Parametros: N.A
     Definicion: En esta funcion se  encuentra el valor del trabajo, puede que con un ingreso de datos o con la funcion de fuerza
     """
-    dicc_ingreso = {1:input ,2:fuerza} 
+    dicc_ingreso = {1:input ,2:Fuerza} 
     rta = True
     while rta:
         borrarPantalla()
@@ -692,8 +698,9 @@ def trabajo():
         try:
             f = float(dicc_ingreso[int(input())]())
             print("Por favor, ingrese la magnitud de la distancia ")
-            distancia = sumatoria("distancia",True)
+            distancia = Sumatoria("distancia",True)
             print("El valor del trabajo es de", str(f*distancia), "J")
+            historial['Fisica'].append('Trabajo \n\t'+str(f*distancia)+'J')
             rta = VolverAntes()
         except FloatingPointError:
             print('Ingrese, por favor, las magnitudes numericas reales separadas por un punto (.)')
@@ -708,12 +715,12 @@ def trabajo():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
 
-def potencia_mecanica():
+def Potencia_mecanica():
     """
     Parametros: N.A
     Definicion: En esta funcion se  
     """ 
-    dicc_ingreso = {1:input ,2:trabajo} 
+    dicc_ingreso = {1:input ,2:Trabajo} 
     rta = True
     while rta:
         borrarPantalla()
@@ -727,6 +734,7 @@ def potencia_mecanica():
             print("Por favor, ingrese la magnitud del tiempo en seg")
             tiempo = float(input())
             print("El valor de la potencia es de", str(t*tiempo), "J/s")
+            historial['Fisica'].append('Potencia \n\t'+str(t*tiempo)+'J/s')
             rta = VolverAntes()
         except FloatingPointError:
             print('Ingrese, por favor, las magnitudes numericas reales separadas por un punto (.)')
@@ -741,7 +749,7 @@ def potencia_mecanica():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
 
-def constantes_dinamica():
+def Constantes_dinamica():
     """
     Parametros: N.A
     Definicion: En esta funcion se  genera un submenu para direccionar a un 
@@ -764,7 +772,7 @@ def constantes_dinamica():
         try:
             entrada = int(input())
             if entrada > 2:
-                regla_de_tres(cte_cinematica[entrada])
+                Regla_de_tres(cte_cinematica[entrada])
             else:
                 print(cte_cinematica[entrada])
             rta = VolverAntes()
@@ -781,7 +789,7 @@ def constantes_dinamica():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(2)
   
-def electromagnetismo():
+def Electromagnetismo():
     """
     La funcion electromagnetismo tiene como proposito direccionar a las funciones contenidas
     en esta, las cuales son las que realizan los calculos. Esta tiene un diccionario
@@ -789,7 +797,7 @@ def electromagnetismo():
     asi como funciones que se usan dentro de las funciones de calculo como 'sumatoria'.
     Esta tiene como entrada un string con el nombre de la variable a conocer.   
     """
-    dicc_electromagnetismo= {1:voltaje,2:corriente,3:resistencia,4:potencia_electrica,5:lectura_resistencias,6:constantes_electromagnetismo} 
+    dicc_electromagnetismo= {1:Voltaje,2:Corriente,3:Resistencia,4:Potencia_electrica,5:Lectura_resistencias,6:Constantes_electromagnetismo} 
     rta = True
     while rta:
         borrarPantalla()
@@ -818,7 +826,7 @@ def electromagnetismo():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(10)
 
-def voltaje():
+def Voltaje():
     """
     Parametros: N.A
     Definicion: En esta funcion se  encarga de hacer una relacion del voltaje
@@ -835,21 +843,24 @@ def voltaje():
         potencia = float(input())
         print("Ingrese la magnitud de la resitencia en Ohms")
         resistencia = float(input())
-        print("El voltaje es de :",str(round((potencia*resistencia)^(1/2),3)),"Voltios")
+        print("El voltaje es de :"+str(round((potencia*resistencia)^(1/2),3))+"Voltios")
+        historial['Fisica'].append('Voltaje \n\t'+str(round((potencia*resistencia)^(1/2),3))+'Voltios')
     elif entrada == 2:
         print("Ingrese la magnitud de la potencia en vatios")
         potencia = float(input())
         print("Ingrese la magnitud de la corriente en Amperios")
         corriente = float(input())
-        print("El voltaje es de :",str(round((potencia/corriente),3)),"Voltios")
+        print("El voltaje es de :"+str(round((potencia/corriente),3))+"Voltios")
+        historial['Fisica'].append('Voltaje \n\t'+str(round((potencia/corriente),3))+'Voltios')
     elif entrada == 3:
         print("Ingrese la magnitud de la corriente en Amperios")
         corriente = float(input())
         print("Ingrese la magnitud de la resitencia en Ohms")
         resistencia = float(input())
-        print("El voltaje es de :",str(round((potencia*resistencia),3)),"Voltios")
+        print("El voltaje es de :"+str(round((potencia*resistencia),3))+"Voltios")
+        historial['Fisica'].append('Voltaje \n\t'+str(round((potencia*resistencia),3))+'Voltios')
 
-def corriente():
+def Corriente():
     """
     Parametros: N.A
     Definicion: En esta funcion se  
@@ -866,21 +877,24 @@ def corriente():
         voltaje = float(input())
         print("Ingrese la magnitud de la potencia en vatios")
         potencia = float(input())
-        print("La corriente es de :",str(round((potencia/voltaje),3)),"Amperios")
+        print("La corriente es de :"+str(round((potencia/voltaje),3))+"Amperios")
+        historial['Fisica'].append('Corriente \n\t'+str(round((potencia/voltaje),3))+'Amperios')
     elif entrada == 2:
         print("Ingrese la magnitud de la potencia en vatios")
         potencia = float(input())
         print("Ingrese la magnitud de la resitencia en Ohms")
         resistencia = float(input())
-        print("La corriente es de :",str(round((potencia/resistencia)*(1/2),3)),"Amperios")
+        print("La corriente es de :"+str(round((potencia/resistencia)*(1/2),3))+"Amperios")
+        historial['Fisica'].append('Corriente \n\t'+str(round((potencia/resistencia)*(1/2),3))+'Amperios')
     elif entrada == 3:
         print("Ingrese la magnitud de la resitencia en Ohms")
         resistencia = float(input())
         print("Ingrese la magnitud de la tension(voltaje) en Voltios")
         voltaje = float(input())
-        print("La corriente es de :",str(round(voltaje/resistencia,3)),"Amperios")
+        print("La corriente es de :"+str(round(voltaje/resistencia,3))+"Amperios")
+        historial['Fisica'].append('Corriente \n\t'+str(round(voltaje/resistencia,3))+'Amperios')
 
-def resistencia():
+def Resistencia():
     """
     Parametros: N.A
     Definicion: En esta funcion se  
@@ -897,21 +911,24 @@ def resistencia():
         voltaje = float(input())
         print("Ingrese la magnitud de la potencia en vatios")
         potencia = float(input())
-        print("La resistencia es de :",str(round((voltaje**2)/(potencia),3)),"Ohms")
+        print("La resistencia es de :"+str(round((voltaje**2)/(potencia),3))+"Ohms")
+        historial['Fisica'].append('Resistencia \n\t'+str(round((voltaje**2)/(potencia),3))+'Ohms')
     elif entrada == 2:
         print("Ingrese la magnitud de la potencia en vatios")
         potencia = float(input())
         print("Ingrese la magnitud de la corriente en Amperios")
         corriente = float(input())
-        print("La resistencia es de :",str(round((potencia)/(corriente**2),3)),"Ohms")
+        print("La resistencia es de :"+str(round((potencia)/(corriente**2),3))+"Ohms")
+        historial['Fisica'].append('Resistencia \n\t'+str(round((potencia)/(corriente**2),3))+'Ohms')
     elif entrada == 3:
         print("Ingrese la magnitud de la corriente en Amperios")
         corriente = float(input())
         print("Ingrese la magnitud de la tension(voltaje) en Voltios")
         voltaje = float(input())
-        print("La resistencia es de :",str(round(voltaje/corriente,3)),"Ohms")
+        print("La resistencia es de :"+str(round(voltaje/corriente,3))+"Ohms")
+        historial['Fisica'].append('Resistencia \n\t'+str(round(voltaje/corriente,3))+'Ohms')
 
-def potencia_electrica():
+def Potencia_electrica():
     print("""
     Por favor, ingrese el numero de la variable que le falta:
     1) Corriente ( I )
@@ -924,21 +941,24 @@ def potencia_electrica():
         voltaje = float(input())
         print("Ingrese la magnitud de la resitencia en Ohms")
         resistencia = float(input())
-        print("La potencia es de :",str(round((voltaje**2)/(resistencia),3)),"Vatios")
+        print("La potencia es de :"+str(round((voltaje**2)/(resistencia),3))+"Vatios")
+        historial['Fisica'].append('Potencia \n\t'+str(round((voltaje**2)/(resistencia),3))+'Vatios')
     elif entrada == 2:
         print("Ingrese la magnitud de la resitencia en Ohms")
         resistencia = float(input())
         print("Ingrese la magnitud de la corriente en Amperios")
         corriente = float(input())
-        print("La potencia es de :",str(round((corriente**2)*resistencia),3),"Vatios")
+        print("La potencia es de :"+str(round((corriente**2)*resistencia),3)+"Vatios")
+        historial['Fisica'].append('Potencia \n\t'+str(round((corriente**2)*resistencia),3)+'Vatios')
     elif entrada == 3:
         print("Ingrese la magnitud de la corriente en Amperios")
         corriente = float(input())
         print("Ingrese la magnitud de la tension(voltaje) en Voltios")
         voltaje = float(input())
-        print("La potencia es de :",str(round((corriente*voltaje),3)),"Vatios")
+        print("La potencia es de :"+str(round((corriente*voltaje),3))+"Vatios")
+        historial['Fisica'].append('Potencia \n\t'+str(round((corriente*voltaje),3))+'Vatios')
 
-def lectura_resistencias():
+def Lectura_resistencias():
     """
     Parametros: N.A
     Definicion: En esta funcion se usa la libreria turtle para imprimir le dibujo de 
@@ -1028,9 +1048,10 @@ def lectura_resistencias():
         lista_bandas += [dicc_tolerancia[banda_leida][1]]
         lista_final = [lista_bandas] + [valor] + [bandas]
     print("El valor de la resistencia es de :"+valor+"Ohms")
+    historial['Fisica'].append('Lectura de resistencias \n\t'+str(valor)+'Vatios')
     return(lista_final)
     
-def constantes_electromagnetismo():
+def Constantes_electromagnetismo():
     """
     Parametros: N.A
     Definicion: En esta funcion se  genera un submenu para direccionar a un 
@@ -1051,7 +1072,7 @@ def constantes_electromagnetismo():
         try:
             entrada = int(input())
             if entrada > 2:
-                regla_de_tres(cte_electromagnetismo[entrada])
+                Regla_de_tres(cte_electromagnetismo[entrada])
             else:
                 print(cte_electromagnetismo[entrada])
             rta = VolverAntes()
@@ -1068,7 +1089,7 @@ def constantes_electromagnetismo():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(2)
 
-def ondas():
+def Ondas():
     """
     La funcion ondas tiene como proposito direccionar a las funciones contenidas
     en esta, las cuales son las que realizan los calculos. Esta tiene un diccioanrio
@@ -1076,7 +1097,7 @@ def ondas():
     asi como funciones que se usan dentro de las funciones de calculo como 'sumatoria'.
     Esta tiene como entrada un string con el nombre de la variable a conocer.   
     """
-    dicc_ondas= {1:vel_onda,2:frecuencia_onda,3:longitud_onda,4:cambio_temperatura,5:constantes_ondas}
+    dicc_ondas= {1:Vel_onda,2:Frecuencia_onda,3:Longitud_onda,4:Cambio_temperatura,5:Constantes_ondas}
     rta = True
     while rta:
         borrarPantalla()
@@ -1104,7 +1125,7 @@ def ondas():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(10)
 
-def vel_onda():
+def Vel_onda():
     """
     Parametros: N.A
     Definicion: En esta funcion se  encarga de hacer una relacion del voltaje
@@ -1117,10 +1138,11 @@ def vel_onda():
     if velocidad > 299792458 or -299792458 > velocidad:
         print("La velocidad no puede sobrepasar la costante de la velocidad de la luz, por favor ingrese datos reales ")
     else:
-        print("La velocidad es de", str(round(velocidad,3)), "m/s")
+        print("La velocidad es de"+str(round(velocidad,3))+"m/s")
+        historial['Fisica'].append('Velocidad onda \n\t'+str(round(velocidad,3))+'m/s')
 
-def frecuencia_onda():
-    dicc_ingreso = {1:input ,2:velocidad} 
+def Frecuencia_onda():
+    dicc_ingreso = {1:input ,2:Velocidad} 
     rta = True
     while rta:
         borrarPantalla()
@@ -1133,7 +1155,8 @@ def frecuencia_onda():
             vel = float(dicc_ingreso[int(input())]())
             print("Por favor, ingrese la magnitud de la longitud de onda en m")
             longitud = float(input())
-            print("El valor de la frecuencia es de", str(round(vel/longitud,3)) , "Hz")
+            print("El valor de la frecuencia es de"+str(round(vel/longitud,3))+"Hz")
+            historial['Fisica'].append('Frecuencia onda \n\t'+str(round(vel/longitud,3))+"Hz")
             rta = VolverAntes()
         except FloatingPointError:
             print('Ingrese, por favor, las magnitudes numericas reales separadas por un punto (.)')
@@ -1148,8 +1171,8 @@ def frecuencia_onda():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
 
-def longitud_onda():
-    dicc_ingreso = {1:input ,2: velocidad} 
+def Longitud_onda():
+    dicc_ingreso = {1:input ,2: Velocidad} 
     rta = True
     while rta:
         borrarPantalla()
@@ -1162,7 +1185,8 @@ def longitud_onda():
             vel = float(dicc_ingreso[int(input())]())
             print("Por favor, ingrese la magnitud de la frecuencia en Hz")
             frecuencia = float(input())
-            print("El valor de la longitud de onda es de", str(round(vel/frecuencia,3)), "m")
+            print("El valor de la longitud de onda es de"+str(round(vel/frecuencia,3))+"m")
+            historial['Fisica'].append('Longitud onda \n\t'+str(round(vel/frecuencia,3))+"m")
             rta = VolverAntes()
         except FloatingPointError:
             print('Ingrese, por favor, las magnitudes numericas reales separadas por un punto (.)')
@@ -1177,7 +1201,7 @@ def longitud_onda():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(5)
     
-def cambio_temperatura():
+def Cambio_temperatura():
     """
     Parametros: N.A
     Definicion: En esta funcion se  encarga de hacer una relacion del voltaje
@@ -1196,9 +1220,10 @@ def cambio_temperatura():
         if velocidad > 299792458 or -299792458 > velocidad:
             print("La velocidad no puede sobrepasar la costante de la velocidad de la luz, por favor ingrese datos reales ")
         else:
-            print("La nueva velocidad es de", str(round(velocidad,3)), "m/s la anterior velocidad era:",str(round(velocidad_inicial,3)),"m/s" )
+            print("La nueva velocidad es de"+str(round(velocidad,3))+"m/s la anterior velocidad era:"+str(round(velocidad_inicial,3))+"m/s" )
+            historial['Fisica'].append('Cambio de velocidad \n\tde'+str(round(velocidad_inicial,3))+"m/s a "+str(round(velocidad,3))+"m/s")
   
-def constantes_ondas():
+def Constantes_ondas():
     """
     Parametros: N.A
     Definicion: En esta funcion se  genera un submenu para direccionar a un 
@@ -1208,7 +1233,7 @@ def constantes_ondas():
     rta = True
     while rta:
         borrarPantalla()
-        cte_ondas = {1:cambio_temp(["K","Cº"]),2:regla_de_tres([[1,10^-10],["Angstrom (A)","m"]])}
+        cte_ondas = {1:Cambio_temp(["K","Cº"]),2:Regla_de_tres([[1,10^-10],["Angstrom (A)","m"]])}
         print (""" BIENVENIDO A LA SECCION DE CONSTANTES DE ELECTROMAGNETISMO
         Por favor, digite el numero de la constante, relacion o proceso:
         \t 1) K : Cº
@@ -1231,7 +1256,7 @@ def constantes_ondas():
             print('Ingrese, por favor, una magnitud distinta a cero en el denominador')
             time.sleep(2)
 
-def sumatoria(variable_a_sumar,verdad):
+def Sumatoria(variable_a_sumar,verdad):
     """
     Parametros: variable_a_sumar= cadena de caracteres con el nombre de la variable a calcular
                 verdad = booleano que define si solo se suman dos magnitudes
@@ -1254,7 +1279,7 @@ def sumatoria(variable_a_sumar,verdad):
             Sumatoria += magnitud
         return(Sumatoria)
 
-def regla_de_tres(relacion):
+def Regla_de_tres(relacion):
     """
     Parametros: relacion= lista compuesta de 2 sublistas, una contiene los dos valores
     enteros de la relacion entre unidades de medida, mientras que la otra tiene las 
@@ -1278,7 +1303,7 @@ def regla_de_tres(relacion):
     else:
         print(int(relacion))
 
-def cambio_temp(lista):
+def Cambio_temp(lista):
     print("Elija el numero de la variable:")
     for unidad in lista:
         print((str(lista.index(unidad)+1))+")",unidad)
@@ -1289,13 +1314,15 @@ def cambio_temp(lista):
         if temperatura <= 0:
             print("La temperarura en el sistema absoluto (K), no puede ser menor a 0")
         else:
-            print("La temperatura es de ",str(round(temperatura+273.15)),lista[1])
+            print("La temperatura es de "+str(round(temperatura+273.15))+str(lista[1]))
+            historial['Fisica'].append('Cambio de temperatura \n\t'+str(round(temperatura+273.15))+str(lista[1]))
     elif entrada == 2:
         temperatura -= 273.15
         if temperatura <= 0:
             print("La temperarura en el sistema absoluto (K), no puede ser menor a 0")
         else:
-            print("La temperatura es de ",str(round(temperatura+273.15)),lista[0])
+            print("La temperatura es de "+str(round(temperatura+273.15))+str(lista[0]))
+            historial['Fisica'].append('Cambio de temperatura \n\t'+str(round(temperatura+273.15))+str(lista[0]))
 
 def Estadistica():
     est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst, 4: GraficasEst, 5: TablasEstadisticas}
@@ -1333,9 +1360,10 @@ def Estadistica():
             print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
             time.sleep(1)
     return
+
 def TablasEstadisticas(DatosNormales):
     try:
-        remove('Tabla_Estadistica.csv')
+        os.remove('Tabla_Estadistica.csv')
         time.sleep(1)
         DatosOrd = AgruparDatos(DatosNormales)
         Tabla = open('Tabla_Estadistica.csv','w')
@@ -1354,6 +1382,7 @@ def TablasEstadisticas(DatosNormales):
             Cadena = str(DatosOrd[0][i])+','+str(DatosOrd[1][i])+','+str(DatosOrd[2][i])+','+str(DatosOrd[3][i])+','+str(DatosOrd[4][i])+','+str(DatosOrd[5][i])+'\n'
             Tabla.write(Cadena)
         Tabla.close()
+
 def CrearDatos():
     print('Ingrese los datos separados por un espacio')
     Datos_entrada = input()
@@ -1383,7 +1412,7 @@ def FuncionesEst(Datos):
     Menú de funciones propias de la estadística
     """
     FEst = {1: MediaAritmetica,2: Mediana,6: Percentiles, 7:Cuartiles} 
-    FEs = {1: 'Media',2: 'Mediana',3: 'Varianza',4: 'Desviacion estandar',7: 'Coeficiente de variación',6: 'Percentil',7: 'Cuartil'}
+    FEs = {1: 'Media',2: 'Mediana',3: 'Varianza',4: 'Desviacion estandar',5: 'Coeficiente de variación',6: 'Percentil',7: 'Cuartil'}
     Fe = True
     historial['Estadistica'].append('Datos \n\t'+str(Datos))
     while Fe:
@@ -1661,7 +1690,7 @@ def CheckSum(PesosLista, Semilla, Limite):
         Checksum_List.append(Check)
     return Checksum_List
     
-def contra(usuario):
+def Contra(usuario):
     Mensaje = usuario
     Mensaje = Mensaje.split(' ')
     Semilla = 213
@@ -1671,7 +1700,7 @@ def contra(usuario):
     resultado = CheckSumLista[len(CheckSumLista)-1]
     return resultado
     
-def login():
+def Login():
     global user
     try:
         us = usuarios.usuarios
@@ -1709,7 +1738,7 @@ def login():
                     print('Su usuario se ha eliminado de la base de datos')
         else:
             print('su usuario es: '+user)
-            cont = str(contra(user))
+            cont = str(Contra(user))
             print('su contrasena sera: ',cont)
             print('¿Desea cambiar su contrasena? Si/No')
             cambio = input()
@@ -1731,242 +1760,7 @@ def login():
         usernames.write('usuarios ='+str(us)+'\n')
     return True
 
-def cuadrilateros(tortuga,color,inicio,largo,alto):
-    """
-    Parametros:
-    tortuga= elemento con el que se dibuja la fuente
-    color= entero que sirve de indice en una lista
-    inicio= lista con las coordenadas iniciales en las que se pone la esquina inferior izquierda del cuadrado
-    largo= entero que define el latgo del cuadrilatero
-    alto=entero que define el ancho del cuadrilatero
-    la funcion es la encargada de usar la libreria turtle para dibujar cuadrilateros y loa rellena
-    """
-    lista_color = ["snow3","skyblue1","seagreen3"]
-    tortuga.speed(100000)
-    tortuga.up()
-    tortuga.fillcolor(lista_color[color])
-    tortuga.goto(inicio[0],inicio[1])
-    tortuga.down()
-    tortuga.begin_fill()
-    tortuga.color(lista_color[color])
-    tortuga.goto(inicio[0]+largo,inicio[1])
-    tortuga.goto(inicio[0]+largo,inicio[1]+alto)
-    tortuga.goto(inicio[0],inicio[1]+alto)
-    tortuga.goto(inicio[0],inicio[1])
-    tortuga.end_fill()   
-
-def escribir(tortuga):
-    """
-    Parametros:
-    tortuga= elemento con el que se posiciona los mensajes escritos en pantalla
-    la funcion es la encargada de usar la libreria turtle para posicionar mensajes en pantalla, a estos mesajes se les puede introducir valores de fuentes y tamanos de letras
-    """
-    tortuga.hideturtle()
-    tortuga.up()
-    tortuga.goto(0,-30)
-    tortuga.write("\"Fuente de investigacion\" ",align=("center"),font=("GothicE",20,"italic"))
-    tortuga.goto(0,-350)
-    tortuga.write("(Haga click en la ventana para continuar)",align=("center"),font=("times new roman",30,"bold")) 
-
-def imagen(tortuga):
-    """
-    parametros:
-    tortuga= elemento con el que se va hacer la imagen
-    En esta funcion se crea una imagen de una calculadora, unicamente con funciones de turtle, con una funcion que crea cuadrilateros
-    """
-    tortuga.hideturtle()
-    cuadrilateros(tortuga,0,[-100,120],200,300)
-    cuadrilateros(tortuga,1,[-80,335],160,60)
-    lista = [[-70,250],[-70,150],[20,250],[20,150]]
-    for posicion in lista:
-        cuadrilateros(tortuga,2,posicion,50,50)
-    tortuga.pencolor("black")
-    tortuga.pensize(7)
-    tortuga.up()
-    tortuga.goto(30,275)
-    tortuga.down()
-    tortuga.goto(60,275)
-    tortuga.up()
-    tortuga.goto(-60,275)
-    tortuga.down()
-    tortuga.goto(-30,275)
-    tortuga.up()
-    tortuga.goto(-45,290)
-    tortuga.down()
-    tortuga.goto(-45,260)
-    tortuga.up()
-    tortuga.goto(30,185)
-    tortuga.down()
-    tortuga.goto(60,185)
-    tortuga.up()
-    tortuga.goto(30,165)
-    tortuga.down()
-    tortuga.goto(60,165)
-    tortuga.up()
-    tortuga.goto(-30,185)
-    tortuga.down()
-    tortuga.goto(-60,165)
-    tortuga.up()
-    tortuga.goto(-30,165)
-    tortuga.down()
-    tortuga.goto(-60,185)
-    ceros = [-75,-35,5,45]
-    for numero in ceros:
-        tortuga.up()
-        tortuga.goto(numero,345)
-        tortuga.down()
-        tortuga.pensize(3)
-        tortuga.goto(numero+30,345)
-        tortuga.goto(numero+30,390)
-        tortuga.goto(numero,390)
-        tortuga.goto(numero,345)
-
-def nombre(tortuga):
-    """
-    parametros:
-    tortuga= elemento con el que se escribe el nombre del proyecto
-    En esta funcion se escribe el nombre del proyecto, unicamente con funciones de turtle, sin funciones adicionales
-    """
-    tortuga.hideturtle()
-    tortuga.up()
-    tortuga.goto(-120,-100)
-    tortuga.speed(10)
-    tortuga.color("black")                             
-    tortuga.fillcolor("blue")
-    tortuga.up()
-    tortuga.down()
-    tortuga.begin_fill()
-    tortuga.forward(70)
-    tortuga.right(90)
-    tortuga.forward(20)
-    tortuga.right(90)
-    tortuga.forward(50)
-    tortuga.left(90)
-    tortuga.forward(30)
-    tortuga.left(90)
-    tortuga.forward(30)
-    tortuga.right(90)
-    tortuga.forward(20)
-    tortuga.right(90)
-    tortuga.forward(30)
-    tortuga.left(90)
-    tortuga.forward(60)
-    tortuga.right(90)
-    tortuga.forward(20)
-    tortuga.right(90)
-    tortuga.forward(130)
-    tortuga.right(90)
-    tortuga.forward(70)
-    tortuga.right(90)
-    tortuga.end_fill()
-    tortuga.color("black")
-    tortuga.fillcolor("white")
-    tortuga.begin_fill()
-    tortuga.forward(130)
-    tortuga.left(90)
-    tortuga.forward(70)
-    tortuga.left(90)
-    tortuga.forward(20)
-    tortuga.left(90)
-    tortuga.forward(50)
-    tortuga.right(90)
-    tortuga.forward(40)
-    tortuga.right(90)
-    tortuga.forward(30)
-    tortuga.left(90)
-    tortuga.forward(20)
-    tortuga.left(90)
-    tortuga.forward(30)
-    tortuga.right(90)
-    tortuga.forward(30)
-    tortuga.right(90)
-    tortuga.forward(50)
-    tortuga.left(90)
-    tortuga.forward(20)
-    tortuga.left(90)
-    tortuga.forward(70)
-    tortuga.end_fill()
-    tortuga.right(180)
-    tortuga.forward(70)
-    tortuga.fillcolor("red")
-    tortuga.begin_fill()
-    tortuga.forward(20)
-    tortuga.right(50)
-    tortuga.forward(60)
-    tortuga.left(100)
-    tortuga.forward(60)
-    tortuga.right(50)
-    tortuga.forward(20)
-    tortuga.right(90)
-    tortuga.forward(130)
-    tortuga.right(90)
-    tortuga.forward(20)
-    tortuga.right(90)
-    tortuga.forward(100)
-    tortuga.left(140)
-    tortuga.forward(60)
-    tortuga.right(100)
-    tortuga.forward(60)
-    tortuga.left(140)
-    tortuga.forward(100)
-    tortuga.right(90)
-    tortuga.forward(20)
-    tortuga.right(90)
-    tortuga.forward(130)
-    tortuga.right(180)
-    tortuga.forward(130)
-    tortuga.end_fill()
-
-def dibujar(puntos,tortuga):
-    """
-    Parametros:
-    tortuga= elemento con el que se dibuja la fuente
-    puntos= lista de valores con los que se forman las lineas
-    la funcion es la encargada de usar la libreria turtle para dibujar las lineas
-    """
-    tortuga.up()
-    tortuga.goto(puntos[0][0],puntos[1][1])
-    tortuga.down()
-    tortuga.goto(puntos[0][0],puntos[0][1])
-    tortuga.goto(puntos[1][0],puntos[1][1])
-
-def division(lista, valor):
-    """
-    Parametros:
-    lista = lista con los valores de los puntos la cual seran cambiados con esta funcion
-    valor = entero con que sirve de factor para cambiar el valor de los puntos de la lista
-    La funcion se encarga de cambiar los valores de la lista de puntos con una division entre el valor
-    """
-    puntos = [[lista[0][0]/valor,lista[0][1]+30/valor], [lista[1][0]/valor,lista[1][1]+30/valor]]
-    return puntos
-
-def koch(puntos,grado,tortuga):
-    """
-    Parametros:
-    grado = entero que se disminuye para llegar al caso base de la recursion
-    tortuga= elemento con el que se dibuja la fuente
-    puntos= lista de valores con los que se forman las lineas
-    la funcion es la encargada de la recursion de las linaeas para cambiar los valores y posicion, se basa en la teoria del matematico Helge Von Koch para cambiar los valores del
-    tamano de las lineas por medio de los puntos
-    """
-    dibujar(puntos,tortuga)
-    if grado > 0:
-        for numero in range(2,4):
-            koch(division(puntos,numero),grado-1, tortuga)
-
-def fractal(tortuga,espaciador,puntos):
-    """
-    Parametros:
-    tortuga= elemento con el que se dibuja la fuente
-    espaciador=entero con el que se se realiza la recursion 
-    puntos= lista con los valores que cambian para definir el tamanno y posicion de las lineas
-    la funcion usa la recursion de la funcion llamada "koch" para generar lineas horizontales que simulan una fuente
-    """    
-    tortuga.hideturtle()
-    tortuga.speed(10000)
-    koch(division(puntos,3),espaciador,tortuga)
-
-def logo_principal():
+def Logo_principal():
     """
     funcion sin parametros de entrada
     En esta funcion se crea un logo con la libreria turtle con las siguentes caracterisiticas:
@@ -1976,13 +1770,13 @@ def logo_principal():
     Envia mensajes en la ventana de turtle
     Se cierra con un click del usuario 
     """
-    def imagen(tortuga):
+    def Imagen(tortuga):
         """
         parametros:
         tortuga= elemento con el que se va hacer la imagen
         En esta funcion se crea una imagen de una calculadora, unicamente con funciones de turtle, con una funcion que crea cuadrilateros
         """
-        def cuadrilateros(tortuga,color,inicio,largo,alto):
+        def Cuadrilateros(tortuga,color,inicio,largo,alto):
             """
             Parametros:
             tortuga= elemento con el que se dibuja la fuente
@@ -1993,7 +1787,7 @@ def logo_principal():
             la funcion es la encargada de usar la libreria turtle para dibujar cuadrilateros y loa rellena
             """
             lista_color = ["snow3","skyblue1","seagreen3"]
-            tortuga.speed(100000)
+            tortuga.speed(0)
             tortuga.up()
             tortuga.fillcolor(lista_color[color])
             tortuga.goto(inicio[0],inicio[1])
@@ -2006,11 +1800,11 @@ def logo_principal():
             tortuga.goto(inicio[0],inicio[1])
             tortuga.end_fill()
         tortuga.hideturtle()
-        cuadrilateros(tortuga,0,[-100,120],200,300)
-        cuadrilateros(tortuga,1,[-80,335],160,60)
+        Cuadrilateros(tortuga,0,[-100,120],200,300)
+        Cuadrilateros(tortuga,1,[-80,335],160,60)
         lista = [[-70,250],[-70,150],[20,250],[20,150]]
         for posicion in lista:
-            cuadrilateros(tortuga,2,posicion,50,50)
+            Cuadrilateros(tortuga,2,posicion,50,50)
         tortuga.pencolor("black")
         tortuga.pensize(7)
         tortuga.up()
@@ -2051,7 +1845,7 @@ def logo_principal():
             tortuga.goto(numero+30,390)
             tortuga.goto(numero,390)
             tortuga.goto(numero,345)
-    def escribir(tortuga):
+    def Escribir(tortuga):
         """
         Parametros:
         tortuga= elemento con el que se posiciona los mensajes escritos en pantalla
@@ -2059,11 +1853,16 @@ def logo_principal():
         """
         tortuga.hideturtle()
         tortuga.up()
-        tortuga.goto(0,-30)
-        tortuga.write("\"fuente de investigacion\"",align=("center"),font=("castellar",25,"normal"))
+        tortuga.goto(-300,-100)
+        tortuga.write("CALCULADORA",font=("Arial",17,"normal"))
+        tortuga.goto(-80,-245)
+        tortuga.write("2020-1",font=("Arial",10,"normal"))
+        tortuga.goto(0,-10)
+        tortuga.write("\"fuente de investigacion\"",align=("center"),font=("castellar",12,"normal"))
         tortuga.goto(0,-350)
-        tortuga.write("(Haga click en la ventana para continuar)",align=("center"),font=("times new roman",20,"normal"))   
-    def fractal(tortuga,espaciador,puntos):
+        tortuga.write("(Haga click en la ventana para continuar)",align=("center"),font=("times new roman",7,"normal"))
+        tortuga.goto(0,-350)   
+    def Fractal(tortuga,espaciador,puntos):
         """
         Parametros:
         tortuga= elemento con el que se dibuja la fuente
@@ -2071,7 +1870,7 @@ def logo_principal():
         puntos= lista con los valores que cambian para definir el tamanno y posicion de las lineas
         la funcion usa la recursion de la funcion llamada "koch" para generar lineas horizontales que simulan una fuente
         """
-        def dibujar(puntos,tortuga):
+        def Dibujar(puntos,tortuga):
             """
             Parametros:
             tortuga= elemento con el que se dibuja la fuente
@@ -2084,7 +1883,7 @@ def logo_principal():
             tortuga.goto(puntos[0][0],puntos[0][1])
             tortuga.goto(puntos[1][0],puntos[1][1])
 
-        def division(lista, valor):
+        def Division(lista, valor):
             """
             Parametros:
             lista = lista con los valores de los puntos la cual seran cambiados con esta funcion
@@ -2094,7 +1893,7 @@ def logo_principal():
             puntos = [[lista[0][0]/valor,lista[0][1]+30/valor], [lista[1][0]/valor,lista[1][1]+30/valor]]
             return puntos
 
-        def koch(puntos,grado,tortuga):
+        def Koch(puntos,grado,tortuga):
             """
             Parametros:
             grado = entero que se disminuye para llegar al caso base de la recursion
@@ -2103,14 +1902,14 @@ def logo_principal():
             la funcion es la encargada de la recursion de las linaeas para cambiar los valores y posicion, se basa en la teoria del matematico Helge Von Koch para cambiar los valores del
             tamano de las lineas por medio de los puntos
             """
-            dibujar(puntos,tortuga)
+            Dibujar(puntos,tortuga)
             if grado > 0:
                 for numero in range(2,4):
-                    koch(division(puntos,numero),grado-1, tortuga)
+                    Koch(Division(puntos,numero),grado-1, tortuga)
         tortuga.hideturtle()
-        tortuga.speed(10000)
-        koch(division(puntos,3),espaciador,tortuga)
-    def nombre(tortuga):
+        tortuga.speed(0)
+        Koch(Division(puntos,3),espaciador,tortuga)
+    def Nombre(tortuga):
         """
         parametros:
         tortuga= elemento con el que se escribe el nombre del proyecto
@@ -2118,7 +1917,7 @@ def logo_principal():
         """
         tortuga.hideturtle()
         tortuga.up()
-        tortuga.goto(-120,-100)
+        tortuga.goto(-300,-100)
         tortuga.speed(10)
         tortuga.color("black")                             
         tortuga.fillcolor("blue")
@@ -2205,14 +2004,86 @@ def logo_principal():
         tortuga.right(180)
         tortuga.forward(130)
         tortuga.end_fill()
+    def Linea_media(tortuga):
+        tortuga.hideturtle()
+        tortuga.up()
+        tortuga.pensize(5)
+        tortuga.goto(0,-70)
+        tortuga.down()
+        tortuga.right(90)
+        tortuga.forward(200)
+    def Logo_un():
+        alex = turtle.Turtle()
+        alex.color('green')
+        alex.speed(0)
+        alex.hideturtle()
+        alex.fillcolor('green')
+        alex.begin_fill()
+        alex.up()
+        alex.goto(200,-205)
+        alex.down()
+        alex.circle(70)
+        alex.end_fill()
+        alex.goto(200,-200)
+        alex.left(90)
+        alex.forward(91)
+        alex.left(90)
+        alex.forward(49)
+        alex.color('white')
+        alex.fillcolor('white')
+        alex.begin_fill()
+        alex.left(90)
+        alex.forward(42)
+        alex.circle(14,90)
+        alex.forward(31.5)
+        alex.left(90)
+        alex.forward(56)
+        alex.left(90)
+        alex.forward(7)
+        alex.left(90)
+        alex.forward(33)
+        alex.circle(-15.75,180)
+        alex.forward(33)
+        alex.left(90)
+        alex.forward(7)
+        alex.end_fill()
+        alex.up()
+        alex.goto(200,-200)
+        alex.left(180)
+        alex.forward(49)
+        alex.left(90)
+        alex.forward(35)
+        alex.down()
+        alex.fillcolor('white')
+        alex.begin_fill()
+        alex.forward(42)
+        alex.circle(14,90)
+        alex.forward(31.5)
+        alex.left(90)
+        alex.forward(56)
+        alex.left(90)
+        alex.forward(7)
+        alex.left(90)
+        alex.forward(33)
+        alex.circle(-15.75,180)
+        alex.forward(33)
+        alex.left(90)
+        alex.forward(7)
+        alex.end_fill()
+        alex.up()
+        alex.goto(205,-235)
+        alex.color('black')
+        alex.down()
+        alex.write('UNIVERSIDAD NACIONAL DE COLOMBIA',align=('center'),font=('Ancizar sans',15))
     pantalla = turtle.Screen()
     pantalla.title("Logo FEM")
-    pantalla.setup(800,1000,200,0)
+    pantalla.setup(900,850,200,0)
     pantalla.bgcolor("light blue")
     a = turtle.Turtle()
     b = turtle.Turtle()
     c = turtle.Turtle()
     d = turtle.Turtle()
+    e = turtle.Turtle()
     a.pensize(2)
     b.pensize(6)
     c.pensize(2)
@@ -2220,10 +2091,12 @@ def logo_principal():
     a.pencolor("green")
     b.pencolor("black")
     c.pencolor("black")
-    fractal(a,3,[[-500,10],[500,10]])
-    imagen(b)
-    nombre(c)
-    escribir(d)   
+    Fractal(a,3,[[-500,10],[500,10]])
+    Imagen(b)
+    Nombre(c)
+    Linea_media(e)
+    Logo_un()
+    Escribir(d)   
     pantalla.exitonclick()
     pantalla.title("Calculadora_resistencias")
 
@@ -2271,9 +2144,9 @@ def VolverInicio():
 def main():
     global historial
     historial = {'Matematicas':[],'Estadistica':[],'Fisica':[]}
-    logo_principal()
+    Logo_principal()
     funciones = {1:Matematicas,2:Estadistica,3:Fisica}
-    bandera = login()
+    bandera = Login()
     entrada = time.strftime("%d-%m-%Y %H:%M", time.localtime())
     while bandera:
         borrarPantalla()
