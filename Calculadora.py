@@ -786,7 +786,7 @@ def electromagnetismo():
     asi como funciones que se usan dentro de las funciones de calculo como 'sumatoria'.
     Esta tiene como entrada un string con el nombre de la variable a conocer.   
     """
-    dicc_electromagnetismo= {1:voltaje,2:corriente,3:resistencia,4:carga,5:lectura_resistencia,6:constantes_electromagnetismo} 
+    dicc_electromagnetismo= {1:voltaje,2:corriente,3:resistencia,4:carga,5:lectura_resistencias,6:constantes_electromagnetismo} 
     rta = True
     while rta:
         borrarPantalla()
@@ -1088,6 +1088,7 @@ def regla_de_tres(relacion):
 def Estadistica():
     est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst, 4: GraficasEst}
     Rta = True
+    global Datos
     while Rta:
         borrarPantalla()
         print('''ELIJA UNA OPCIÓN:
