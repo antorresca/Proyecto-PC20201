@@ -2154,17 +2154,23 @@ def main():
         \t 1)MATEMÁTICAS
         \t 2)ESTADÍSTICA
         \t 3)FÍSICA
+        \t 4)Salida
         ''')
         try:
-            funciones[int(input())]()
-            bandera = VolverInicio()
+            eleccion = int(input())
+            if eleccion < 4:
+                funciones[eleccion]()
+                bandera = VolverInicio()
+            elif eleccion == 4:
+                bandera = False
         except:
             print('***OPCIÓN INVALIDA***') 
             time.sleep(3)    
     salida = time.strftime("%d-%m-%Y %H:%M", time.localtime())
-    print('Desea guardar su historial?')
+    print('¿Desea guardar su historial?')
     respuestahisto = input().lower()
     if respuestahisto == 'si':
+        print('Guardando historial...')
         GuardarHistorial(entrada,salida)
     print('Vuelva Pronto')
     time.sleep(10)    
