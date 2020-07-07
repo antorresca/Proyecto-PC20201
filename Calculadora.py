@@ -1291,7 +1291,7 @@ def cambio_temp(lista):
         temperatura -= 273.15
 
 def Estadistica():
-    est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst, 4: GraficasEst}
+    est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst, 4: GraficasEst, 5: TablasEstadisticas}
     Rta = True
     global Datos
     while Rta:
@@ -1301,13 +1301,18 @@ def Estadistica():
             \t 2)Agregar Datos
             \t 3)Operaciones estadisticas
             \t 4)Graficas Estadisticas
+            \t 5)Tablas Estadisticas
             ''')
         try:
             entrada = int(input())
             if entrada == 1:
                 Datos = est[entrada]()
             elif entrada == 2:
-                Datos = est[entrada](Datos)
+                try:
+                    Datos = est[entrada](Datos)
+                except:
+                    print('No se han ingresado Datos, por favor eliga la opcion 1 para continuar')
+                    Rta = VolverAntes()
             else:
                 try:
                     est[entrada](Datos)
@@ -1316,12 +1321,32 @@ def Estadistica():
             Rta = VolverAntes()
         except KeyError:
             print('La opcion seleccionada no se encuentra en la lista presentada')
-            time.sleep(2)
+            time.sleep(1)
         except ValueError:
             print('La opcion no es valida, tenga en cuenta que SOLO es el numero de la opcion deseada')
-            time.sleep(2)
+            time.sleep(1)
     return
-
+def TablasEstadisticas(DatosNormales):
+    try:
+        remove('Tabla_Estadistica.csv')
+        time.sleep(1)
+        DatosOrd = AgruparDatos(DatosNormales)
+        Tabla = open('Tabla_Estadistica.csv','w')
+        Cadena = 'Intervalos,Marca de Clase,fi,Fi,hi,Hi\n'
+        Tabla.write(Cadena)
+        for i in range(len(DatosOrd[0])):
+            Cadena = str(DatosOrd[0][i])+','+str(DatosOrd[1][i])+','+str(DatosOrd[2][i])+','+str(DatosOrd[3][i])+','+str(DatosOrd[4][i])+','+str(DatosOrd[5][i])+'\n'
+            Tabla.write(Cadena)
+        Tabla.close()
+    except:
+        DatosOrd = AgruparDatos(DatosNormales)
+        Tabla = open('Tabla_Estadistica.csv','w')
+        Cadena = 'Intervalos,Marca de Clase,fi,Fi,hi,Hi\n'
+        Tabla.write(Cadena)
+        for i in range(len(DatosOrd[0])):
+            Cadena = str(DatosOrd[0][i])+','+str(DatosOrd[1][i])+','+str(DatosOrd[2][i])+','+str(DatosOrd[3][i])+','+str(DatosOrd[4][i])+','+str(DatosOrd[5][i])+'\n'
+            Tabla.write(Cadena)
+        Tabla.close()
 def CrearDatos():
     print('Ingrese los datos separados por un espacio')
     Datos_entrada = input()
@@ -1336,6 +1361,7 @@ def AgregarDatos(ListaDeDatos):
     :param ListaDeDatos: Lista de datos anteriormente ingresados
     La función agrega nuevos elementos a la lista de datos con la que se está trabajando
     """
+
     print('Ingrese cantidad de valores: ')
     n = int(input())
     for i in range(n):
