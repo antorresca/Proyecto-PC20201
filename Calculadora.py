@@ -1526,13 +1526,12 @@ def Ojiva(DatosAgrupados):
     plt.style.use('seaborn-colorblind')
     ages_x = DatosAgrupados[1]
     dev_y = DatosAgrupados[5]
-    plt.plot(ages_x, dev_y, color='#444444',marker='*', label='All Devs')
+    plt.plot(ages_x, dev_y, color='#444444',linewidth=1,marker='*',markersize=5)
     plt.xlabel('Marcas de clase del intervalo')
     plt.ylabel('Frecuencias relativas acumuladas')
     print('Ingrese un titulo para el diagrama de Ojiva:')
     Titulo = input()
     plt.title(Titulo)
-    plt.legend()
     plt.grid(True)
     plt.tight_layout()
     plt.show()
@@ -1550,8 +1549,13 @@ def GraficasEst(Datos):
         ''')
         try:
             funcion = int(input())
-            salida = grafs[funcion](DatosAgrupados)
-            Fe = VolverAntes()
+            if funcion != 2:
+                salida = grafs[funcion](DatosAgrupados)
+                Fe = VolverAntes()
+            else:
+                Median = Mediana(Datos)[1]
+                salida = grafs[funcion](Datos, DatosAgrupados, Median)
+                Fe = VolverAntes()
         except:
             print('Opcion invalida')
     return
