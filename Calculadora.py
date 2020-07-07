@@ -815,7 +815,7 @@ def Electromagnetismo():
             rta = VolverAntes()
         except FloatingPointError:
             print('Ingrese, por favor, las magnitudes numericas reales separadas per un punto (.)')
-            time.sleep(10)
+            time.sleep(9)
         except KeyError:
             print('La opcion seleccionada no se encuentra en la lista presentada')
             time.sleep(10)
