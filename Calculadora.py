@@ -751,7 +751,7 @@ def constantes_dinamica():
     rta = True
     while rta:
         borrarPantalla()
-        cte_cinematica = {1:"El peso en la tierra es de 9.871 m/s^2",2:"La constante de gravitacion universal de 6.67 X 10^-11 Nm^2/kg",3:[[1,101325],["Pa","atm"]],4:[[1,4184],["Kcal","J"]],5:[[1,14.7]["atm" , "lb/pulg^2" ]],6:[[1,4.448]["lb" , "N"  ]]}
+        cte_cinematica = {1:"El peso en la tierra es de 9.871 m/s^2",2:"La constante de gravitacion universal de 6.67 X 10^-11 Nm^2/kg",3:[[1,101325],["Pa","atm"]],4:[[1,4184],["Kcal","J"]],5:[[1,14.7],["atm" , "lb/pulg^2" ]],6:[[1,4.448],["lb" , "N"  ]]}
         print (""" BIENVENIDO A LA SECCION DE CONSTANTES DE DINAMICA
         Por favor, digite el numero de la constante, relacion o proceso:
         \t 1) Peso en la tierra
@@ -1283,12 +1283,19 @@ def cambio_temp(lista):
     for unidad in lista:
         print((str(lista.index(unidad)+1))+")",unidad)
     entrada = int(input())
-    print("Ingrese la magnitude de la temperatura en", str(lista[entrada]))
+    print("Ingrese la magnitud de de la temperatura en", str(lista[entrada]))
     temperatura = float(input())
     if entrada == 1:
-        temperatura += 273.15
+        if temperatura <= 0:
+            print("La temperarura en el sistema absoluto (K), no puede ser menor a 0")
+        else:
+            print("La temperatura es de ",str(round(temperatura+273.15)),lista[1])
     elif entrada == 2:
         temperatura -= 273.15
+        if temperatura <= 0:
+            print("La temperarura en el sistema absoluto (K), no puede ser menor a 0")
+        else:
+            print("La temperatura es de ",str(round(temperatura+273.15)),lista[0])
 
 def Estadistica():
     est = {1: CrearDatos,2: AgregarDatos, 3: FuncionesEst, 4: GraficasEst, 5: TablasEstadisticas}
